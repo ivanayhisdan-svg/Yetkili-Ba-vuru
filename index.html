@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SnMac | Başvuru Sistemi</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            color: white;
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.8)),
+                url("assets/background.jpg") center/cover fixed;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        header {
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #cccccc;
+            font-size: 17px;
+        }
+
+        .welcome {
+            text-align: center;
+            margin: 50px auto;
+            max-width: 750px;
+        }
+
+        .welcome h2 {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .welcome p {
+            color: #cccccc;
+            line-height: 1.7;
+        }
+
+        .applications {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            padding-bottom: 50px;
+        }
+
+        .application {
+            background: rgba(20, 20, 20, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .application:hover {
+            transform: translateY(-6px);
+            background: rgba(35, 35, 35, 0.95);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .application h3 {
+            margin-bottom: 10px;
+        }
+
+        .application p {
+            color: #aaaaaa;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #777777;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 32px;
+            }
+
+            .welcome h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <header>
+            <img src="assets/logo.png" class="logo" alt="SnMac Logo">
+
+            <h1>SnMac</h1>
+
+            <p>Yetkili Başvuru Sistemi</p>
+        </header>
+
+        <section class="welcome">
+
+            <h2>Ekibimize Katılmak İster misin?</h2>
+
+            <p>
+                SnMac ekibinde görev almak ve sunucumuzun gelişimine katkıda bulunmak
+                istiyorsan aşağıdaki başvuru alanlarından sana uygun olanı seçerek
+                başvurunu oluşturabilirsin.
+            </p>
+
+        </section>
+
+        <section class="applications">
+
+            <div class="application">
+                <div class="icon">🛡️</div>
+
+                <h3>Yetkili Alımı</h3>
+
+                <p>
+                    Sunucu düzeninden, oyuncu desteğinden ve topluluk yönetiminden
+                    sorumlu ekip.
+                </p>
+            </div>
+
+            <div class="application">
+                <div class="icon">🎨</div>
+
+                <h3>Medya Alımı</h3>
+
+                <p>
+                    Sosyal medya, içerik üretimi ve SnMac'in tanıtım çalışmalarında
+                    görev alacak ekip.
+                </p>
+            </div>
+
+            <div class="application">
+                <div class="icon">💻</div>
+
+                <h3>Geliştirici Alımı</h3>
+
+                <p>
+                    Sunucunun yazılım, plugin, sistem ve teknik geliştirmelerinde
+                    görev alacak ekip.
+                </p>
+            </div>
+
+            <div class="application">
+                <div class="icon">🔧</div>
+
+                <h3>AAC Alımı</h3>
+
+                <p>
+                    AAC ekibinde görev almak ve sunucunun denetim süreçlerine
+                    katkıda bulunmak isteyenler için.
+                </p>
+            </div>
+
+        </section>
+
+        <footer>
+            © 2026 SnMac — Tüm hakları saklıdır.
+        </footer>
+
+    </div>
+
+</body>
+</html>
