@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SnMac | Yetkili Başvurusu</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.70),
+                    rgba(0, 0, 0, 0.88)
+                ),
+                url("assets/background.jpg") center/cover fixed;
+
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo {
+            width: 90px;
+            height: 90px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #aaaaaa;
+            font-size: 16px;
+        }
+
+        .form-box {
+            background: rgba(18, 18, 18, 0.94);
+
+            border: 1px solid rgba(255, 255, 255, 0.10);
+
+            border-radius: 18px;
+
+            padding: 35px;
+
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+        }
+
+        .question {
+            margin-bottom: 25px;
+        }
+
+        .question label {
+            display: block;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            margin-bottom: 10px;
+        }
+
+        .required {
+            color: #ff4d4d;
+        }
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            background: rgba(255, 255, 255, 0.06);
+
+            color: white;
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            border-radius: 10px;
+
+            padding: 13px 14px;
+
+            outline: none;
+
+            font-size: 15px;
+
+            transition: 0.2s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+
+            border-color: rgba(255, 255, 255, 0.40);
+
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        textarea {
+
+            min-height: 130px;
+
+            resize: vertical;
+
+            line-height: 1.5;
+        }
+
+        select {
+
+            cursor: pointer;
+        }
+
+        select option {
+
+            background: #181818;
+
+            color: white;
+        }
+
+        .submit {
+
+            width: 100%;
+
+            border: none;
+
+            border-radius: 10px;
+
+            padding: 15px;
+
+            background: white;
+
+            color: #111;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .submit:hover {
+
+            transform: translateY(-2px);
+
+            background: #dddddd;
+        }
+
+        .back {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #999;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+        }
+
+        .back:hover {
+
+            color: white;
+        }
+
+        .notice {
+
+            margin-bottom: 30px;
+
+            padding: 15px;
+
+            border-radius: 10px;
+
+            background: rgba(255, 255, 255, 0.05);
+
+            border: 1px solid rgba(255, 255, 255, 0.08);
+
+            color: #bbbbbb;
+
+            font-size: 14px;
+
+            line-height: 1.6;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px 12px;
+            }
+
+            .form-box {
+                padding: 22px 18px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <div class="header">
+
+        <img
+            src="assets/logo.jpg"
+            class="logo"
+            alt="SnMac Logo"
+        >
+
+        <h1>🛡️ Yetkili Başvurusu</h1>
+
+        <p>
+            SnMac Yetkili Ekibine katılmak için aşağıdaki formu eksiksiz doldurun.
+        </p>
+
+    </div>
+
+
+    <div class="form-box">
+
+
+        <div class="notice">
+
+            Başvurunuzu gönderirken verdiğiniz bilgilerin doğru ve
+            eksiksiz olduğundan emin olun. Eksik, yanlış veya
+            yetersiz cevaplar başvurunuzun değerlendirme sürecini
+            olumsuz etkileyebilir.
+
+        </div>
+
+
+        <form>
+
+
+            <!-- 1 -->
+
+            <div class="question">
+
+                <label>
+                    Adınız ve Soyadınız:
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    name="fullname"
+                    placeholder="Adınız ve soyadınız"
+                    required
+                >
+
+            </div>
+
+
+            <!-- 2 -->
+
+            <div class="question">
+
+                <label>
+                    Discord Adınız:
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    type="text"
+                    name="discord"
+                    placeholder="Örn: kullaniciadi"
+                    required
+                >
+
+            </div>
+
+
+            <!-- 3 -->
+
+            <div class="question">
+
+                <label>
+                    Yaşınız:
+                    <span class="required">*</span>
+                </label>
+
+                <input
+                    type="number"
+                    name="age"
+                    min="13"
+                    max="99"
+                    placeholder="Yaşınız"
+                    required
+                >
+
+            </div>
+
+
+            <!-- 4 -->
+
+            <div class="question">
+
+                <label>
+                    Günde ve haftada kaç saatinizi bu sunucu için ayırabilirsiniz?
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="activity"
+                    placeholder="Örn: Hafta içi günde 3 saat, hafta sonu günde 5-6 saat."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 5 -->
+
+            <div class="question">
+
+                <label>
+                    Daha önce başka bir Discord veya Minecraft sunucusunda yetkililik yaptınız mı?
+                    Yaptıysanız neden ayrıldınız?
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="experience"
+                    placeholder="Daha önceki yetkililik deneyimlerinizden ve ayrılma nedenlerinizden bahsedin. Deneyiminiz yoksa bunu belirtebilirsiniz."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 6 -->
+
+            <div class="question">
+
+                <label>
+                    SnMac sunucusunda neden yetkili olmak istiyorsunuz?
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="motivation"
+                    placeholder="Yetkili olmak istemenizin nedenlerini açıklayın."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 7 -->
+
+            <div class="question">
+
+                <label>
+                    Mikrofonunuz var mı?
+                    <span class="required">*</span>
+                </label>
+
+                <select name="microphone" required>
+
+                    <option value="">
+                        Seçiniz
+                    </option>
+
+                    <option value="Evet">
+                        Evet
+                    </option>
+
+                    <option value="Hayır">
+                        Hayır
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- 8 -->
+
+            <div class="question">
+
+                <label>
+                    Bir arkadaşınızın kuralları ihlal ettiğini gördünüz.
+                    Ne yaparsınız ve işlem sıralamanız nasıl olur?
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="friend_rule_violation"
+                    placeholder="Bu durumda nasıl hareket edeceğinizi ve uygulayacağınız işlem sırasını açıklayın."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 9 -->
+
+            <div class="question">
+
+                <label>
+                    Bir oyuncu size Discord veya Minecraft sunucusu ile ilgili
+                    çok basit sorular soruyor ve cevapları sürekli unutup
+                    tekrar tekrar aynı soruları soruyor. Ne yaparsınız?
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="repeated_questions"
+                    placeholder="Bu oyuncuya nasıl yaklaşacağınızı açıklayın."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 10 -->
+
+            <div class="question">
+
+                <label>
+                    Yetkili başvurunuz kabul edilirse, sunucudaki görevinizi
+                    kurallara ve yetki sınırlarına uygun şekilde yerine
+                    getirebileceğinizi ve kendinizi bu görevde geliştirebileceğinizi
+                    düşünüyor musunuz?
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="responsibility"
+                    placeholder="Kendinizi bu görev için neden uygun gördüğünüzü açıklayın."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 11 -->
+
+            <div class="question">
+
+                <label>
+                    SnMac sunucusunda yetkili olmak istemenizin
+                    size göre en önemli nedeni nedir?
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="main_reason"
+                    placeholder="En önemli nedeninizi kendi cümlelerinizle açıklayın."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 12 -->
+
+            <div class="question">
+
+                <label>
+                    Biraz kendinizden bahsedin.
+                    <span class="required">*</span>
+                </label>
+
+                <textarea
+                    name="about"
+                    placeholder="Kendinizden, ilgi alanlarınızdan, deneyimlerinizden ve sizi tanımamızı sağlayacak bilgilerden bahsedin. Lütfen kısa veya boş cevap vermeyin."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="submit"
+            >
+                Başvuruyu Gönder
+            </button>
+
+
+        </form>
+
+
+        <a
+            href="index.html"
+            class="back"
+        >
+            ← Ana Sayfaya Dön
+        </a>
+
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
