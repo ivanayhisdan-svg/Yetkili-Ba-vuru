@@ -17,8 +17,12 @@
         body {
             min-height: 100vh;
             color: white;
+
             background:
-                linear-gradient(rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.8)),
+                linear-gradient(
+                    rgba(0, 0, 0, 0.65),
+                    rgba(0, 0, 0, 0.8)
+                ),
                 url("assets/background.jpg") center/cover fixed;
         }
 
@@ -75,18 +79,30 @@
         }
 
         .application {
+            display: block;
+
             background: rgba(20, 20, 20, 0.85);
+
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 15px;
+
             padding: 30px 20px;
+
             text-align: center;
+
             cursor: pointer;
+
             transition: 0.25s;
+
+            text-decoration: none;
+            color: white;
         }
 
         .application:hover {
             transform: translateY(-6px);
+
             background: rgba(35, 35, 35, 0.95);
+
             border-color: rgba(255, 255, 255, 0.25);
         }
 
@@ -108,17 +124,24 @@
         footer {
             text-align: center;
             padding: 30px;
+
             color: #777777;
+
             font-size: 14px;
         }
 
         @media (max-width: 600px) {
+
             header h1 {
                 font-size: 32px;
             }
 
             .welcome h2 {
                 font-size: 24px;
+            }
+
+            .application {
+                padding: 25px 15px;
             }
         }
     </style>
@@ -129,73 +152,123 @@
     <div class="container">
 
         <header>
-            <img src="assets/logo.jpg" class="logo" alt="SnMac Logo">
+
+            <img
+                src="assets/logo.jpg"
+                class="logo"
+                alt="SnMac Logo"
+            >
 
             <h1>SnMac</h1>
 
             <p>Yetkili Başvuru Sistemi</p>
+
         </header>
+
 
         <section class="welcome">
 
             <h2>Ekibimize Katılmak İster misin?</h2>
 
             <p>
-                SnMac ekibinde görev almak ve sunucumuzun gelişimine katkıda bulunmak
-                istiyorsan aşağıdaki başvuru alanlarından sana uygun olanı seçerek
-                başvurunu oluşturabilirsin.
+                SnMac ekibinde görev almak ve sunucumuzun gelişimine
+                katkıda bulunmak istiyorsan aşağıdaki başvuru alanlarından
+                sana uygun olanı seçerek başvurunu oluşturabilirsin.
             </p>
 
         </section>
 
-        <a href="yetkili.html" class="application">
-    <div class="icon">🛡️</div>
 
-    <h3>Yetkili Alımı</h3>
+        <section class="applications">
 
-    <p>
-        Sunucu düzeninden, oyuncu desteğinden ve topluluk yönetiminden
-        sorumlu ekip.
-    </p>
-</a>
 
-            <div class="application">
-                <div class="icon">🎨</div>
+            <!-- YETKİLİ -->
 
-                <h3>Medya Alımı</h3>
+            <a href="yetkili.html" class="application">
 
-                <p>
-                    Sosyal medya, içerik üretimi ve SnMac'in tanıtım çalışmalarında
-                    görev alacak ekip.
-                </p>
-            </div>
+                <div class="icon">
+                    🛡️
+                </div>
 
-            <div class="application">
-                <div class="icon">💻</div>
-
-                <h3>Geliştirici Alımı</h3>
+                <h3>
+                    Yetkili Alımı
+                </h3>
 
                 <p>
-                    Sunucunun yazılım, plugin, sistem ve teknik geliştirmelerinde
-                    görev alacak ekip.
+                    Sunucu düzeninden, oyuncu desteğinden ve topluluk
+                    yönetiminden sorumlu ekip.
                 </p>
-            </div>
 
-            <div class="application">
-                <div class="icon">🔧</div>
+            </a>
 
-                <h3>AAC Alımı</h3>
+
+            <!-- MEDYA -->
+
+            <a href="medya.html" class="application">
+
+                <div class="icon">
+                    🎨
+                </div>
+
+                <h3>
+                    Medya Alımı
+                </h3>
 
                 <p>
-                    AAC ekibinde görev almak ve sunucunun denetim süreçlerine
-                    katkıda bulunmak isteyenler için.
+                    Sosyal medya, içerik üretimi ve SnMac'in tanıtım
+                    çalışmalarında görev alacak ekip.
                 </p>
-            </div>
+
+            </a>
+
+
+            <!-- GELİŞTİRİCİ -->
+
+            <a href="gelistirici.html" class="application">
+
+                <div class="icon">
+                    💻
+                </div>
+
+                <h3>
+                    Geliştirici Alımı
+                </h3>
+
+                <p>
+                    Sunucunun yazılım, plugin, sistem ve teknik
+                    geliştirmelerinde görev alacak ekip.
+                </p>
+
+            </a>
+
+
+            <!-- AAC -->
+
+            <a href="aac.html" class="application">
+
+                <div class="icon">
+                    🔧
+                </div>
+
+                <h3>
+                    AAC Alımı
+                </h3>
+
+                <p>
+                    AAC ekibinde görev almak ve sunucunun denetim
+                    süreçlerine katkıda bulunmak isteyenler için.
+                </p>
+
+            </a>
+
 
         </section>
 
+
         <footer>
+
             © 2026 SnMac — Tüm hakları saklıdır.
+
         </footer>
 
     </div>
