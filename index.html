@@ -6,9 +6,11 @@
 
     <title>SnMac | Başvuru Sistemi</title>
 
+    <!-- SUPABASE -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -39,35 +41,21 @@
         ========================= */
 
         .account-bar {
+            width: 100%;
+
             display: flex;
             justify-content: flex-end;
             align-items: center;
+
             gap: 10px;
 
-            padding-top: 20px;
-        }
-
-        .account-info {
-            display: none;
-
-            background: rgba(20, 20, 20, 0.9);
-            border: 1px solid rgba(255,255,255,0.1);
-
-            border-radius: 10px;
-
-            padding: 10px 14px;
-
-            color: #bbb;
-
-            font-size: 14px;
-        }
-
-        .account-info strong {
-            color: white;
+            padding: 20px 0;
         }
 
         .account-button {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
 
             padding: 10px 15px;
 
@@ -75,7 +63,7 @@
 
             border: 1px solid rgba(255,255,255,0.15);
 
-            background: rgba(20,20,20,0.9);
+            background: rgba(20,20,20,0.92);
 
             color: white;
 
@@ -89,10 +77,36 @@
         }
 
         .account-button:hover {
-            background: rgba(50,50,50,0.95);
+            background: rgba(55,55,55,0.98);
+
+            transform: translateY(-1px);
         }
 
-        .logout-button {
+        .account-info {
+            display: none;
+
+            padding: 10px 14px;
+
+            border-radius: 9px;
+
+            border: 1px solid rgba(255,255,255,0.15);
+
+            background: rgba(20,20,20,0.92);
+
+            color: #aaa;
+
+            font-size: 14px;
+        }
+
+        .account-info strong {
+            color: white;
+        }
+
+        #logoutButton {
+            display: none;
+        }
+
+        #applicationsButton {
             display: none;
         }
 
@@ -102,6 +116,7 @@
 
         header {
             padding: 30px 0;
+
             text-align: center;
         }
 
@@ -118,11 +133,13 @@
 
         header h1 {
             font-size: 42px;
+
             margin-bottom: 10px;
         }
 
         header p {
             color: #cccccc;
+
             font-size: 17px;
         }
 
@@ -140,11 +157,13 @@
 
         .welcome h2 {
             font-size: 30px;
+
             margin-bottom: 15px;
         }
 
         .welcome p {
             color: #cccccc;
+
             line-height: 1.7;
         }
 
@@ -204,6 +223,7 @@
 
         .icon {
             font-size: 45px;
+
             margin-bottom: 15px;
         }
 
@@ -234,7 +254,7 @@
         }
 
         /* =========================
-           MOBILE
+           MOBİL
         ========================= */
 
         @media (max-width: 600px) {
@@ -262,15 +282,16 @@
             .application {
                 padding: 25px 15px;
             }
+
         }
 
     </style>
+
 </head>
 
 <body>
 
 <div class="container">
-
 
     <!-- =========================
          HESAP MENÜSÜ
@@ -278,14 +299,14 @@
 
     <div class="account-bar">
 
-        <!-- GİRİŞ YAPILMAMIŞ -->
+        <!-- GİRİŞ YAPILMAMIŞSA -->
 
         <a
             href="login.html"
             class="account-button"
             id="loginButton"
         >
-            Giriş Yap
+            🔑 Giriş Yap
         </a>
 
         <a
@@ -293,35 +314,31 @@
             class="account-button"
             id="registerButton"
         >
-            Kayıt Ol
+            📝 Kayıt Ol
         </a>
 
 
-        <!-- GİRİŞ YAPILMIŞ -->
+        <!-- GİRİŞ YAPILDIYSA -->
 
         <div
             class="account-info"
             id="accountInfo"
         >
             Hesap:
-            <strong id="userEmail">
-                ...
-            </strong>
+            <strong id="userEmail">...</strong>
         </div>
-
 
         <a
             href="basvurularim.html"
             class="account-button"
             id="applicationsButton"
-            style="display:none;"
         >
             📋 Başvurularım
         </a>
 
-
         <button
-            class="account-button logout-button"
+            type="button"
+            class="account-button"
             id="logoutButton"
         >
             🚪 Çıkış Yap
@@ -373,7 +390,7 @@
 
 
     <!-- =========================
-         APPLICATIONS
+         BAŞVURU ALANLARI
     ========================= -->
 
     <section class="applications">
@@ -470,7 +487,6 @@
 
         </a>
 
-
     </section>
 
 
@@ -484,218 +500,239 @@
 
     </footer>
 
-
 </div>
 
 
 <script>
 
-/* =========================================
-   SUPABASE AYARLARI
-========================================= */
+    /* =========================================
+       SUPABASE
+    ========================================= */
 
-const SUPABASE_URL =
-    "https://drfborwvynrwfljrqlmg.supabase.co";
+    const SUPABASE_URL =
+        "https://drfborwvynrwfljrqlmg.supabase.co";
 
-const SUPABASE_KEY =
-    "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
-
-
-const supabaseClient =
-    supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+    const SUPABASE_KEY =
+        "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
 
 
-/* =========================================
-   HTML ELEMANLARI
-========================================= */
-
-const loginButton =
-    document.getElementById(
-        "loginButton"
-    );
-
-const registerButton =
-    document.getElementById(
-        "registerButton"
-    );
-
-const accountInfo =
-    document.getElementById(
-        "accountInfo"
-    );
-
-const userEmail =
-    document.getElementById(
-        "userEmail"
-    );
-
-const applicationsButton =
-    document.getElementById(
-        "applicationsButton"
-    );
-
-const logoutButton =
-    document.getElementById(
-        "logoutButton"
-    );
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
 
 
-/* =========================================
-   HESAP DURUMUNU KONTROL ET
-========================================= */
+    /* =========================================
+       HTML ELEMANLARI
+    ========================================= */
 
-async function checkUser() {
+    const loginButton =
+        document.getElementById("loginButton");
 
-    try {
+    const registerButton =
+        document.getElementById("registerButton");
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient
-                .auth
-                .getSession();
+    const accountInfo =
+        document.getElementById("accountInfo");
+
+    const userEmail =
+        document.getElementById("userEmail");
+
+    const applicationsButton =
+        document.getElementById("applicationsButton");
+
+    const logoutButton =
+        document.getElementById("logoutButton");
 
 
-        if (error) {
+    /* =========================================
+       MENÜYÜ GÜNCELLE
+    ========================================= */
+
+    function showLoggedOut() {
+
+        loginButton.style.display = "inline-flex";
+
+        registerButton.style.display = "inline-flex";
+
+        accountInfo.style.display = "none";
+
+        applicationsButton.style.display = "none";
+
+        logoutButton.style.display = "none";
+
+    }
+
+
+    function showLoggedIn(user) {
+
+        loginButton.style.display = "none";
+
+        registerButton.style.display = "none";
+
+        accountInfo.style.display = "block";
+
+        applicationsButton.style.display = "inline-flex";
+
+        logoutButton.style.display = "inline-flex";
+
+        userEmail.textContent =
+            user.email || "Hesap";
+
+    }
+
+
+    /* =========================================
+       OTURUM KONTROLÜ
+    ========================================= */
+
+    async function checkUser() {
+
+        try {
+
+            const result =
+                await supabaseClient.auth.getSession();
+
+
+            if (result.error) {
+
+                console.error(
+                    "Supabase oturum hatası:",
+                    result.error
+                );
+
+                showLoggedOut();
+
+                return;
+
+            }
+
+
+            const session =
+                result.data.session;
+
+
+            if (session && session.user) {
+
+                showLoggedIn(
+                    session.user
+                );
+
+                console.log(
+                    "Giriş yapıldı:",
+                    session.user.email
+                );
+
+            } else {
+
+                showLoggedOut();
+
+                console.log(
+                    "Aktif kullanıcı yok."
+                );
+
+            }
+
+        }
+
+        catch (error) {
 
             console.error(
-                "Session hatası:",
+                "Oturum kontrol hatası:",
                 error
             );
 
-            return;
+            showLoggedOut();
+
         }
-
-
-        /* GİRİŞ YAPILMAMIŞ */
-
-        if (
-            !data ||
-            !data.session
-        ) {
-
-            loginButton.style.display =
-                "inline-block";
-
-            registerButton.style.display =
-                "inline-block";
-
-            accountInfo.style.display =
-                "none";
-
-            applicationsButton.style.display =
-                "none";
-
-            logoutButton.style.display =
-                "none";
-
-            return;
-        }
-
-
-        /* GİRİŞ YAPILMIŞ */
-
-        const user =
-            data.session.user;
-
-
-        loginButton.style.display =
-            "none";
-
-        registerButton.style.display =
-            "none";
-
-
-        accountInfo.style.display =
-            "block";
-
-
-        applicationsButton.style.display =
-            "inline-block";
-
-
-        logoutButton.style.display =
-            "inline-block";
-
-
-        userEmail.textContent =
-            user.email;
-
-
-        console.log(
-            "Giriş yapan kullanıcı:",
-            user.email
-        );
 
     }
 
-    catch (error) {
 
-        console.error(
-            "Kullanıcı kontrol hatası:",
-            error
-        );
+    /* =========================================
+       ÇIKIŞ
+    ========================================= */
 
-    }
+    logoutButton.addEventListener(
+        "click",
+        async function() {
 
-}
+            logoutButton.disabled = true;
 
-
-/* =========================================
-   ÇIKIŞ YAP
-========================================= */
-
-logoutButton.addEventListener(
-    "click",
-    async function() {
-
-        const {
-            error
-        } =
-            await supabaseClient
-                .auth
-                .signOut();
+            logoutButton.textContent =
+                "Çıkış yapılıyor...";
 
 
-        if (error) {
+            const result =
+                await supabaseClient.auth.signOut();
 
-            alert(
-                "Çıkış yapılırken hata oluştu: " +
-                error.message
+
+            if (result.error) {
+
+                console.error(
+                    "Çıkış hatası:",
+                    result.error
+                );
+
+                alert(
+                    "Çıkış yapılırken hata oluştu:\n\n" +
+                    result.error.message
+                );
+
+                logoutButton.disabled = false;
+
+                logoutButton.textContent =
+                    "🚪 Çıkış Yap";
+
+                return;
+
+            }
+
+
+            showLoggedOut();
+
+        }
+    );
+
+
+    /* =========================================
+       AUTH DEĞİŞİKLİKLERİ
+    ========================================= */
+
+    supabaseClient.auth.onAuthStateChange(
+        function(event, session) {
+
+            console.log(
+                "Auth değişikliği:",
+                event
             );
 
-            return;
+
+            if (
+                session &&
+                session.user
+            ) {
+
+                showLoggedIn(
+                    session.user
+                );
+
+            } else {
+
+                showLoggedOut();
+
+            }
+
         }
+    );
 
 
-        window.location.reload();
+    /* =========================================
+       SAYFA AÇILINCA ÇALIŞ
+    ========================================= */
 
-    }
-);
-
-
-/* =========================================
-   AUTH DEĞİŞİKLİĞİNİ DİNLE
-========================================= */
-
-supabaseClient.auth.onAuthStateChange(
-    function() {
-
-        checkUser();
-
-    }
-);
-
-
-/* =========================================
-   BAŞLAT
-========================================= */
-
-checkUser();
+    checkUser();
 
 </script>
 
