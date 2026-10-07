@@ -52,7 +52,7 @@
         }
 
         /* =========================
-           GERİ
+           GERİ BUTONU
         ========================= */
 
         .back-button {
@@ -65,9 +65,11 @@
 
             border-radius: 9px;
 
-            background: rgba(25,25,25,0.9);
+            background:
+                rgba(25,25,25,0.9);
 
-            border: 1px solid
+            border:
+                1px solid
                 rgba(255,255,255,0.15);
 
             color: white;
@@ -427,6 +429,8 @@
 
             color: #ff7777;
 
+            white-space: pre-wrap;
+
         }
 
         /* =========================
@@ -466,6 +470,8 @@
 <div class="container">
 
 
+    <!-- GERİ -->
+
     <a
         href="index.html"
         class="back-button"
@@ -474,9 +480,7 @@
     </a>
 
 
-    <!-- =========================
-         BAŞLIK
-    ========================= -->
+    <!-- BAŞLIK -->
 
     <div class="header">
 
@@ -491,9 +495,7 @@
     </div>
 
 
-    <!-- =========================
-         YÜKLENİYOR
-    ========================= -->
+    <!-- YÜKLENİYOR -->
 
     <div
         id="loading"
@@ -506,7 +508,7 @@
 
 
     <!-- =========================
-         FORM
+         BAŞVURU FORMU
     ========================= -->
 
     <div
@@ -733,11 +735,15 @@
         style="display:none;"
     >
 
+
+        <!-- DURUM KARTI -->
+
         <div class="card status-card">
 
             <h2>
                 Başvurun
             </h2>
+
 
             <div
                 id="status"
@@ -805,6 +811,8 @@
             </div>
 
 
+            <!-- ADMIN MESAJI -->
+
             <div
                 id="adminMessage"
                 class="admin-message"
@@ -819,13 +827,10 @@
 
             </div>
 
-
         </div>
 
 
-        <!-- =========================
-             CEVAPLAR
-        ========================= -->
+        <!-- CEVAPLAR -->
 
         <div class="card">
 
@@ -974,9 +979,7 @@
     </div>
 
 
-    <!-- =========================
-         HATA
-    ========================= -->
+    <!-- HATA -->
 
     <div
         id="errorContainer"
@@ -992,7 +995,7 @@
 
 
 /* =========================================
-   SUPABASE
+   SUPABASE AYARLARI
 ========================================= */
 
 const SUPABASE_URL =
@@ -1010,7 +1013,7 @@ const supabaseClient =
 
 
 /* =========================================
-   HTML
+   HTML ELEMANLARI
 ========================================= */
 
 const loading =
@@ -1279,7 +1282,7 @@ function showApplication(app) {
 
 
 /* =========================================
-   KULLANICIYI KONTROL ET
+   SAYFAYI YÜKLE
 ========================================= */
 
 async function loadPage() {
@@ -1295,10 +1298,12 @@ async function loadPage() {
                 .getSession();
 
 
+        /* OTURUM HATASI */
+
         if (error) {
 
             showError(
-                "Oturum kontrol edilirken hata oluştu: " +
+                "Oturum kontrol edilirken hata oluştu:\n\n" +
                 error.message
             );
 
@@ -1307,7 +1312,7 @@ async function loadPage() {
         }
 
 
-        /* GİRİŞ YAPMAMIŞ */
+        /* GİRİŞ YAPILMAMIŞ */
 
         if (
             !data ||
@@ -1328,7 +1333,7 @@ async function loadPage() {
 
 
         /* =========================================
-           KULLANICININ MEVCUT BAŞVURUSUNU BUL
+           MEVCUT BAŞVURUYU BUL
         ========================================= */
 
         const result =
@@ -1369,9 +1374,7 @@ async function loadPage() {
         }
 
 
-        /* =========================================
-           BAŞVURU VAR
-        ========================================= */
+        /* BAŞVURU VAR */
 
         if (
             result.data &&
@@ -1387,9 +1390,7 @@ async function loadPage() {
         }
 
 
-        /* =========================================
-           BAŞVURU YOK
-        ========================================= */
+        /* BAŞVURU YOK */
 
         showForm();
 
@@ -1413,7 +1414,7 @@ async function loadPage() {
 
 
 /* =========================================
-   FORM GÖNDER
+   FORM GÖNDERME
 ========================================= */
 
 applicationForm.addEventListener(
@@ -1432,6 +1433,8 @@ applicationForm.addEventListener(
 
         try {
 
+            /* KULLANICIYI AL */
+
             const {
                 data: sessionData,
                 error: sessionError
@@ -1443,12 +1446,9 @@ applicationForm.addEventListener(
 
             if (
                 sessionError ||
+                !sessionData ||
                 !sessionData.session
             ) {
-
-                alert(
-                    "Başvuru yapmak için giriş yapmalısın."
-                );
 
                 window.location.href =
                     "login.html";
@@ -1461,6 +1461,8 @@ applicationForm.addEventListener(
             const user =
                 sessionData.session.user;
 
+
+            /* FORM VERİLERİ */
 
             const formData =
                 new FormData(
@@ -1545,7 +1547,7 @@ applicationForm.addEventListener(
 
 
             /* =========================================
-               BAŞVURU GÖNDER
+               SUPABASE'E KAYDET
             ========================================= */
 
             const result =
@@ -1558,6 +1560,8 @@ applicationForm.addEventListener(
                     .single();
 
 
+            /* HATA */
+
             if (result.error) {
 
                 console.error(
@@ -1565,16 +1569,10 @@ applicationForm.addEventListener(
                     result.error
                 );
 
-                alert(
+                showError(
                     "Başvuru gönderilemedi:\n\n" +
                     result.error.message
                 );
-
-                submitButton.disabled =
-                    false;
-
-                submitButton.textContent =
-                    "Başvuruyu Gönder";
 
                 return;
 
@@ -1583,16 +1581,15 @@ applicationForm.addEventListener(
 
             /* =========================================
                BAŞARILI
+               
+               ARTIK ALERT YOK.
+               DİREKT BAŞVURU EKRANINA GEÇİYOR.
             ========================================= */
-
-            alert(
-                "Başvurun başarıyla gönderildi!"
-            );
-
 
             showApplication(
                 result.data
             );
+
 
         }
 
@@ -1603,10 +1600,14 @@ applicationForm.addEventListener(
                 error
             );
 
-            alert(
-                "Bir hata oluştu:\n\n" +
+            showError(
+                "Beklenmeyen bir hata oluştu:\n\n" +
                 error.message
             );
+
+        }
+
+        finally {
 
             submitButton.disabled =
                 false;
