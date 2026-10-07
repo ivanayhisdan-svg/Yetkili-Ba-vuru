@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SnMac | Giriş Yap</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.70),
+                    rgba(0, 0, 0, 0.88)
+                ),
+                url("assets/background.jpg")
+                center/cover fixed;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 20px;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 450px;
+
+            background: rgba(18, 18, 18, 0.94);
+
+            border: 1px solid rgba(255,255,255,0.10);
+
+            border-radius: 18px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 10px 40px
+                rgba(0,0,0,0.4);
+        }
+
+        .logo {
+            display: block;
+
+            width: 80px;
+            height: 80px;
+
+            object-fit: cover;
+
+            border-radius: 50%;
+
+            margin: 0 auto 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            text-align: center;
+
+            color: #999;
+
+            margin-bottom: 30px;
+
+            line-height: 1.5;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            font-weight: bold;
+
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+
+            padding: 13px;
+
+            border-radius: 10px;
+
+            border: 1px solid
+                rgba(255,255,255,0.12);
+
+            background:
+                rgba(255,255,255,0.06);
+
+            color: white;
+
+            outline: none;
+
+            font-size: 15px;
+        }
+
+        input:focus {
+            border-color:
+                rgba(255,255,255,0.4);
+        }
+
+        button {
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 10px;
+
+            background: white;
+
+            color: #111;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        button:hover {
+            background: #ddd;
+
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+        #message {
+            text-align: center;
+
+            margin-top: 18px;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+        .register {
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #aaa;
+
+            text-decoration: none;
+        }
+
+        .register:hover {
+            color: white;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="box">
+
+
+    <img
+        src="assets/logo.jpg"
+        class="logo"
+        alt="SnMac"
+    >
+
+
+    <h1>Giriş Yap</h1>
+
+
+    <p class="description">
+        SnMac başvuru sistemine devam etmek için
+        hesabınıza giriş yapın.
+    </p>
+
+
+    <form id="loginForm">
+
+
+        <div class="input-group">
+
+            <label for="email">
+                E-posta
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="ornek@mail.com"
+                autocomplete="email"
+                required
+            >
+
+        </div>
+
+
+        <div class="input-group">
+
+            <label for="password">
+                Şifre
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Şifreniz"
+                autocomplete="current-password"
+                required
+            >
+
+        </div>
+
+
+        <button
+            type="submit"
+            id="loginButton"
+        >
+            Giriş Yap
+        </button>
+
+
+    </form>
+
+
+    <div id="message"></div>
+
+
+    <a
+        href="register.html"
+        class="register"
+    >
+        Hesabınız yok mu? Kayıt olun
+    </a>
+
+
+</div>
+
+
+<script>
+
+
+/* ==========================================
+   SUPABASE
+========================================== */
+
+
+const SUPABASE_URL =
+    "https://drfborwvynrwfljrqlmg.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
+
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* ==========================================
+   GİRİŞ
+========================================== */
+
+
+document
+    .getElementById("loginForm")
+    .addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const email =
+                document
+                    .getElementById("email")
+                    .value
+                    .trim();
+
+
+            const password =
+                document
+                    .getElementById("password")
+                    .value;
+
+
+            const message =
+                document
+                    .getElementById("message");
+
+
+            const button =
+                document
+                    .getElementById("loginButton");
+
+
+            button.disabled = true;
+
+            button.textContent =
+                "Giriş Yapılıyor...";
+
+
+            message.style.color =
+                "#aaaaaa";
+
+            message.textContent =
+                "Hesabınız kontrol ediliyor...";
+
+
+            const { data, error } =
+                await supabaseClient.auth.signInWithPassword({
+
+                    email: email,
+
+                    password: password
+
+                });
+
+
+            if (error) {
+
+                message.style.color =
+                    "#ff5555";
+
+                message.textContent =
+                    error.message;
+
+                button.disabled = false;
+
+                button.textContent =
+                    "Giriş Yap";
+
+                return;
+            }
+
+
+            message.style.color =
+                "#55ff88";
+
+            message.textContent =
+                "Giriş başarılı!";
+
+
+            setTimeout(function() {
+
+                window.location.href =
+                    "index.html";
+
+            }, 1000);
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>
