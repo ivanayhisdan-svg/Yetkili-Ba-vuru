@@ -6,6 +6,8 @@
 
     <title>SnMac | Başvuru Sistemi</title>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <style>
         * {
             margin: 0;
@@ -32,6 +34,72 @@
             margin: auto;
         }
 
+        /* =========================
+           HESAP MENÜSÜ
+        ========================= */
+
+        .account-bar {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+
+            padding-top: 20px;
+        }
+
+        .account-info {
+            display: none;
+
+            background: rgba(20, 20, 20, 0.9);
+            border: 1px solid rgba(255,255,255,0.1);
+
+            border-radius: 10px;
+
+            padding: 10px 14px;
+
+            color: #bbb;
+
+            font-size: 14px;
+        }
+
+        .account-info strong {
+            color: white;
+        }
+
+        .account-button {
+            display: inline-block;
+
+            padding: 10px 15px;
+
+            border-radius: 9px;
+
+            border: 1px solid rgba(255,255,255,0.15);
+
+            background: rgba(20,20,20,0.9);
+
+            color: white;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .account-button:hover {
+            background: rgba(50,50,50,0.95);
+        }
+
+        .logout-button {
+            display: none;
+        }
+
+        /* =========================
+           HEADER
+        ========================= */
+
         header {
             padding: 30px 0;
             text-align: center;
@@ -40,8 +108,11 @@
         .logo {
             width: 100px;
             height: 100px;
+
             object-fit: cover;
+
             border-radius: 50%;
+
             margin-bottom: 20px;
         }
 
@@ -55,9 +126,15 @@
             font-size: 17px;
         }
 
+        /* =========================
+           WELCOME
+        ========================= */
+
         .welcome {
             text-align: center;
+
             margin: 50px auto;
+
             max-width: 750px;
         }
 
@@ -71,19 +148,34 @@
             line-height: 1.7;
         }
 
+        /* =========================
+           APPLICATIONS
+        ========================= */
+
         .applications {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(220px, 1fr)
+                );
+
             gap: 20px;
+
             padding-bottom: 50px;
         }
 
         .application {
             display: block;
 
-            background: rgba(20, 20, 20, 0.85);
+            background:
+                rgba(20, 20, 20, 0.85);
 
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.1);
+
             border-radius: 15px;
 
             padding: 30px 20px;
@@ -95,15 +187,19 @@
             transition: 0.25s;
 
             text-decoration: none;
+
             color: white;
         }
 
         .application:hover {
-            transform: translateY(-6px);
+            transform:
+                translateY(-6px);
 
-            background: rgba(35, 35, 35, 0.95);
+            background:
+                rgba(35, 35, 35, 0.95);
 
-            border-color: rgba(255, 255, 255, 0.25);
+            border-color:
+                rgba(255, 255, 255, 0.25);
         }
 
         .icon {
@@ -117,12 +213,19 @@
 
         .application p {
             color: #aaaaaa;
+
             font-size: 14px;
+
             line-height: 1.5;
         }
 
+        /* =========================
+           FOOTER
+        ========================= */
+
         footer {
             text-align: center;
+
             padding: 30px;
 
             color: #777777;
@@ -130,7 +233,23 @@
             font-size: 14px;
         }
 
+        /* =========================
+           MOBILE
+        ========================= */
+
         @media (max-width: 600px) {
+
+            .account-bar {
+                justify-content: center;
+
+                flex-wrap: wrap;
+            }
+
+            .account-info {
+                width: 100%;
+
+                text-align: center;
+            }
 
             header h1 {
                 font-size: 32px;
@@ -144,134 +263,441 @@
                 padding: 25px 15px;
             }
         }
+
     </style>
 </head>
 
 <body>
 
-    <div class="container">
-
-        <header>
-
-            <img
-                src="assets/logo.jpg"
-                class="logo"
-                alt="SnMac Logo"
-            >
-
-            <h1>SnMac</h1>
-
-            <p>Yetkili Başvuru Sistemi</p>
-
-        </header>
+<div class="container">
 
 
-        <section class="welcome">
+    <!-- =========================
+         HESAP MENÜSÜ
+    ========================= -->
 
-            <h2>Ekibimize Katılmak İster misin?</h2>
+    <div class="account-bar">
 
-            <p>
-                SnMac ekibinde görev almak ve sunucumuzun gelişimine
-                katkıda bulunmak istiyorsan aşağıdaki başvuru alanlarından
-                sana uygun olanı seçerek başvurunu oluşturabilirsin.
-            </p>
+        <!-- GİRİŞ YAPILMAMIŞ -->
 
-        </section>
+        <a
+            href="login.html"
+            class="account-button"
+            id="loginButton"
+        >
+            Giriş Yap
+        </a>
 
-
-        <section class="applications">
-
-
-            <!-- YETKİLİ -->
-
-            <a href="yetkili.html" class="application">
-
-                <div class="icon">
-                    🛡️
-                </div>
-
-                <h3>
-                    Yetkili Alımı
-                </h3>
-
-                <p>
-                    Sunucu düzeninden, oyuncu desteğinden ve topluluk
-                    yönetiminden sorumlu ekip.
-                </p>
-
-            </a>
+        <a
+            href="register.html"
+            class="account-button"
+            id="registerButton"
+        >
+            Kayıt Ol
+        </a>
 
 
-            <!-- MEDYA -->
+        <!-- GİRİŞ YAPILMIŞ -->
 
-            <a href="medya.html" class="application">
-
-                <div class="icon">
-                    🎨
-                </div>
-
-                <h3>
-                    Medya Alımı
-                </h3>
-
-                <p>
-                    Sosyal medya, içerik üretimi ve SnMac'in tanıtım
-                    çalışmalarında görev alacak ekip.
-                </p>
-
-            </a>
+        <div
+            class="account-info"
+            id="accountInfo"
+        >
+            Hesap:
+            <strong id="userEmail">
+                ...
+            </strong>
+        </div>
 
 
-            <!-- GELİŞTİRİCİ -->
-
-            <a href="gelistirici.html" class="application">
-
-                <div class="icon">
-                    💻
-                </div>
-
-                <h3>
-                    Geliştirici Alımı
-                </h3>
-
-                <p>
-                    Sunucunun yazılım, plugin, sistem ve teknik
-                    geliştirmelerinde görev alacak ekip.
-                </p>
-
-            </a>
+        <a
+            href="basvurularim.html"
+            class="account-button"
+            id="applicationsButton"
+            style="display:none;"
+        >
+            📋 Başvurularım
+        </a>
 
 
-            <!-- AAC -->
-
-            <a href="aac.html" class="application">
-
-                <div class="icon">
-                    🔧
-                </div>
-
-                <h3>
-                    AAC Alımı
-                </h3>
-
-                <p>
-                    AAC ekibinde görev almak ve sunucunun denetim
-                    süreçlerine katkıda bulunmak isteyenler için.
-                </p>
-
-            </a>
-
-
-        </section>
-
-
-        <footer>
-
-            © 2026 SnMac — Tüm hakları saklıdır.
-
-        </footer>
+        <button
+            class="account-button logout-button"
+            id="logoutButton"
+        >
+            🚪 Çıkış Yap
+        </button>
 
     </div>
+
+
+    <!-- =========================
+         HEADER
+    ========================= -->
+
+    <header>
+
+        <img
+            src="assets/logo.jpg"
+            class="logo"
+            alt="SnMac Logo"
+        >
+
+        <h1>
+            SnMac
+        </h1>
+
+        <p>
+            Yetkili Başvuru Sistemi
+        </p>
+
+    </header>
+
+
+    <!-- =========================
+         WELCOME
+    ========================= -->
+
+    <section class="welcome">
+
+        <h2>
+            Ekibimize Katılmak İster misin?
+        </h2>
+
+        <p>
+            SnMac ekibinde görev almak ve sunucumuzun gelişimine
+            katkıda bulunmak istiyorsan aşağıdaki başvuru alanlarından
+            sana uygun olanı seçerek başvurunu oluşturabilirsin.
+        </p>
+
+    </section>
+
+
+    <!-- =========================
+         APPLICATIONS
+    ========================= -->
+
+    <section class="applications">
+
+
+        <!-- YETKİLİ -->
+
+        <a
+            href="yetkili.html"
+            class="application"
+        >
+
+            <div class="icon">
+                🛡️
+            </div>
+
+            <h3>
+                Yetkili Alımı
+            </h3>
+
+            <p>
+                Sunucu düzeninden, oyuncu desteğinden ve topluluk
+                yönetiminden sorumlu ekip.
+            </p>
+
+        </a>
+
+
+        <!-- MEDYA -->
+
+        <a
+            href="medya.html"
+            class="application"
+        >
+
+            <div class="icon">
+                🎨
+            </div>
+
+            <h3>
+                Medya Alımı
+            </h3>
+
+            <p>
+                Sosyal medya, içerik üretimi ve SnMac'in tanıtım
+                çalışmalarında görev alacak ekip.
+            </p>
+
+        </a>
+
+
+        <!-- GELİŞTİRİCİ -->
+
+        <a
+            href="gelistirici.html"
+            class="application"
+        >
+
+            <div class="icon">
+                💻
+            </div>
+
+            <h3>
+                Geliştirici Alımı
+            </h3>
+
+            <p>
+                Sunucunun yazılım, plugin, sistem ve teknik
+                geliştirmelerinde görev alacak ekip.
+            </p>
+
+        </a>
+
+
+        <!-- AAC -->
+
+        <a
+            href="aac.html"
+            class="application"
+        >
+
+            <div class="icon">
+                🔧
+            </div>
+
+            <h3>
+                AAC Alımı
+            </h3>
+
+            <p>
+                AAC ekibinde görev almak ve sunucunun denetim
+                süreçlerine katkıda bulunmak isteyenler için.
+            </p>
+
+        </a>
+
+
+    </section>
+
+
+    <!-- =========================
+         FOOTER
+    ========================= -->
+
+    <footer>
+
+        © 2026 SnMac — Tüm hakları saklıdır.
+
+    </footer>
+
+
+</div>
+
+
+<script>
+
+/* =========================================
+   SUPABASE AYARLARI
+========================================= */
+
+const SUPABASE_URL =
+    "https://drfborwvynrwfljrqlmg.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
+
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================================
+   HTML ELEMANLARI
+========================================= */
+
+const loginButton =
+    document.getElementById(
+        "loginButton"
+    );
+
+const registerButton =
+    document.getElementById(
+        "registerButton"
+    );
+
+const accountInfo =
+    document.getElementById(
+        "accountInfo"
+    );
+
+const userEmail =
+    document.getElementById(
+        "userEmail"
+    );
+
+const applicationsButton =
+    document.getElementById(
+        "applicationsButton"
+    );
+
+const logoutButton =
+    document.getElementById(
+        "logoutButton"
+    );
+
+
+/* =========================================
+   HESAP DURUMUNU KONTROL ET
+========================================= */
+
+async function checkUser() {
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
+
+        if (error) {
+
+            console.error(
+                "Session hatası:",
+                error
+            );
+
+            return;
+        }
+
+
+        /* GİRİŞ YAPILMAMIŞ */
+
+        if (
+            !data ||
+            !data.session
+        ) {
+
+            loginButton.style.display =
+                "inline-block";
+
+            registerButton.style.display =
+                "inline-block";
+
+            accountInfo.style.display =
+                "none";
+
+            applicationsButton.style.display =
+                "none";
+
+            logoutButton.style.display =
+                "none";
+
+            return;
+        }
+
+
+        /* GİRİŞ YAPILMIŞ */
+
+        const user =
+            data.session.user;
+
+
+        loginButton.style.display =
+            "none";
+
+        registerButton.style.display =
+            "none";
+
+
+        accountInfo.style.display =
+            "block";
+
+
+        applicationsButton.style.display =
+            "inline-block";
+
+
+        logoutButton.style.display =
+            "inline-block";
+
+
+        userEmail.textContent =
+            user.email;
+
+
+        console.log(
+            "Giriş yapan kullanıcı:",
+            user.email
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Kullanıcı kontrol hatası:",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   ÇIKIŞ YAP
+========================================= */
+
+logoutButton.addEventListener(
+    "click",
+    async function() {
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+        if (error) {
+
+            alert(
+                "Çıkış yapılırken hata oluştu: " +
+                error.message
+            );
+
+            return;
+        }
+
+
+        window.location.reload();
+
+    }
+);
+
+
+/* =========================================
+   AUTH DEĞİŞİKLİĞİNİ DİNLE
+========================================= */
+
+supabaseClient.auth.onAuthStateChange(
+    function() {
+
+        checkUser();
+
+    }
+);
+
+
+/* =========================================
+   BAŞLAT
+========================================= */
+
+checkUser();
+
+</script>
 
 </body>
 </html>
