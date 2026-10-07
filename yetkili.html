@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
-
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>SnMac | Yetkili Başvurusu</title>
@@ -12,25 +9,19 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, Helvetica, sans-serif;
         }
 
         body {
-            min-height: 100vh;
-            color: white;
-
+            font-family: Arial, sans-serif;
             background:
-                linear-gradient(
-                    rgba(0, 0, 0, 0.70),
-                    rgba(0, 0, 0, 0.88)
-                ),
+                linear-gradient(rgba(0,0,0,0.72), rgba(0,0,0,0.82)),
                 url("assets/background.jpg") center/cover fixed;
-
+            color: white;
+            min-height: 100vh;
             padding: 40px 20px;
         }
 
@@ -40,587 +31,383 @@
             margin: auto;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
         .logo {
-            width: 90px;
-            height: 90px;
-            object-fit: cover;
-            border-radius: 50%;
-            margin-bottom: 20px;
+            display: block;
+            width: 150px;
+            max-width: 70%;
+            margin: 0 auto 25px;
+            border-radius: 15px;
         }
 
-        .header h1 {
-            font-size: 36px;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: #aaaaaa;
-            font-size: 16px;
-        }
-
-        .form-box {
-            background: rgba(18, 18, 18, 0.94);
-
-            border: 1px solid rgba(255, 255, 255, 0.10);
-
+        .card {
+            background: rgba(20, 20, 20, 0.94);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 18px;
-
             padding: 35px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.45);
+        }
 
-            box-shadow:
-                0 10px 40px
-                rgba(0, 0, 0, 0.35);
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        .description {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .logged-user {
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 25px;
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .logged-user span {
+            color: white;
+            font-weight: bold;
         }
 
         .question {
-            margin-bottom: 25px;
+            margin-bottom: 23px;
         }
 
-        .question label {
+        label {
             display: block;
-            font-size: 16px;
+            margin-bottom: 8px;
             font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .required {
-            color: #ff4d4d;
+            color: #eee;
         }
 
         input,
         textarea,
         select {
             width: 100%;
-
-            background:
-                rgba(255, 255, 255, 0.06);
-
-            color: white;
-
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.12);
-
-            border-radius: 10px;
-
             padding: 13px 14px;
-
+            border: 1px solid #333;
+            border-radius: 9px;
+            background: #111;
+            color: white;
             outline: none;
-
             font-size: 15px;
-
             transition: 0.2s;
         }
 
         input:focus,
         textarea:focus,
         select:focus {
-            border-color:
-                rgba(255, 255, 255, 0.40);
-
-            background:
-                rgba(255, 255, 255, 0.08);
+            border-color: #777;
         }
 
         textarea {
-            min-height: 130px;
+            min-height: 120px;
             resize: vertical;
-            line-height: 1.5;
         }
 
         select {
             cursor: pointer;
         }
 
-        select option {
-            background: #181818;
-            color: white;
-        }
-
-        .submit {
+        button {
             width: 100%;
-
-            border: none;
-
-            border-radius: 10px;
-
             padding: 15px;
-
+            border: none;
+            border-radius: 10px;
             background: white;
-
-            color: #111;
-
+            color: black;
             font-size: 16px;
-
             font-weight: bold;
-
             cursor: pointer;
-
             transition: 0.2s;
+            margin-top: 10px;
         }
 
-        .submit:hover {
-            transform: translateY(-2px);
-            background: #dddddd;
+        button:hover {
+            background: #ddd;
         }
 
-        .submit:disabled {
+        button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .back {
-            display: block;
-
-            text-align: center;
-
-            margin-top: 20px;
-
-            color: #999;
-
-            text-decoration: none;
-
-            transition: 0.2s;
-        }
-
-        .back:hover {
-            color: white;
-        }
-
-        .notice {
-            margin-bottom: 30px;
-
-            padding: 15px;
-
-            border-radius: 10px;
-
-            background:
-                rgba(255, 255, 255, 0.05);
-
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.08);
-
-            color: #bbbbbb;
-
-            font-size: 14px;
-
-            line-height: 1.6;
-        }
-
-        .user-info {
-            margin-bottom: 20px;
-
-            padding: 12px 15px;
-
-            border-radius: 10px;
-
-            background:
-                rgba(255, 255, 255, 0.04);
-
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.08);
-
-            color: #aaa;
-
-            font-size: 14px;
-        }
-
-        .user-info strong {
-            color: white;
-        }
-
-        #message {
+        .message {
             display: none;
-
-            margin-bottom: 20px;
-
-            padding: 14px 15px;
-
+            margin-top: 20px;
+            padding: 15px;
             border-radius: 10px;
-
-            font-size: 14px;
-
             line-height: 1.5;
-
-            text-align: center;
+            word-break: break-word;
         }
 
-        .success-box {
-            text-align: center;
-
-            padding: 30px 20px;
+        .success {
+            background: rgba(0, 180, 80, 0.15);
+            border: 1px solid rgba(0, 180, 80, 0.4);
+            color: #6dff9d;
         }
 
-        .success-box h2 {
-            margin-bottom: 15px;
+        .error {
+            background: rgba(220, 40, 40, 0.15);
+            border: 1px solid rgba(220, 40, 40, 0.4);
+            color: #ff7777;
         }
 
-        .application-id {
-            display: inline-block;
-
-            margin-top: 15px;
-
-            padding: 12px 18px;
-
-            border-radius: 10px;
-
-            background:
-                rgba(255, 255, 255, 0.08);
-
-            border:
-                1px solid
-                rgba(255, 255, 255, 0.12);
-
-            font-family: monospace;
-
-            font-size: 14px;
-
-            word-break: break-all;
+        .test-box {
+            display: none;
+            margin-bottom: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            color: #aaa;
+            font-size: 13px;
         }
 
         @media (max-width: 600px) {
-
             body {
                 padding: 20px 12px;
             }
 
-            .form-box {
-                padding: 22px 18px;
+            .card {
+                padding: 22px;
             }
 
-            .header h1 {
-                font-size: 28px;
+            h1 {
+                font-size: 24px;
             }
-
         }
-
     </style>
-
 </head>
-
 
 <body>
 
-
 <div class="container">
 
+    <img
+        src="assets/logo.jpg"
+        alt="SnMac Logo"
+        class="logo"
+    >
 
-    <div class="header">
+    <div class="card">
 
-        <img
-            src="assets/logo.jpg"
-            class="logo"
-            alt="SnMac Logo"
-        >
+        <h1>Yetkili Başvurusu</h1>
 
-        <h1>🛡️ Yetkili Başvurusu</h1>
-
-        <p>
-            SnMac Yetkili Ekibine katılmak için aşağıdaki formu eksiksiz doldurun.
+        <p class="description">
+            SnMac yetkili ekibine katılmak için aşağıdaki formu eksiksiz
+            ve doğru şekilde doldur.
         </p>
 
-    </div>
-
-
-    <div class="form-box">
-
-
-        <div class="notice">
-
-            Başvurunuzu gönderirken verdiğiniz bilgilerin doğru ve
-            eksiksiz olduğundan emin olun. Eksik, yanlış veya
-            yetersiz cevaplar başvurunuzun değerlendirme sürecini
-            olumsuz etkileyebilir.
-
-        </div>
-
-
-        <div class="user-info">
-
+        <div class="logged-user">
             Giriş yapılan hesap:
-
-            <strong id="userEmail">
-                Kontrol ediliyor...
-            </strong>
-
+            <span id="loggedEmail">Kontrol ediliyor...</span>
         </div>
 
-
-        <div id="message"></div>
-
+        <div id="testBox" class="test-box">
+            Sistem hazır. Form gönderme işlemi bekleniyor...
+        </div>
 
         <form id="applicationForm">
 
-
             <!-- 1 -->
-
             <div class="question">
-
-                <label>
-                    Adınız ve Soyadınız:
-                    <span class="required">*</span>
+                <label for="fullname">
+                    1. Adınız ve soyadınız nedir?
                 </label>
 
                 <input
                     type="text"
+                    id="fullname"
                     name="fullname"
-                    placeholder="Adınız ve soyadınız"
+                    placeholder="Örn: Emir Yılmaz"
                     required
                 >
-
             </div>
-
 
             <!-- 2 -->
-
             <div class="question">
-
-                <label>
-                    Discord Adınız:
-                    <span class="required">*</span>
+                <label for="discord">
+                    2. Discord kullanıcı adınız nedir?
                 </label>
 
                 <input
                     type="text"
+                    id="discord"
                     name="discord"
-                    placeholder="Örn: kullaniciadi"
+                    placeholder="Örn: emiryilmaz"
                     required
                 >
-
             </div>
 
-
             <!-- 3 -->
-
             <div class="question">
-
-                <label>
-                    Yaşınız:
-                    <span class="required">*</span>
+                <label for="age">
+                    3. Kaç yaşındasınız?
                 </label>
 
                 <input
                     type="number"
+                    id="age"
                     name="age"
                     min="13"
-                    max="99"
-                    placeholder="Yaşınız"
+                    max="80"
+                    placeholder="Örn: 17"
                     required
                 >
-
             </div>
-
 
             <!-- 4 -->
-
             <div class="question">
-
-                <label>
-                    Günde ve haftada kaç saatinizi bu sunucu için ayırabilirsiniz?
-                    <span class="required">*</span>
+                <label for="activity">
+                    4. Sunucuda günlük ortalama kaç saat aktif olabilirsiniz?
                 </label>
 
                 <textarea
+                    id="activity"
                     name="activity"
-                    placeholder="Örn: Hafta içi günde 3 saat, hafta sonu günde 5-6 saat."
+                    placeholder="Örn: Günlük 4-6 saat aktif olabilirim."
                     required
                 ></textarea>
-
             </div>
-
 
             <!-- 5 -->
-
             <div class="question">
-
-                <label>
-                    Daha önce başka bir Discord veya Minecraft sunucusunda yetkililik yaptınız mı?
-                    Yaptıysanız neden ayrıldınız?
-                    <span class="required">*</span>
+                <label for="experience">
+                    5. Daha önce yetkili oldunuz mu? Nerelerde ve hangi görevlerde bulundunuz?
                 </label>
 
                 <textarea
+                    id="experience"
                     name="experience"
-                    placeholder="Daha önceki yetkililik deneyimlerinizden ve ayrılma nedenlerinizden bahsedin. Deneyiminiz yoksa bunu belirtebilirsiniz."
+                    placeholder="Daha önceki yetkili deneyimlerinizi anlatın."
                     required
                 ></textarea>
-
             </div>
-
 
             <!-- 6 -->
-
             <div class="question">
-
-                <label>
-                    SnMac sunucusunda neden yetkili olmak istiyorsunuz?
-                    <span class="required">*</span>
+                <label for="motivation">
+                    6. Neden yetkili olmak istiyorsunuz?
                 </label>
 
                 <textarea
+                    id="motivation"
                     name="motivation"
-                    placeholder="Yetkili olmak istemenizin nedenlerini açıklayın."
+                    placeholder="Yetkili olmak isteme nedeninizi açıklayın."
                     required
                 ></textarea>
-
             </div>
 
-
             <!-- 7 -->
-
             <div class="question">
-
-                <label>
-                    Mikrofonunuz var mı?
-                    <span class="required">*</span>
+                <label for="microphone">
+                    7. Mikrofonunuz var mı?
                 </label>
 
                 <select
+                    id="microphone"
                     name="microphone"
                     required
                 >
-
-                    <option value="">
-                        Seçiniz
-                    </option>
-
-                    <option value="Evet">
-                        Evet
-                    </option>
-
-                    <option value="Hayır">
-                        Hayır
-                    </option>
-
+                    <option value="">Seçiniz</option>
+                    <option value="Evet">Evet</option>
+                    <option value="Hayır">Hayır</option>
                 </select>
-
             </div>
-
 
             <!-- 8 -->
-
             <div class="question">
-
-                <label>
-                    Bir arkadaşınızın kuralları ihlal ettiğini gördünüz.
-                    Ne yaparsınız ve işlem sıralamanız nasıl olur?
-                    <span class="required">*</span>
+                <label for="friend_rule_violation">
+                    8. Yakın arkadaşınızın kural ihlali yaptığını görürseniz ne yaparsınız?
                 </label>
 
                 <textarea
+                    id="friend_rule_violation"
                     name="friend_rule_violation"
-                    placeholder="Bu durumda nasıl hareket edeceğinizi ve uygulayacağınız işlem sırasını açıklayın."
+                    placeholder="Nasıl bir işlem uygulayacağınızı açıklayın."
                     required
                 ></textarea>
-
             </div>
-
 
             <!-- 9 -->
-
             <div class="question">
-
-                <label>
-                    Bir oyuncu size Discord veya Minecraft sunucusu ile ilgili
-                    çok basit sorular soruyor ve cevapları sürekli unutup
-                    tekrar tekrar aynı soruları soruyor. Ne yaparsınız?
-                    <span class="required">*</span>
+                <label for="repeated_questions">
+                    9. Aynı soruyu defalarca soran bir oyuncuya nasıl yaklaşırsınız?
                 </label>
 
                 <textarea
+                    id="repeated_questions"
                     name="repeated_questions"
-                    placeholder="Bu oyuncuya nasıl yaklaşacağınızı açıklayın."
+                    placeholder="Oyuncuya nasıl yardımcı olacağınızı açıklayın."
                     required
                 ></textarea>
-
             </div>
-
 
             <!-- 10 -->
-
             <div class="question">
-
-                <label>
-                    Yetkili başvurunuz kabul edilirse, sunucudaki görevinizi
-                    kurallara ve yetki sınırlarına uygun şekilde yerine
-                    getirebileceğinizi ve kendinizi bu görevde geliştirebileceğinizi
-                    düşünüyor musunuz?
-                    <span class="required">*</span>
+                <label for="responsibility">
+                    10. Size verilen bir sorumluluğu yerine getiremeyeceğinizi fark ederseniz ne yaparsınız?
                 </label>
 
                 <textarea
+                    id="responsibility"
                     name="responsibility"
-                    placeholder="Kendinizi bu görev için neden uygun gördüğünüzü açıklayın."
+                    placeholder="İzleyeceğiniz yolu açıklayın."
                     required
                 ></textarea>
-
             </div>
-
 
             <!-- 11 -->
-
             <div class="question">
-
-                <label>
-                    SnMac sunucusunda yetkili olmak istemenizin
-                    size göre en önemli nedeni nedir?
-                    <span class="required">*</span>
+                <label for="main_reason">
+                    11. Neden özellikle SnMac'te yetkili olmak istiyorsunuz?
                 </label>
 
                 <textarea
+                    id="main_reason"
                     name="main_reason"
-                    placeholder="En önemli nedeninizi kendi cümlelerinizle açıklayın."
+                    placeholder="SnMac'i tercih etme nedeninizi açıklayın."
                     required
                 ></textarea>
-
             </div>
-
 
             <!-- 12 -->
-
             <div class="question">
-
-                <label>
-                    Biraz kendinizden bahsedin.
-                    <span class="required">*</span>
+                <label for="about">
+                    12. Kendinizi birkaç cümleyle anlatın.
                 </label>
 
                 <textarea
+                    id="about"
                     name="about"
-                    placeholder="Kendinizden, ilgi alanlarınızdan, deneyimlerinizden ve sizi tanımamızı sağlayacak bilgilerden bahsedin. Lütfen kısa veya boş cevap vermeyin."
+                    placeholder="Kendinizden bahsedin."
                     required
                 ></textarea>
-
             </div>
-
 
             <button
                 type="submit"
-                class="submit"
                 id="submitButton"
             >
                 Başvuruyu Gönder
             </button>
 
-
         </form>
 
+        <div
+            id="successMessage"
+            class="message success"
+        ></div>
 
-        <a
-            href="index.html"
-            class="back"
-        >
-            ← Ana Sayfaya Dön
-        </a>
-
+        <div
+            id="errorMessage"
+            class="message error"
+        ></div>
 
     </div>
 
@@ -629,19 +416,20 @@
 
 <script>
 
-
-/* ==========================================
-   SUPABASE
-========================================== */
-
+/* =========================================
+   SUPABASE AYARLARI
+========================================= */
 
 const SUPABASE_URL =
     "https://drfborwvynrwfljrqlmg.supabase.co";
 
-
 const SUPABASE_KEY =
     "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
 
+
+/* =========================================
+   SUPABASE BAĞLANTISI
+========================================= */
 
 const supabaseClient =
     supabase.createClient(
@@ -650,163 +438,147 @@ const supabaseClient =
     );
 
 
-/* ==========================================
-   ELEMENTLER
-========================================== */
-
+/* =========================================
+   HTML ELEMANLARI
+========================================= */
 
 const form =
-    document.getElementById(
-        "applicationForm"
-    );
-
-
-const message =
-    document.getElementById(
-        "message"
-    );
-
-
-const userEmail =
-    document.getElementById(
-        "userEmail"
-    );
-
+    document.getElementById("applicationForm");
 
 const submitButton =
-    document.getElementById(
-        "submitButton"
-    );
+    document.getElementById("submitButton");
+
+const loggedEmail =
+    document.getElementById("loggedEmail");
+
+const successMessage =
+    document.getElementById("successMessage");
+
+const errorMessage =
+    document.getElementById("errorMessage");
+
+const testBox =
+    document.getElementById("testBox");
 
 
-/* ==========================================
-   MESAJ
-========================================== */
+/* =========================================
+   MESAJ FONKSİYONLARI
+========================================= */
 
+function showError(message) {
 
-function showMessage(text, type) {
+    errorMessage.style.display = "block";
 
-    message.style.display = "block";
+    errorMessage.innerHTML =
+        "<strong>Hata:</strong><br>" +
+        message;
 
-    message.textContent = text;
-
-
-    if (type === "success") {
-
-        message.style.background =
-            "rgba(40, 180, 90, 0.12)";
-
-        message.style.border =
-            "1px solid rgba(40, 180, 90, 0.25)";
-
-        message.style.color =
-            "#65e69a";
-
-    }
-
-
-    else if (type === "error") {
-
-        message.style.background =
-            "rgba(255, 60, 60, 0.12)";
-
-        message.style.border =
-            "1px solid rgba(255, 60, 60, 0.25)";
-
-        message.style.color =
-            "#ff7777";
-
-    }
-
-
-    else {
-
-        message.style.background =
-            "rgba(255, 255, 255, 0.05)";
-
-        message.style.border =
-            "1px solid rgba(255, 255, 255, 0.08)";
-
-        message.style.color =
-            "#bbbbbb";
-
-    }
-
+    successMessage.style.display = "none";
 }
 
 
-/* ==========================================
-   GİRİŞ KONTROLÜ
-========================================== */
+function showSuccess(message) {
 
+    successMessage.style.display = "block";
+
+    successMessage.innerHTML =
+        message;
+
+    errorMessage.style.display = "none";
+}
+
+
+/* =========================================
+   LOGIN KONTROLÜ
+========================================= */
 
 async function checkLogin() {
 
-    const {
-        data,
-        error
-    } =
-        await supabaseClient
-            .auth
-            .getSession();
+    console.log("LOGIN KONTROLÜ BAŞLADI");
+
+    try {
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.auth.getSession();
 
 
-    if (error) {
+        console.log("SESSION:", data);
+        console.log("SESSION ERROR:", error);
+
+
+        if (error) {
+
+            loggedEmail.textContent =
+                "Oturum kontrolünde hata";
+
+            showError(
+                "Oturum kontrol edilirken hata oluştu: " +
+                error.message
+            );
+
+            return false;
+        }
+
+
+        if (!data.session) {
+
+            loggedEmail.textContent =
+                "Giriş yapılmamış";
+
+            alert(
+                "Başvuru göndermek için önce giriş yapmalısınız."
+            );
+
+            window.location.href =
+                "login.html";
+
+            return false;
+        }
+
+
+        loggedEmail.textContent =
+            data.session.user.email;
+
+
+        testBox.style.display =
+            "block";
+
+        testBox.textContent =
+            "✓ Sistem hazır. Giriş yapılmış: " +
+            data.session.user.email;
+
+
+        console.log(
+            "LOGIN BAŞARILI:",
+            data.session.user.email
+        );
+
+
+        return true;
+
+    } catch (error) {
 
         console.error(
-            "Oturum kontrolü:",
+            "LOGIN KONTROL HATASI:",
             error
         );
 
-        window.location.href =
-            "login.html";
+        showError(
+            "Beklenmeyen hata: " +
+            error.message
+        );
 
-        return null;
+        return false;
     }
-
-
-    const session =
-        data.session;
-
-
-    if (!session) {
-
-        window.location.href =
-            "login.html";
-
-        return null;
-    }
-
-
-    userEmail.textContent =
-        session.user.email;
-
-
-    return session;
-
 }
 
 
-/* ==========================================
-   SAYFA AÇILDIĞINDA
-========================================== */
-
-
-let currentSession = null;
-
-
-(async function() {
-
-    currentSession =
-        await checkLogin();
-
-})();
-
-
-/* ==========================================
-   BAŞVURU GÖNDER
-========================================== */
-
+/* =========================================
+   FORM GÖNDERME
+========================================= */
 
 form.addEventListener(
     "submit",
@@ -815,245 +587,239 @@ form.addEventListener(
         event.preventDefault();
 
 
-        /* OTURUMU TEKRAR AL */
-
-        const {
-            data,
-            error: sessionError
-        } =
-            await supabaseClient
-                .auth
-                .getSession();
+        console.log(
+            "1 - FORM SUBMIT ÇALIŞTI"
+        );
 
 
-        if (
-            sessionError ||
-            !data.session
-        ) {
-
-            showMessage(
-                "Oturumunuz bulunamadı. Lütfen tekrar giriş yapın.",
-                "error"
-            );
-
-            setTimeout(
-                function() {
-
-                    window.location.href =
-                        "login.html";
-
-                },
-                1500
-            );
-
-            return;
-        }
-
-
-        const session =
-            data.session;
-
-
-        /* BUTONU KİLİTLE */
-
-        submitButton.disabled = true;
+        submitButton.disabled =
+            true;
 
         submitButton.textContent =
             "Başvuru Gönderiliyor...";
 
 
-        showMessage(
-            "Başvurunuz gönderiliyor...",
-            "info"
-        );
+        errorMessage.style.display =
+            "none";
+
+        successMessage.style.display =
+            "none";
 
 
-        /* FORM VERİLERİNİ AL */
+        try {
 
-        const formData =
-            new FormData(form);
+            /* SESSION AL */
 
-
-        const applicationData = {
-
-            user_id:
-                session.user.id,
-
-            application_type:
-                "yetkili",
-
-            fullname:
-                formData.get("fullname").trim(),
-
-            discord:
-                formData.get("discord").trim(),
-
-            age:
-                Number(
-                    formData.get("age")
-                ),
-
-            activity:
-                formData.get("activity").trim(),
-
-            experience:
-                formData.get("experience").trim(),
-
-            motivation:
-                formData.get("motivation").trim(),
-
-            microphone:
-                formData.get("microphone"),
-
-            friend_rule_violation:
-                formData
-                    .get("friend_rule_violation")
-                    .trim(),
-
-            repeated_questions:
-                formData
-                    .get("repeated_questions")
-                    .trim(),
-
-            responsibility:
-                formData
-                    .get("responsibility")
-                    .trim(),
-
-            main_reason:
-                formData
-                    .get("main_reason")
-                    .trim(),
-
-            about:
-                formData.get("about").trim(),
-
-            status:
-                "Bekliyor"
-
-        };
+            const {
+                data: sessionData,
+                error: sessionError
+            } =
+                await supabaseClient.auth.getSession();
 
 
-        /* SUPABASE'E GÖNDER */
+            console.log(
+                "2 - SESSION:",
+                sessionData
+            );
 
-        const {
-            data: insertedData,
-            error
-        } =
-            await supabaseClient
-                .from("applications")
-                .insert(
-                    applicationData
-                )
-                .select()
-                .single();
+            console.log(
+                "3 - SESSION ERROR:",
+                sessionError
+            );
 
 
-        /* HATA */
+            if (
+                sessionError ||
+                !sessionData ||
+                !sessionData.session
+            ) {
 
-        if (error) {
+                throw new Error(
+                    "Aktif giriş oturumu bulunamadı. Lütfen tekrar giriş yapın."
+                );
+            }
 
-            console.error(
-                "Başvuru gönderme hatası:",
+
+            const session =
+                sessionData.session;
+
+
+            /* FORM VERİLERİ */
+
+            const formData =
+                new FormData(form);
+
+
+            const applicationData = {
+
+                user_id:
+                    session.user.id,
+
+                application_type:
+                    "yetkili",
+
+                fullname:
+                    formData.get("fullname"),
+
+                discord:
+                    formData.get("discord"),
+
+                age:
+                    Number(
+                        formData.get("age")
+                    ),
+
+                activity:
+                    formData.get("activity"),
+
+                experience:
+                    formData.get("experience"),
+
+                motivation:
+                    formData.get("motivation"),
+
+                microphone:
+                    formData.get("microphone"),
+
+                friend_rule_violation:
+                    formData.get(
+                        "friend_rule_violation"
+                    ),
+
+                repeated_questions:
+                    formData.get(
+                        "repeated_questions"
+                    ),
+
+                responsibility:
+                    formData.get(
+                        "responsibility"
+                    ),
+
+                main_reason:
+                    formData.get(
+                        "main_reason"
+                    ),
+
+                about:
+                    formData.get("about"),
+
+                status:
+                    "Bekliyor"
+            };
+
+
+            console.log(
+                "4 - GÖNDERİLECEK VERİ:",
+                applicationData
+            );
+
+
+            /* SUPABASE INSERT */
+
+            const {
+                data,
+                error
+            } =
+                await supabaseClient
+                    .from("applications")
+                    .insert(
+                        applicationData
+                    )
+                    .select()
+                    .single();
+
+
+            console.log(
+                "5 - SUPABASE DATA:",
+                data
+            );
+
+            console.log(
+                "6 - SUPABASE ERROR:",
                 error
             );
 
 
-            showMessage(
-                "Başvuru gönderilemedi: " +
-                error.message,
-                "error"
+            /* HATA */
+
+            if (error) {
+
+                console.error(
+                    "SUPABASE INSERT HATASI:",
+                    error
+                );
+
+                throw new Error(
+                    error.message +
+                    " | Kod: " +
+                    (error.code || "bilinmiyor")
+                );
+            }
+
+
+            /* BAŞARILI */
+
+            console.log(
+                "BAŞVURU BAŞARIYLA GÖNDERİLDİ:",
+                data
             );
 
 
-            submitButton.disabled = false;
+            form.style.display =
+                "none";
+
+
+            testBox.style.display =
+                "none";
+
+
+            showSuccess(
+                "<h3>✓ Başvurunuz başarıyla gönderildi!</h3>" +
+                "<br>" +
+                "Başvuru ID'niz:" +
+                "<br><br>" +
+                "<strong>" +
+                data.id +
+                "</strong>" +
+                "<br><br>" +
+                "Başvurunuz şu anda <strong>Bekliyor</strong> durumunda."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "GENEL FORM HATASI:",
+                error
+            );
+
+
+            showError(
+                error.message ||
+                "Bilinmeyen bir hata oluştu."
+            );
+
+
+            submitButton.disabled =
+                false;
+
 
             submitButton.textContent =
                 "Başvuruyu Gönder";
-
-            return;
         }
-
-
-        /* BAŞARILI */
-
-        form.style.display =
-            "none";
-
-
-        document.querySelector(
-            ".notice"
-        ).style.display =
-            "none";
-
-
-        document.querySelector(
-            ".user-info"
-        ).style.display =
-            "none";
-
-
-        message.style.display =
-            "none";
-
-
-        const success =
-            document.createElement("div");
-
-
-        success.className =
-            "success-box";
-
-
-        success.innerHTML = `
-
-            <h2>✅ Başvurunuz Gönderildi!</h2>
-
-            <p>
-                Başvurunuz başarıyla alınmıştır.
-                Yetkili ekibimiz tarafından incelenecektir.
-            </p>
-
-            <div class="application-id">
-
-                Başvuru ID:
-                ${insertedData.id}
-
-            </div>
-
-            <p style="
-                margin-top:20px;
-                color:#999;
-                font-size:14px;
-            ">
-
-                Başvuru durumunuz şu anda:
-                <strong style="color:#f0c674;">
-                    Bekliyor
-                </strong>
-
-            </p>
-
-        `;
-
-
-        document.querySelector(
-            ".form-box"
-        ).insertBefore(
-            success,
-            document.querySelector(
-                ".back"
-            )
-        );
-
 
     }
 );
 
 
+/* =========================================
+   SAYFA AÇILINCA LOGIN KONTROLÜ
+========================================= */
+
+checkLogin();
+
 </script>
 
-
 </body>
-
 </html>
