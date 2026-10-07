@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SnMac | Başvurularım</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(0,0,0,0.72),
+                    rgba(0,0,0,0.85)
+                ),
+                url("assets/background.jpg")
+                center / cover fixed;
+
+            color: white;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            margin: auto;
+        }
+
+        .logo {
+            display: block;
+            width: 150px;
+            max-width: 70%;
+            margin: 0 auto 25px;
+            border-radius: 15px;
+        }
+
+        .card {
+            background: rgba(20,20,20,0.95);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+            padding: 30px;
+            margin-bottom: 25px;
+
+            box-shadow:
+                0 15px 50px rgba(0,0,0,0.45);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        .description {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .user-info {
+            background: rgba(255,255,255,0.05);
+            padding: 13px 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            color: #bbb;
+        }
+
+        .user-info strong {
+            color: white;
+        }
+
+        .application {
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 25px;
+            margin-bottom: 25px;
+            background: rgba(255,255,255,0.025);
+        }
+
+        .application:last-child {
+            margin-bottom: 0;
+        }
+
+        .application-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .application-title {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .date {
+            color: #777;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .status {
+            padding: 8px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .pending {
+            background: rgba(255,193,7,0.15);
+            color: #ffd54a;
+            border: 1px solid rgba(255,193,7,0.3);
+        }
+
+        .accepted {
+            background: rgba(0,200,90,0.15);
+            color: #6dff9d;
+            border: 1px solid rgba(0,200,90,0.3);
+        }
+
+        .rejected {
+            background: rgba(220,40,40,0.15);
+            color: #ff7777;
+            border: 1px solid rgba(220,40,40,0.3);
+        }
+
+        .question {
+            margin-bottom: 18px;
+        }
+
+        .question-title {
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+
+        .answer {
+            background: rgba(0,0,0,0.25);
+            border-radius: 8px;
+            padding: 12px;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .admin-message {
+            margin-top: 25px;
+            padding: 17px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            border-left: 3px solid #fff;
+        }
+
+        .admin-message-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .admin-message-text {
+            color: #ccc;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .no-applications {
+            text-align: center;
+            color: #888;
+            padding: 40px 10px;
+            line-height: 1.6;
+        }
+
+        .error {
+            background: rgba(220,40,40,0.15);
+            border: 1px solid rgba(220,40,40,0.4);
+            color: #ff7777;
+            padding: 15px;
+            border-radius: 10px;
+            line-height: 1.5;
+        }
+
+        .loading {
+            text-align: center;
+            color: #aaa;
+            padding: 40px;
+        }
+
+        .back-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin-top: 25px;
+
+            text-align: center;
+            text-decoration: none;
+
+            background: white;
+            color: black;
+
+            border-radius: 10px;
+
+            font-weight: bold;
+
+            transition: 0.2s;
+        }
+
+        .back-button:hover {
+            background: #ddd;
+        }
+
+        @media (max-width: 650px) {
+
+            body {
+                padding: 20px 12px;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .application {
+                padding: 18px;
+            }
+
+            .application-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            h1 {
+                font-size: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <img
+        src="assets/logo.jpg"
+        alt="SnMac Logo"
+        class="logo"
+    >
+
+    <div class="card">
+
+        <h1>Başvurularım</h1>
+
+        <p class="description">
+            Daha önce gönderdiğiniz başvuruları ve güncel durumlarını
+            buradan görüntüleyebilirsiniz.
+        </p>
+
+        <div class="user-info">
+            Giriş yapılan hesap:
+            <strong id="userEmail">
+                Kontrol ediliyor...
+            </strong>
+        </div>
+
+        <div id="applicationsContainer">
+
+            <div class="loading">
+                Başvurularınız yükleniyor...
+            </div>
+
+        </div>
+
+        <a
+            href="index.html"
+            class="back-button"
+        >
+            Ana Sayfaya Dön
+        </a>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+    "https://drfborwvynrwfljrqlmg.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
+
+
+const supabaseClient =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================================
+   HTML ELEMANLARI
+========================================= */
+
+const userEmail =
+    document.getElementById("userEmail");
+
+const applicationsContainer =
+    document.getElementById(
+        "applicationsContainer"
+    );
+
+
+/* =========================================
+   DURUM RENKLERİ
+========================================= */
+
+function getStatusClass(status) {
+
+    if (status === "Kabul Edildi") {
+        return "accepted";
+    }
+
+    if (status === "Reddedildi") {
+        return "rejected";
+    }
+
+    return "pending";
+}
+
+
+/* =========================================
+   TARİH FORMATLAMA
+========================================= */
+
+function formatDate(dateString) {
+
+    if (!dateString) {
+        return "Bilinmiyor";
+    }
+
+    const date =
+        new Date(dateString);
+
+    return date.toLocaleString(
+        "tr-TR",
+        {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+
+            hour: "2-digit",
+            minute: "2-digit"
+        }
+    );
+}
+
+
+/* =========================================
+   GÜVENLİ HTML
+========================================= */
+
+function escapeHTML(value) {
+
+    if (value === null || value === undefined) {
+        return "";
+    }
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
+
+/* =========================================
+   BAŞVURU HTML
+========================================= */
+
+function createApplicationHTML(app) {
+
+    const statusClass =
+        getStatusClass(app.status);
+
+
+    return `
+
+        <div class="application">
+
+            <div class="application-header">
+
+                <div>
+
+                    <div class="application-title">
+                        Yetkili Başvurusu
+                    </div>
+
+                    <div class="date">
+                        ${formatDate(app.created_at)}
+                    </div>
+
+                </div>
+
+
+                <div class="status ${statusClass}">
+                    ${escapeHTML(app.status)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Başvuru ID
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.id)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Ad Soyad
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.fullname)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Discord Kullanıcı Adı
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.discord)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Yaş
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.age)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Günlük Aktiflik
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.activity)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Yetkili Deneyimi
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.experience)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Yetkili Olma Nedeni
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.motivation)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Mikrofon
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.microphone)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Arkadaşınız Kural İhlali Yaparsa
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.friend_rule_violation)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Tekrarlanan Sorulara Yaklaşım
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.repeated_questions)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Sorumluluk Yerine Getirilemiyorsa
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.responsibility)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Neden SnMac?
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.main_reason)}
+                </div>
+
+            </div>
+
+
+            <div class="question">
+
+                <div class="question-title">
+                    Kendiniz Hakkında
+                </div>
+
+                <div class="answer">
+                    ${escapeHTML(app.about)}
+                </div>
+
+            </div>
+
+
+            ${
+                app.admin_message
+                ?
+                `
+                <div class="admin-message">
+
+                    <div class="admin-message-title">
+                        Yönetici Mesajı
+                    </div>
+
+                    <div class="admin-message-text">
+                        ${escapeHTML(app.admin_message)}
+                    </div>
+
+                </div>
+                `
+                :
+                ""
+            }
+
+        </div>
+
+    `;
+}
+
+
+/* =========================================
+   BAŞVURULARI GETİR
+========================================= */
+
+async function loadApplications() {
+
+    console.log(
+        "Başvurular yükleniyor..."
+    );
+
+
+    try {
+
+        /* SESSION */
+
+        const {
+            data: sessionData,
+            error: sessionError
+        } =
+            await supabaseClient.auth.getSession();
+
+
+        if (sessionError) {
+
+            throw new Error(
+                sessionError.message
+            );
+        }
+
+
+        if (
+            !sessionData ||
+            !sessionData.session
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+
+        const session =
+            sessionData.session;
+
+
+        userEmail.textContent =
+            session.user.email;
+
+
+        console.log(
+            "Kullanıcı:",
+            session.user.id
+        );
+
+
+        /* BAŞVURULAR */
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .eq(
+                    "user_id",
+                    session.user.id
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        console.log(
+            "Başvurular:",
+            data
+        );
+
+        console.log(
+            "Başvuru hatası:",
+            error
+        );
+
+
+        if (error) {
+
+            throw new Error(
+                error.message
+            );
+        }
+
+
+        /* BAŞVURU YOK */
+
+        if (
+            !data ||
+            data.length === 0
+        ) {
+
+            applicationsContainer.innerHTML = `
+
+                <div class="no-applications">
+
+                    Henüz gönderilmiş bir başvurunuz bulunmuyor.
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        /* BAŞVURULARI GÖSTER */
+
+        applicationsContainer.innerHTML =
+            data
+                .map(
+                    createApplicationHTML
+                )
+                .join("");
+
+
+    } catch (error) {
+
+        console.error(
+            "BAŞVURU YÜKLEME HATASI:",
+            error
+        );
+
+
+        applicationsContainer.innerHTML = `
+
+            <div class="error">
+
+                <strong>
+                    Başvurular yüklenemedi.
+                </strong>
+
+                <br><br>
+
+                ${escapeHTML(error.message)}
+
+            </div>
+
+        `;
+    }
+}
+
+
+/* =========================================
+   BAŞLAT
+========================================= */
+
+loadApplications();
+
+</script>
+
+</body>
+</html>
