@@ -49,8 +49,7 @@
         }
 
         .form-box,
-        .existing-box,
-        .success-box {
+        .existing-box {
             background: rgba(15, 15, 15, 0.95);
             border: 1px solid rgba(139, 92, 246, 0.35);
             border-radius: 14px;
@@ -145,24 +144,16 @@
             color: #ff9b9b;
         }
 
-        .success {
-            background: rgba(40, 160, 90, 0.12);
-            border: 1px solid rgba(70, 190, 110, 0.4);
-            color: #9be7b3;
-        }
-
         .existing-box {
             display: none;
         }
 
-        .existing-box h2,
-        .success-box h2 {
+        .existing-box h2 {
             color: #a78bfa;
             margin-bottom: 12px;
         }
 
-        .existing-box p,
-        .success-box p {
+        .existing-box > p {
             color: #ccc;
             line-height: 1.6;
             margin-bottom: 10px;
@@ -178,17 +169,8 @@
             font-weight: bold;
         }
 
-        .answers-title {
-            color: #a78bfa;
-            font-size: 20px;
-            margin-top: 30px;
-            margin-bottom: 22px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #292929;
-        }
-
         .answer-item {
-            margin-bottom: 22px;
+            margin-top: 22px;
             padding-bottom: 20px;
             border-bottom: 1px solid #292929;
         }
@@ -232,18 +214,13 @@
             word-break: break-word;
         }
 
-        .hidden {
-            display: none !important;
-        }
-
         @media (max-width: 600px) {
             body {
                 padding: 25px 12px;
             }
 
             .form-box,
-            .existing-box,
-            .success-box {
+            .existing-box {
                 padding: 20px;
             }
 
@@ -271,14 +248,13 @@
 
     <div id="message" class="message"></div>
 
-    <!-- MEVCUT BAŞVURU -->
     <div id="existingBox" class="existing-box">
 
-        <h2>Mevcut Başvurunuz</h2>
+        <h2>Başvurunuz Alındı</h2>
 
         <p>
-            Geliştirici kategorisinde daha önce bir başvuru göndermişsiniz.
-            Aşağıdan başvurunuzu ve verdiğiniz cevapları görüntüleyebilirsiniz.
+            Geliştirici başvurunuz başarıyla gönderildi ve değerlendirme
+            sürecine alındı.
         </p>
 
         <p>
@@ -291,13 +267,14 @@
 
         <div id="existingAnswers"></div>
 
-        <div id="existingAdminMessageBox"
-             class="admin-message-box hidden">
-
+        <div
+            id="existingAdminMessageBox"
+            class="admin-message-box"
+            style="display: none;"
+        >
             <h3>Yönetici Mesajı</h3>
 
             <p id="existingAdminMessage"></p>
-
         </div>
 
         <a href="index.html" class="back-button">
@@ -306,7 +283,6 @@
 
     </div>
 
-    <!-- FORM -->
     <div id="formContainer" class="form-box">
 
         <form id="developerForm">
@@ -534,7 +510,8 @@
 
     function showMessage(text, type) {
 
-        message.textContent = text;
+        message.textContent =
+            text;
 
         message.className =
             "message " + type;
@@ -611,31 +588,29 @@
         ];
 
 
-        existingAnswers.innerHTML = `
+        existingAnswers.innerHTML =
+            answers.map(
+                ([question, answer]) => `
 
-            <div class="answers-title">
-                Verdiğiniz Cevaplar
-            </div>
+                    <div class="answer-item">
 
-            ${answers.map(([question, answer]) => `
+                        <div class="answer-question">
+                            ${escapeHtml(question)}
+                        </div>
 
-                <div class="answer-item">
+                        <div class="answer-text">
+                            ${escapeHtml(
+                                String(
+                                    answer ??
+                                    "Belirtilmedi"
+                                )
+                            )}
+                        </div>
 
-                    <div class="answer-question">
-                        ${escapeHtml(question)}
                     </div>
 
-                    <div class="answer-text">
-                        ${escapeHtml(
-                            String(answer ?? "Belirtilmedi")
-                        )}
-                    </div>
-
-                </div>
-
-            `).join("")}
-
-        `;
+                `
+            ).join("");
     }
 
 
@@ -648,9 +623,12 @@
             "block";
 
         existingStatus.textContent =
-            application.status || "Bekliyor";
+            application.status ||
+            "Bekliyor";
 
-        createAnswers(application);
+        createAnswers(
+            application
+        );
 
 
         if (
@@ -661,16 +639,13 @@
             existingAdminMessage.textContent =
                 application.admin_message;
 
-            existingAdminMessageBox.classList.remove(
-                "hidden"
-            );
+            existingAdminMessageBox.style.display =
+                "block";
 
         } else {
 
-            existingAdminMessageBox.classList.add(
-                "hidden"
-            );
-
+            existingAdminMessageBox.style.display =
+                "none";
         }
     }
 
@@ -684,7 +659,10 @@
             await supabaseClient.auth.getUser();
 
 
-        if (error || !user) {
+        if (
+            error ||
+            !user
+        ) {
 
             window.location.href =
                 "login.html";
@@ -700,11 +678,20 @@
             await supabaseClient
                 .from("applications")
                 .select("*")
-                .eq("user_id", user.id)
-                .eq("application_type", "gelistirici")
-                .order("created_at", {
-                    ascending: false
-                })
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "application_type",
+                    "gelistirici"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                )
                 .limit(1);
 
 
@@ -726,9 +713,7 @@
             showApplication(
                 data[0]
             );
-
         }
-
     }
 
 
@@ -846,21 +831,17 @@
 
                     status:
                         "Bekliyor"
-
                 };
 
 
                 const {
-                    data,
                     error
                 } =
                     await supabaseClient
                         .from("applications")
                         .insert(
                             application
-                        )
-                        .select()
-                        .single();
+                        );
 
 
                 if (error) {
@@ -888,8 +869,16 @@
                 }
 
 
+                /*
+                 * Kayıt başarılı olduğu anda
+                 * formu kapatıp gönderilen
+                 * cevapları doğrudan gösteriyoruz.
+                 *
+                 * Sayfayı yenilemeye gerek yok.
+                 */
+
                 showApplication(
-                    data
+                    application
                 );
 
 
