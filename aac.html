@@ -1,0 +1,1640 @@
+```html
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SnMac | AAC Başvurusu</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+
+            min-height: 100vh;
+
+            background:
+                linear-gradient(
+                    rgba(0, 0, 0, 0.78),
+                    rgba(0, 0, 0, 0.90)
+                ),
+                url("assets/background.jpg")
+                center/cover fixed;
+
+            color: white;
+
+            padding: 30px 15px;
+
+        }
+
+        .container {
+
+            width: 100%;
+
+            max-width: 850px;
+
+            margin: auto;
+
+        }
+
+        .top {
+
+            text-align: center;
+
+            margin-bottom: 30px;
+
+        }
+
+        .top h1 {
+
+            font-size: 34px;
+
+            margin-bottom: 12px;
+
+        }
+
+        .top-line {
+
+            width: 70px;
+
+            height: 3px;
+
+            margin: 0 auto;
+
+            background: #8b5cf6;
+
+            border-radius: 5px;
+
+        }
+
+        .back-button {
+
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            padding: 10px 16px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(20, 20, 20, 0.9);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+            color: #ddd;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+
+        }
+
+        .back-button:hover {
+
+            border-color: #8b5cf6;
+
+            color: white;
+
+        }
+
+        .description {
+
+            background:
+                rgba(20, 20, 20, 0.92);
+
+            border:
+                1px solid
+                rgba(139, 92, 246, 0.25);
+
+            border-left:
+                3px solid
+                #8b5cf6;
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            margin-bottom: 25px;
+
+        }
+
+        .description h2 {
+
+            font-size: 18px;
+
+            color: #a78bfa;
+
+            margin-bottom: 12px;
+
+        }
+
+        .description p {
+
+            color: #c7c7c7;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+        }
+
+        .form-container {
+
+            background:
+                rgba(18, 18, 18, 0.95);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.09);
+
+            border-radius: 14px;
+
+            padding: 28px;
+
+        }
+
+        .section-title {
+
+            margin-top: 10px;
+
+            margin-bottom: 20px;
+
+            padding-bottom: 10px;
+
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            color: #a78bfa;
+
+            font-size: 19px;
+
+        }
+
+        .section-title:not(:first-child) {
+
+            margin-top: 35px;
+
+        }
+
+        .form-group {
+
+            margin-bottom: 20px;
+
+        }
+
+        .form-group label {
+
+            display: block;
+
+            color: #e5e5e5;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+
+            line-height: 1.5;
+
+        }
+
+        .form-group label span {
+
+            color: #8b5cf6;
+
+        }
+
+        input,
+        textarea {
+
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border-radius: 9px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+            background:
+                rgba(5, 5, 5, 0.9);
+
+            color: white;
+
+            outline: none;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+
+        }
+
+        input {
+
+            height: 46px;
+
+        }
+
+        textarea {
+
+            min-height: 120px;
+
+            resize: vertical;
+
+            line-height: 1.6;
+
+        }
+
+        input:focus,
+        textarea:focus {
+
+            border-color: #8b5cf6;
+
+            box-shadow:
+                0 0 0 2px
+                rgba(139, 92, 246, 0.10);
+
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+
+            color: #666;
+
+        }
+
+        .submit-button {
+
+            width: 100%;
+
+            margin-top: 15px;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #8b5cf6;
+
+            color: white;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+
+        }
+
+        .submit-button:hover {
+
+            background: #7c3aed;
+
+        }
+
+        .submit-button:disabled {
+
+            opacity: 0.55;
+
+            cursor: not-allowed;
+
+        }
+
+        .application-view {
+
+            background:
+                rgba(18, 18, 18, 0.95);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.09);
+
+            border-radius: 14px;
+
+            padding: 28px;
+
+        }
+
+        .application-view h2 {
+
+            color: #a78bfa;
+
+            margin-bottom: 8px;
+
+        }
+
+        .application-id {
+
+            color: #666;
+
+            font-size: 12px;
+
+            word-break: break-all;
+
+            margin-bottom: 20px;
+
+        }
+
+        .status {
+
+            display: inline-block;
+
+            padding: 9px 15px;
+
+            border-radius: 8px;
+
+            font-weight: bold;
+
+            margin-bottom: 25px;
+
+        }
+
+        .status-bekliyor {
+
+            color: #f5c542;
+
+            background:
+                rgba(245, 197, 66, 0.12);
+
+            border:
+                1px solid
+                rgba(245, 197, 66, 0.25);
+
+        }
+
+        .status-kabul {
+
+            color: #42d392;
+
+            background:
+                rgba(66, 211, 146, 0.12);
+
+            border:
+                1px solid
+                rgba(66, 211, 146, 0.25);
+
+        }
+
+        .status-red {
+
+            color: #ff6464;
+
+            background:
+                rgba(255, 100, 100, 0.12);
+
+            border:
+                1px solid
+                rgba(255, 100, 100, 0.25);
+
+        }
+
+        .answer-box {
+
+            padding: 16px;
+
+            margin-bottom: 12px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(255, 255, 255, 0.035);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+
+        }
+
+        .answer-box strong {
+
+            display: block;
+
+            color: #999;
+
+            font-size: 12px;
+
+            margin-bottom: 8px;
+
+        }
+
+        .answer-box p {
+
+            color: #ddd;
+
+            line-height: 1.6;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+
+        }
+
+        .admin-message {
+
+            margin-top: 25px;
+
+            padding: 18px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(139, 92, 246, 0.08);
+
+            border:
+                1px solid
+                rgba(139, 92, 246, 0.25);
+
+        }
+
+        .admin-message strong {
+
+            display: block;
+
+            color: #a78bfa;
+
+            margin-bottom: 9px;
+
+        }
+
+        .admin-message p {
+
+            color: #ddd;
+
+            line-height: 1.6;
+
+            white-space: pre-wrap;
+
+        }
+
+        .error {
+
+            margin-bottom: 20px;
+
+            padding: 15px;
+
+            border-radius: 9px;
+
+            color: #ff7777;
+
+            background:
+                rgba(255, 0, 0, 0.08);
+
+            border:
+                1px solid
+                rgba(255, 0, 0, 0.18);
+
+            white-space: pre-wrap;
+
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+
+                padding: 20px 10px;
+
+            }
+
+            .top h1 {
+
+                font-size: 27px;
+
+            }
+
+            .form-container,
+            .application-view {
+
+                padding: 20px;
+
+            }
+
+            .description {
+
+                padding: 18px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <a
+        href="index.html"
+        class="back-button"
+    >
+        ← Ana Sayfaya Dön
+    </a>
+
+
+    <div class="top">
+
+        <h1>
+            AAC Başvurusu
+        </h1>
+
+        <div class="top-line"></div>
+
+    </div>
+
+
+    <div
+        id="errorBox"
+        class="error"
+        style="display:none;"
+    ></div>
+
+
+    <!-- =========================
+         AÇIKLAMA
+    ========================= -->
+
+    <div
+        id="descriptionBox"
+        class="description"
+    >
+
+        <h2>
+            Bilgilendirme
+        </h2>
+
+        <p>
+            AAC ekibine kabul edilen kişiler görevlerine AAC olarak
+            başlar. Belirli bir süre boyunca görevlerini ve yeteneklerini
+            başarılı şekilde sürdürmeleri halinde zaman içerisinde yeni
+            yetkiler kazanabilir ve terfi alabilirler. Terfi sürecinin
+            ardından Moderatör yetkisinde görev yapmaya ve hile analiz
+            alanında çalışmalarını sürdürmeye devam ederler. Ayrıca
+            ilerleyen süreçte diğer AAC ekiplerinden sorumlu olabilecek
+            görevler üstlenebilirler.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         FORM
+    ========================= -->
+
+    <div
+        id="formContainer"
+        class="form-container"
+        style="display:none;"
+    >
+
+        <form id="applicationForm">
+
+
+            <div class="section-title">
+                Kişisel Bilgiler
+            </div>
+
+
+            <!-- 1 -->
+
+            <div class="form-group">
+
+                <label for="fullname">
+                    Adınız nedir?
+                    <span>*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="fullname"
+                    name="fullname"
+                    placeholder="Adınızı girin"
+                    required
+                >
+
+            </div>
+
+
+            <!-- 2 -->
+
+            <div class="form-group">
+
+                <label for="age">
+                    Kaç yaşındasınız?
+                    <span>*</span>
+                </label>
+
+                <input
+                    type="number"
+                    id="age"
+                    name="age"
+                    min="1"
+                    max="100"
+                    placeholder="Yaşınızı girin"
+                    required
+                >
+
+            </div>
+
+
+            <!-- 3 -->
+
+            <div class="form-group">
+
+                <label for="discord">
+                    Discord kullanıcı adınız nedir?
+                    <span>*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="discord"
+                    name="discord"
+                    placeholder="Discord kullanıcı adınızı girin"
+                    required
+                >
+
+            </div>
+
+
+            <div class="section-title">
+                AAC ve Anti-Cheat Deneyimi
+            </div>
+
+
+            <!-- 4 -->
+
+            <div class="form-group">
+
+                <label for="aac_experience">
+                    Daha önce herhangi bir sunucuda AAC /
+                    Anti-Cheat alanında görev yaptınız mı?
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="aac_experience"
+                    name="aac_experience"
+                    placeholder="Varsa görev yaptığınız sunucuları ve deneyimlerinizi açıklayın..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 5 -->
+
+            <div class="form-group">
+
+                <label for="anticheat_experience">
+                    Hangi Anti-Cheat sistemleri konusunda deneyiminiz var?
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="anticheat_experience"
+                    name="anticheat_experience"
+                    placeholder="Deneyiminiz olan Anti-Cheat sistemlerini ve seviyenizi açıklayın..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 6 -->
+
+            <div class="form-group">
+
+                <label for="cheat_analysis">
+                    Hileleri tespit etme ve analiz etme konusunda
+                    kendinizi nasıl değerlendiriyorsunuz?
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="cheat_analysis"
+                    name="cheat_analysis"
+                    placeholder="Kendinizi bu alanda nasıl değerlendirdiğinizi açıklayın..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 7 -->
+
+            <div class="form-group">
+
+                <label for="suspected_cheat_process">
+                    Bir oyuncunun hile kullandığından şüphelendiğinizde
+                    nasıl bir yol izlersiniz?
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="suspected_cheat_process"
+                    name="suspected_cheat_process"
+                    placeholder="Şüpheli bir oyuncuyu değerlendirirken izleyeceğiniz süreci açıklayın..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 8 -->
+
+            <div class="form-group">
+
+                <label for="false_positive">
+                    Yanlış pozitif durumlarını nasıl önlersiniz?
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="false_positive"
+                    name="false_positive"
+                    placeholder="Yanlış pozitif kararlarını önlemek için nasıl hareket edeceğinizi açıklayın..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 9 -->
+
+            <div class="form-group">
+
+                <label for="analysis_tools">
+                    Bilgisayar inceleme ve analiz süreçlerinde hangi
+                    programları kullanmayı biliyorsunuz? (Örneğin AnyDesk,
+                    Everything vb.) Bu programlardaki deneyiminizi açıklayınız.
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="analysis_tools"
+                    name="analysis_tools"
+                    placeholder="Kullandığınız programları ve deneyiminizi açıklayın..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="section-title">
+                AAC Görevi ve Ekip Çalışması
+            </div>
+
+
+            <!-- 10 -->
+
+            <div class="form-group">
+
+                <label for="aac_motivation">
+                    AAC ekibinde neden görev almak istiyorsunuz?
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="aac_motivation"
+                    name="aac_motivation"
+                    placeholder="AAC ekibinde görev almak isteme nedeninizi açıklayın..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 11 -->
+
+            <div class="form-group">
+
+                <label for="aac_availability">
+                    Gün içerisinde AAC görevlerine ne kadar zaman ayırabilirsiniz?
+                    <span>*</span>
+                </label>
+
+                <input
+                    type="text"
+                    id="aac_availability"
+                    name="aac_availability"
+                    placeholder="Örneğin: 3-4 saat"
+                    required
+                >
+
+            </div>
+
+
+            <!-- 12 -->
+
+            <div class="form-group">
+
+                <label for="team_conflict">
+                    Ekip içi anlaşmazlık veya bir yetkiliyle fikir
+                    ayrılığı yaşadığınızda nasıl davranırsınız?
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="team_conflict"
+                    name="team_conflict"
+                    placeholder="Böyle bir durumda nasıl hareket edeceğinizi açıklayın..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <!-- 13 -->
+
+            <div class="form-group">
+
+                <label for="about">
+                    Bize biraz kendinizden ve AAC ekibine neler
+                    katabileceğinizden bahseder misiniz?
+                    <span>*</span>
+                </label>
+
+                <textarea
+                    id="about"
+                    name="about"
+                    placeholder="Kendinizden, hedeflerinizden ve ekibe katabileceklerinizden bahsedin..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                id="submitButton"
+                class="submit-button"
+            >
+                AAC Başvurusunu Gönder
+            </button>
+
+
+        </form>
+
+    </div>
+
+
+    <!-- =========================
+         MEVCUT BAŞVURU
+    ========================= -->
+
+    <div
+        id="applicationView"
+        class="application-view"
+        style="display:none;"
+    >
+
+        <h2>
+            AAC Başvurunuz
+        </h2>
+
+        <div
+            id="applicationId"
+            class="application-id"
+        ></div>
+
+
+        <div
+            id="statusBox"
+            class="status status-bekliyor"
+        >
+            Bekliyor
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Adınız</strong>
+            <p id="viewFullname"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Yaşınız</strong>
+            <p id="viewAge"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Discord Kullanıcı Adınız</strong>
+            <p id="viewDiscord"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>AAC / Anti-Cheat Deneyimi</strong>
+            <p id="viewAacExperience"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Anti-Cheat Sistemleri Deneyimi</strong>
+            <p id="viewAnticheatExperience"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Hile Tespit ve Analiz Değerlendirmesi</strong>
+            <p id="viewCheatAnalysis"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Şüpheli Oyuncu Süreci</strong>
+            <p id="viewSuspectedCheatProcess"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Yanlış Pozitif Durumları</strong>
+            <p id="viewFalsePositive"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Bilgisayar İnceleme ve Analiz Programları</strong>
+            <p id="viewAnalysisTools"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>AAC Ekibine Katılma Nedeni</strong>
+            <p id="viewAacMotivation"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>AAC İçin Ayrılabilecek Süre</strong>
+            <p id="viewAacAvailability"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Ekip İçi Anlaşmazlık</strong>
+            <p id="viewTeamConflict"></p>
+        </div>
+
+
+        <div class="answer-box">
+            <strong>Kendisi ve Ekibe Katabilecekleri</strong>
+            <p id="viewAbout"></p>
+        </div>
+
+
+        <div
+            id="adminMessageBox"
+            class="admin-message"
+            style="display:none;"
+        >
+
+            <strong>
+                AAC Ekibinden Mesaj
+            </strong>
+
+            <p id="adminMessage"></p>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+/* =========================================
+   SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+    "https://drfborwvynrwfljrqlmg.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================================
+   ELEMENTLER
+========================================= */
+
+const formContainer =
+    document.getElementById(
+        "formContainer"
+    );
+
+const applicationView =
+    document.getElementById(
+        "applicationView"
+    );
+
+const descriptionBox =
+    document.getElementById(
+        "descriptionBox"
+    );
+
+const errorBox =
+    document.getElementById(
+        "errorBox"
+    );
+
+
+/* =========================================
+   HATA GÖSTER
+========================================= */
+
+function showError(message) {
+
+    errorBox.style.display =
+        "block";
+
+    errorBox.textContent =
+        message;
+
+}
+
+
+/* =========================================
+   HATA GİZLE
+========================================= */
+
+function hideError() {
+
+    errorBox.style.display =
+        "none";
+
+    errorBox.textContent =
+        "";
+
+}
+
+
+/* =========================================
+   DURUM
+========================================= */
+
+function getStatus(status) {
+
+    if (
+        status === "Kabul Edildi"
+    ) {
+
+        return {
+            text: "Kabul Edildi",
+            className: "status-kabul"
+        };
+
+    }
+
+
+    if (
+        status === "Reddedildi"
+    ) {
+
+        return {
+            text: "Reddedildi",
+            className: "status-red"
+        };
+
+    }
+
+
+    return {
+        text: "Bekliyor",
+        className: "status-bekliyor"
+    };
+
+}
+
+
+/* =========================================
+   MEVCUT BAŞVURUYU GÖSTER
+========================================= */
+
+function showApplication(app) {
+
+    formContainer.style.display =
+        "none";
+
+    descriptionBox.style.display =
+        "none";
+
+    applicationView.style.display =
+        "block";
+
+
+    document.getElementById(
+        "applicationId"
+    ).textContent =
+        "Başvuru ID: " + app.id;
+
+
+    const status =
+        getStatus(
+            app.status
+        );
+
+
+    const statusBox =
+        document.getElementById(
+            "statusBox"
+        );
+
+
+    statusBox.textContent =
+        status.text;
+
+
+    statusBox.className =
+        "status " +
+        status.className;
+
+
+    document.getElementById(
+        "viewFullname"
+    ).textContent =
+        app.fullname || "-";
+
+
+    document.getElementById(
+        "viewAge"
+    ).textContent =
+        app.age || "-";
+
+
+    document.getElementById(
+        "viewDiscord"
+    ).textContent =
+        app.discord || "-";
+
+
+    document.getElementById(
+        "viewAacExperience"
+    ).textContent =
+        app.aac_experience || "-";
+
+
+    document.getElementById(
+        "viewAnticheatExperience"
+    ).textContent =
+        app.anticheat_experience || "-";
+
+
+    document.getElementById(
+        "viewCheatAnalysis"
+    ).textContent =
+        app.cheat_analysis || "-";
+
+
+    document.getElementById(
+        "viewSuspectedCheatProcess"
+    ).textContent =
+        app.suspected_cheat_process || "-";
+
+
+    document.getElementById(
+        "viewFalsePositive"
+    ).textContent =
+        app.false_positive || "-";
+
+
+    document.getElementById(
+        "viewAnalysisTools"
+    ).textContent =
+        app.analysis_tools || "-";
+
+
+    document.getElementById(
+        "viewAacMotivation"
+    ).textContent =
+        app.aac_motivation || "-";
+
+
+    document.getElementById(
+        "viewAacAvailability"
+    ).textContent =
+        app.aac_availability || "-";
+
+
+    document.getElementById(
+        "viewTeamConflict"
+    ).textContent =
+        app.team_conflict || "-";
+
+
+    document.getElementById(
+        "viewAbout"
+    ).textContent =
+        app.about || "-";
+
+
+    const adminMessageBox =
+        document.getElementById(
+            "adminMessageBox"
+        );
+
+
+    if (
+        app.admin_message &&
+        app.admin_message.trim() !== ""
+    ) {
+
+        adminMessageBox.style.display =
+            "block";
+
+        document.getElementById(
+            "adminMessage"
+        ).textContent =
+            app.admin_message;
+
+    }
+
+    else {
+
+        adminMessageBox.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* =========================================
+   SAYFA BAŞLAT
+========================================= */
+
+async function initializePage() {
+
+    try {
+
+        hideError();
+
+
+        const {
+            data: sessionData,
+            error: sessionError
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
+
+        if (
+            sessionError ||
+            !sessionData ||
+            !sessionData.session
+        ) {
+
+            window.location.href =
+                "login.html";
+
+            return;
+
+        }
+
+
+        const user =
+            sessionData.session.user;
+
+
+        const result =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "application_type",
+                    "aac"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                )
+                .limit(1);
+
+
+        if (result.error) {
+
+            console.error(
+                "Başvuru kontrol hatası:",
+                result.error
+            );
+
+            showError(
+                "Başvurunuz kontrol edilirken bir hata oluştu:\n\n" +
+                result.error.message
+            );
+
+            return;
+
+        }
+
+
+        if (
+            result.data &&
+            result.data.length > 0
+        ) {
+
+            showApplication(
+                result.data[0]
+            );
+
+            return;
+
+        }
+
+
+        descriptionBox.style.display =
+            "block";
+
+        formContainer.style.display =
+            "block";
+
+        applicationView.style.display =
+            "none";
+
+    }
+
+    catch (error) {
+
+        console.error(
+            error
+        );
+
+        showError(
+            "Beklenmeyen bir hata oluştu:\n\n" +
+            error.message
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   FORM GÖNDERME
+========================================= */
+
+document.getElementById(
+    "applicationForm"
+).addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+
+        hideError();
+
+
+        const submitButton =
+            document.getElementById(
+                "submitButton"
+            );
+
+
+        submitButton.disabled =
+            true;
+
+        submitButton.textContent =
+            "Başvurunuz gönderiliyor...";
+
+
+        try {
+
+            const {
+                data: sessionData,
+                error: sessionError
+            } =
+                await supabaseClient
+                    .auth
+                    .getSession();
+
+
+            if (
+                sessionError ||
+                !sessionData ||
+                !sessionData.session
+            ) {
+
+                window.location.href =
+                    "login.html";
+
+                return;
+
+            }
+
+
+            const user =
+                sessionData.session.user;
+
+
+            const form =
+                new FormData(
+                    event.target
+                );
+
+
+            const application = {
+
+                user_id:
+                    user.id,
+
+                application_type:
+                    "aac",
+
+                fullname:
+                    form.get(
+                        "fullname"
+                    ),
+
+                discord:
+                    form.get(
+                        "discord"
+                    ),
+
+                age:
+                    Number(
+                        form.get(
+                            "age"
+                        )
+                    ),
+
+                aac_experience:
+                    form.get(
+                        "aac_experience"
+                    ),
+
+                anticheat_experience:
+                    form.get(
+                        "anticheat_experience"
+                    ),
+
+                cheat_analysis:
+                    form.get(
+                        "cheat_analysis"
+                    ),
+
+                suspected_cheat_process:
+                    form.get(
+                        "suspected_cheat_process"
+                    ),
+
+                false_positive:
+                    form.get(
+                        "false_positive"
+                    ),
+
+                analysis_tools:
+                    form.get(
+                        "analysis_tools"
+                    ),
+
+                aac_motivation:
+                    form.get(
+                        "aac_motivation"
+                    ),
+
+                aac_availability:
+                    form.get(
+                        "aac_availability"
+                    ),
+
+                team_conflict:
+                    form.get(
+                        "team_conflict"
+                    ),
+
+                about:
+                    form.get(
+                        "about"
+                    ),
+
+                status:
+                    "Bekliyor"
+
+            };
+
+
+            const result =
+                await supabaseClient
+                    .from("applications")
+                    .insert(
+                        application
+                    )
+                    .select()
+                    .single();
+
+
+            if (result.error) {
+
+                console.error(
+                    "AAC başvuru gönderme hatası:",
+                    result.error
+                );
+
+                showError(
+                    "AAC başvurunuz gönderilemedi:\n\n" +
+                    result.error.message +
+                    "\n\nKod: " +
+                    (
+                        result.error.code ||
+                        "Bilinmiyor"
+                    )
+                );
+
+                return;
+
+            }
+
+
+            showApplication(
+                result.data
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+            showError(
+                "Beklenmeyen bir hata oluştu:\n\n" +
+                error.message
+            );
+
+        }
+
+        finally {
+
+            submitButton.disabled =
+                false;
+
+            submitButton.textContent =
+                "AAC Başvurusunu Gönder";
+
+        }
+
+    }
+);
+
+
+/* =========================================
+   BAŞLAT
+========================================= */
+
+initializePage();
+
+</script>
+
+
+</body>
+
+</html>
+```
