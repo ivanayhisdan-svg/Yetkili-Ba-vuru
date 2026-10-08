@@ -41,7 +41,6 @@
 
         .back {
             display: inline-block;
-
             margin-bottom: 20px;
 
             color: #aaa;
@@ -505,43 +504,6 @@
             white-space: pre-wrap;
 
             word-break: break-word;
-        }
-
-        .new-application-btn {
-
-            width: 100%;
-
-            margin-top: 10px;
-
-            padding: 12px;
-
-            border-radius: 8px;
-
-            border: 1px solid #303044;
-
-            background: transparent;
-
-            color: #aaa;
-
-            font-weight: bold;
-
-            cursor: pointer;
-
-            transition: 0.2s;
-        }
-
-        .new-application-btn:hover {
-
-            color: white;
-
-            border-color: #8b5cf6;
-
-            background: rgba(
-                139,
-                92,
-                246,
-                0.05
-            );
         }
 
         @media (max-width: 650px) {
@@ -1027,14 +989,6 @@
 
             </div>
 
-
-            <button
-                class="new-application-btn"
-                id="newApplicationBtn"
-            >
-                Başvuru Formuna Dön
-            </button>
-
         </div>
 
     </div>
@@ -1441,10 +1395,6 @@
                 }
 
 
-                /*
-                    Form verilerini al.
-                */
-
                 const formData =
                     new FormData(form);
 
@@ -1550,11 +1500,6 @@
                 );
 
 
-                /*
-                    Sayfayı yenilemeden
-                    başvuruyu göster.
-                */
-
                 setTimeout(
                     () => {
 
@@ -1591,34 +1536,6 @@
                     "Medya Başvurusunu Gönder";
 
             }
-
-        }
-    );
-
-
-    /* =========================================
-       FORMU TEKRAR GÖSTER
-    ========================================== */
-
-    document.getElementById(
-        "newApplicationBtn"
-    )
-    .addEventListener(
-        "click",
-        () => {
-
-            applicationView.style.display =
-                "none";
-
-            formContainer.style.display =
-                "block";
-
-            form.reset();
-
-            window.scrollTo({
-                top: 0,
-                behavior: "smooth"
-            });
 
         }
     );
