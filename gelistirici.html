@@ -1,308 +1,688 @@
 <!DOCTYPE html>
 <html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Geliştirici Başvurusu - SnMac</title>
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SnMac | Geliştirici Başvurusu</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
         }
 
         body {
+
             min-height: 100vh;
-            font-family: Arial, sans-serif;
+
             background:
-                linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.94)),
-                url("assets/background.jpg") center/cover fixed;
+                linear-gradient(
+                    rgba(0, 0, 0, 0.78),
+                    rgba(0, 0, 0, 0.90)
+                ),
+                url("assets/background.jpg")
+                center/cover fixed;
+
             color: white;
-            padding: 40px 20px;
+
+            padding: 30px 15px;
+
         }
 
         .container {
+
             width: 100%;
+
             max-width: 850px;
+
             margin: auto;
+
         }
 
-        .header {
+        /* =========================
+           ÜST KISIM
+        ========================= */
+
+        .top {
+
             text-align: center;
+
             margin-bottom: 30px;
+
         }
 
-        .header h1 {
-            font-size: 32px;
-            color: #a78bfa;
+        .top h1 {
+
+            font-size: 34px;
+
             margin-bottom: 12px;
+
         }
 
-        .header p {
-            color: #cfcfcf;
-            line-height: 1.6;
-            font-size: 15px;
+        .top-line {
+
+            width: 70px;
+
+            height: 3px;
+
+            margin: 0 auto;
+
+            background: #8b5cf6;
+
+            border-radius: 5px;
+
         }
 
-        .form-box,
-        .existing-box {
-            background: rgba(15, 15, 15, 0.95);
-            border: 1px solid rgba(139, 92, 246, 0.35);
-            border-radius: 14px;
-            padding: 28px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+        /* =========================
+           GERİ BUTONU
+        ========================= */
+
+        .back-button {
+
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            padding: 10px 16px;
+
+            border-radius: 8px;
+
+            background:
+                rgba(20, 20, 20, 0.9);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+            color: #ddd;
+
+            text-decoration: none;
+
+            transition: 0.2s;
+
         }
 
-        .question {
-            margin-bottom: 24px;
+        .back-button:hover {
+
+            border-color: #8b5cf6;
+
+            color: white;
+
         }
 
-        .question label {
-            display: block;
+        /* =========================
+           AÇIKLAMA
+        ========================= */
+
+        .description {
+
+            background:
+                rgba(20, 20, 20, 0.92);
+
+            border:
+                1px solid
+                rgba(139, 92, 246, 0.25);
+
+            border-left:
+                3px solid
+                #8b5cf6;
+
+            border-radius: 12px;
+
+            padding: 22px;
+
+            margin-bottom: 25px;
+
+        }
+
+        .description h2 {
+
+            font-size: 18px;
+
             color: #a78bfa;
-            font-weight: bold;
-            margin-bottom: 9px;
+
+            margin-bottom: 12px;
+
+        }
+
+        .description p {
+
+            color: #c7c7c7;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+        }
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .form-container {
+
+            background:
+                rgba(18, 18, 18, 0.95);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.09);
+
+            border-radius: 14px;
+
+            padding: 28px;
+
+        }
+
+        .section-title {
+
+            margin-top: 10px;
+
+            margin-bottom: 20px;
+
+            padding-bottom: 10px;
+
+            border-bottom:
+                1px solid
+                rgba(255, 255, 255, 0.08);
+
+            color: #a78bfa;
+
+            font-size: 19px;
+
+        }
+
+        .section-title:not(:first-child) {
+
+            margin-top: 35px;
+
+        }
+
+        .form-group {
+
+            margin-bottom: 20px;
+
+        }
+
+        .form-group label {
+
+            display: block;
+
+            color: #e5e5e5;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            margin-bottom: 8px;
+
             line-height: 1.5;
+
+        }
+
+        .form-group label span {
+
+            color: #8b5cf6;
+
         }
 
         input,
         textarea {
+
             width: 100%;
-            background: #101010;
+
+            padding: 13px 14px;
+
+            border-radius: 9px;
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.12);
+
+            background:
+                rgba(5, 5, 5, 0.9);
+
             color: white;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 12px 14px;
-            font-size: 14px;
+
             outline: none;
+
+            font-size: 14px;
+
             transition: 0.2s;
+
+        }
+
+        input {
+
+            height: 46px;
+
+        }
+
+        textarea {
+
+            min-height: 120px;
+
+            resize: vertical;
+
+            line-height: 1.6;
+
         }
 
         input:focus,
         textarea:focus {
+
             border-color: #8b5cf6;
-            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.12);
+
+            box-shadow:
+                0 0 0 2px
+                rgba(139, 92, 246, 0.10);
+
         }
 
-        textarea {
-            min-height: 120px;
-            resize: vertical;
-            font-family: Arial, sans-serif;
+        input::placeholder,
+        textarea::placeholder {
+
+            color: #666;
+
         }
+
+        /* =========================
+           GÖNDER
+        ========================= */
 
         .submit-button {
+
             width: 100%;
-            border: none;
-            border-radius: 8px;
+
+            margin-top: 15px;
+
             padding: 14px;
+
+            border: none;
+
+            border-radius: 9px;
+
             background: #8b5cf6;
+
             color: white;
+
             font-size: 15px;
+
             font-weight: bold;
+
             cursor: pointer;
+
             transition: 0.2s;
+
         }
 
         .submit-button:hover {
+
             background: #7c3aed;
+
         }
 
         .submit-button:disabled {
-            opacity: 0.6;
+
+            opacity: 0.55;
+
             cursor: not-allowed;
+
         }
 
-        .back-button {
-            display: block;
-            text-align: center;
-            margin-top: 18px;
-            color: #aaa;
-            text-decoration: none;
-            font-size: 14px;
+        /* =========================
+           MEVCUT BAŞVURU
+        ========================= */
+
+        .application-view {
+
+            background:
+                rgba(18, 18, 18, 0.95);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.09);
+
+            border-radius: 14px;
+
+            padding: 28px;
+
         }
 
-        .back-button:hover {
-            color: white;
-        }
+        .application-view h2 {
 
-        .message {
-            display: none;
-            margin-bottom: 20px;
-            padding: 12px 14px;
-            border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        .error {
-            background: rgba(180, 40, 40, 0.15);
-            border: 1px solid rgba(220, 70, 70, 0.4);
-            color: #ff9b9b;
-        }
-
-        .existing-box {
-            display: none;
-        }
-
-        .existing-box h2 {
             color: #a78bfa;
-            margin-bottom: 12px;
+
+            margin-bottom: 8px;
+
         }
 
-        .existing-box > p {
-            color: #ccc;
-            line-height: 1.6;
-            margin-bottom: 10px;
+        .application-id {
+
+            color: #666;
+
+            font-size: 12px;
+
+            word-break: break-all;
+
+            margin-bottom: 20px;
+
         }
 
         .status {
+
             display: inline-block;
-            margin-top: 8px;
-            padding: 7px 12px;
-            border-radius: 6px;
-            background: rgba(139, 92, 246, 0.15);
-            color: #c4b5fd;
+
+            padding: 9px 15px;
+
+            border-radius: 8px;
+
             font-weight: bold;
+
+            margin-bottom: 25px;
+
         }
 
-        .answer-item {
-            margin-top: 22px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid #292929;
+        .status-bekliyor {
+
+            color: #f5c542;
+
+            background:
+                rgba(245, 197, 66, 0.12);
+
+            border:
+                1px solid
+                rgba(245, 197, 66, 0.25);
+
         }
 
-        .answer-item:last-child {
-            border-bottom: none;
+        .status-kabul {
+
+            color: #42d392;
+
+            background:
+                rgba(66, 211, 146, 0.12);
+
+            border:
+                1px solid
+                rgba(66, 211, 146, 0.25);
+
         }
 
-        .answer-question {
-            color: #a78bfa;
-            font-weight: bold;
-            line-height: 1.5;
+        .status-red {
+
+            color: #ff6464;
+
+            background:
+                rgba(255, 100, 100, 0.12);
+
+            border:
+                1px solid
+                rgba(255, 100, 100, 0.25);
+
+        }
+
+        .answer-box {
+
+            padding: 16px;
+
+            margin-bottom: 12px;
+
+            border-radius: 9px;
+
+            background:
+                rgba(255, 255, 255, 0.035);
+
+            border:
+                1px solid
+                rgba(255, 255, 255, 0.07);
+
+        }
+
+        .answer-box strong {
+
+            display: block;
+
+            color: #999;
+
+            font-size: 12px;
+
             margin-bottom: 8px;
+
         }
 
-        .answer-text {
-            color: #ccc;
-            line-height: 1.7;
+        .answer-box p {
+
+            color: #ddd;
+
+            line-height: 1.6;
+
             white-space: pre-wrap;
+
             word-break: break-word;
+
         }
 
-        .admin-message-box {
+        .admin-message {
+
             margin-top: 25px;
+
             padding: 18px;
+
             border-radius: 10px;
-            background: rgba(139, 92, 246, 0.08);
-            border: 1px solid rgba(139, 92, 246, 0.3);
+
+            background:
+                rgba(139, 92, 246, 0.08);
+
+            border:
+                1px solid
+                rgba(139, 92, 246, 0.25);
+
         }
 
-        .admin-message-box h3 {
+        .admin-message strong {
+
+            display: block;
+
             color: #a78bfa;
-            margin-bottom: 10px;
-            font-size: 17px;
+
+            margin-bottom: 9px;
+
         }
 
-        .admin-message-box p {
-            color: #ccc;
-            line-height: 1.7;
+        .admin-message p {
+
+            color: #ddd;
+
+            line-height: 1.6;
+
             white-space: pre-wrap;
-            word-break: break-word;
+
         }
+
+        /* =========================
+           HATA
+        ========================= */
+
+        .error {
+
+            margin-bottom: 20px;
+
+            padding: 15px;
+
+            border-radius: 9px;
+
+            color: #ff7777;
+
+            background:
+                rgba(255, 0, 0, 0.08);
+
+            border:
+                1px solid
+                rgba(255, 0, 0, 0.18);
+
+            white-space: pre-wrap;
+
+        }
+
+        /* =========================
+           MOBİL
+        ========================= */
 
         @media (max-width: 600px) {
+
             body {
-                padding: 25px 12px;
+
+                padding: 20px 10px;
+
             }
 
-            .form-box,
-            .existing-box {
+            .top h1 {
+
+                font-size: 27px;
+
+            }
+
+            .form-container,
+            .application-view {
+
                 padding: 20px;
+
             }
 
-            .header h1 {
-                font-size: 26px;
+            .description {
+
+                padding: 18px;
+
             }
+
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <div class="header">
-        <h1>Geliştirici Başvurusu</h1>
 
-        <p>
-            SnMac geliştirici ekibinde görev almak isteyen kullanıcılar için
-            hazırlanmış başvuru formudur. Soruları dikkatlice okuyarak
-            kendiniz ve geliştirme deneyimleriniz hakkında mümkün olduğunca
-            açık ve doğru bilgiler vermeniz beklenmektedir.
-        </p>
-    </div>
+    <a
+        href="index.html"
+        class="back-button"
+    >
+        Ana Sayfaya Dön
+    </a>
 
-    <div id="message" class="message"></div>
 
-    <div id="existingBox" class="existing-box">
+    <div class="top">
 
-        <h2>Başvurunuz Alındı</h2>
+        <h1>
+            Geliştirici Başvurusu
+        </h1>
 
-        <p>
-            Geliştirici başvurunuz başarıyla gönderildi ve değerlendirme
-            sürecine alındı.
-        </p>
-
-        <p>
-            Başvuru durumu:
-        </p>
-
-        <span id="existingStatus" class="status">
-            Bekliyor
-        </span>
-
-        <div id="existingAnswers"></div>
-
-        <div
-            id="existingAdminMessageBox"
-            class="admin-message-box"
-            style="display: none;"
-        >
-            <h3>Yönetici Mesajı</h3>
-
-            <p id="existingAdminMessage"></p>
-        </div>
-
-        <a href="index.html" class="back-button">
-            Ana Sayfaya Dön
-        </a>
+        <div class="top-line"></div>
 
     </div>
 
-    <div id="formContainer" class="form-box">
 
-        <form id="developerForm">
+    <!-- =========================
+         HATA
+    ========================= -->
 
-            <div class="question">
+    <div
+        id="errorBox"
+        class="error"
+        style="display:none;"
+    ></div>
+
+
+    <!-- =========================
+         AÇIKLAMA
+    ========================= -->
+
+    <div
+        id="descriptionBox"
+        class="description"
+    >
+
+        <h2>
+            Geliştirici Ekibine Katılmak
+        </h2>
+
+        <p>
+            SnMac geliştirici ekibinde görev almak isteyen
+            kullanıcılar için hazırlanmış başvuru formudur.
+            Soruları dikkatlice okuyarak kendiniz ve geliştirme
+            deneyimleriniz hakkında mümkün olduğunca açık ve
+            doğru bilgiler vermeniz beklenmektedir. Başvurunuz
+            geliştirici ekip tarafından incelendikten sonra
+            değerlendirme sonucu başvurunuz üzerinden tarafınıza
+            iletilecektir.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         FORM
+    ========================= -->
+
+    <div
+        id="formContainer"
+        class="form-container"
+        style="display:none;"
+    >
+
+        <form id="applicationForm">
+
+
+            <div class="section-title">
+                Kişisel Bilgiler
+            </div>
+
+
+            <!-- 1 -->
+
+            <div class="form-group">
+
                 <label for="fullname">
-                    1. Adınız nedir?
+                    Adınız nedir?
+                    <span>*</span>
                 </label>
 
                 <input
                     type="text"
                     id="fullname"
                     name="fullname"
+                    placeholder="Adınızı girin"
                     required
                 >
+
             </div>
 
-            <div class="question">
+
+            <!-- 2 -->
+
+            <div class="form-group">
+
                 <label for="age">
-                    2. Kaç yaşındasınız?
+                    Kaç yaşındasınız?
+                    <span>*</span>
                 </label>
 
                 <input
@@ -311,129 +691,218 @@
                     name="age"
                     min="1"
                     max="100"
+                    placeholder="Yaşınızı girin"
                     required
                 >
+
             </div>
 
-            <div class="question">
+
+            <!-- 3 -->
+
+            <div class="form-group">
+
                 <label for="discord">
-                    3. Discord kullanıcı adınız nedir?
+                    Discord kullanıcı adınız nedir?
+                    <span>*</span>
                 </label>
 
                 <input
                     type="text"
                     id="discord"
                     name="discord"
+                    placeholder="Discord kullanıcı adınızı girin"
                     required
                 >
+
             </div>
 
-            <div class="question">
+
+            <div class="section-title">
+                Geliştirme Deneyimi
+            </div>
+
+
+            <!-- 4 -->
+
+            <div class="form-group">
+
                 <label for="programming_languages">
-                    4. Hangi programlama dillerini biliyorsunuz?
+                    Hangi programlama dillerini biliyorsunuz?
+                    <span>*</span>
                 </label>
 
                 <textarea
                     id="programming_languages"
                     name="programming_languages"
+                    placeholder="Bildiğiniz programlama dillerini yazın..."
                     required
                 ></textarea>
+
             </div>
 
-            <div class="question">
+
+            <!-- 5 -->
+
+            <div class="form-group">
+
                 <label for="development_areas">
-                    5. Hangi alanlarda geliştirme yapabiliyorsunuz?
+                    Hangi alanlarda geliştirme yapabiliyorsunuz?
+                    <span>*</span>
                 </label>
 
                 <textarea
                     id="development_areas"
                     name="development_areas"
+                    placeholder="Geliştirme yapabildiğiniz alanları belirtin..."
                     required
                 ></textarea>
+
             </div>
 
-            <div class="question">
+
+            <!-- 6 -->
+
+            <div class="form-group">
+
                 <label for="projects">
-                    6. Daha önce yaptığınız projeler var mı? Varsa kısaca bahsediniz.
+                    Daha önce yaptığınız projeler var mı? Varsa
+                    kısaca bahsediniz.
+                    <span>*</span>
                 </label>
 
                 <textarea
                     id="projects"
                     name="projects"
+                    placeholder="Daha önce yaptığınız projelerden bahsedin..."
                     required
                 ></textarea>
+
             </div>
 
-            <div class="question">
+
+            <!-- 7 -->
+
+            <div class="form-group">
+
                 <label for="portfolio">
-                    7. Varsa GitHub, web sitesi veya projelerinizi gösterebileceğiniz bağlantılarınızı paylaşınız.
+                    Varsa GitHub, web sitesi veya projelerinizi
+                    gösterebileceğiniz bağlantılarınızı paylaşınız.
                 </label>
 
                 <textarea
                     id="portfolio"
                     name="portfolio"
+                    placeholder="Bağlantılarınızı buraya yazabilirsiniz..."
                 ></textarea>
+
             </div>
 
-            <div class="question">
+
+            <div class="section-title">
+                Ekip ve Uygunluk
+            </div>
+
+
+            <!-- 8 -->
+
+            <div class="form-group">
+
                 <label for="motivation">
-                    8. SnMac geliştirici ekibinde neden yer almak istiyorsunuz?
+                    SnMac geliştirici ekibinde neden yer almak
+                    istiyorsunuz?
+                    <span>*</span>
                 </label>
 
                 <textarea
                     id="motivation"
                     name="motivation"
+                    placeholder="Geliştirici ekibinde yer alma nedeninizi açıklayın..."
                     required
                 ></textarea>
+
             </div>
 
-            <div class="question">
+
+            <!-- 9 -->
+
+            <div class="form-group">
+
                 <label for="availability">
-                    9. Gün içerisinde ortalama ne kadar zaman ayırabilirsiniz?
+                    Gün içerisinde ortalama ne kadar zaman
+                    ayırabilirsiniz?
+                    <span>*</span>
                 </label>
 
                 <textarea
                     id="availability"
                     name="availability"
+                    placeholder="Günlük ayırabileceğiniz süreyi belirtin..."
                     required
                 ></textarea>
+
             </div>
 
-            <div class="question">
+
+            <!-- 10 -->
+
+            <div class="form-group">
+
                 <label for="conflict">
-                    10. Ekip içerisinde bir fikir veya teknik konuda anlaşmazlık yaşarsanız nasıl çözersiniz?
+                    Ekip içerisinde bir fikir veya teknik konuda
+                    anlaşmazlık yaşarsanız nasıl çözersiniz?
+                    <span>*</span>
                 </label>
 
                 <textarea
                     id="conflict"
                     name="conflict"
+                    placeholder="Böyle bir durumda nasıl hareket edeceğinizi açıklayın..."
                     required
                 ></textarea>
+
             </div>
 
-            <div class="question">
+
+            <!-- 11 -->
+
+            <div class="form-group">
+
                 <label for="responsibility">
-                    11. Bir projede size verilen görevi zamanında tamamlayamayacağınızı fark ederseniz ne yaparsınız?
+                    Bir projede size verilen görevi zamanında
+                    tamamlayamayacağınızı fark ederseniz ne yaparsınız?
+                    <span>*</span>
                 </label>
 
                 <textarea
                     id="responsibility"
                     name="responsibility"
+                    placeholder="Böyle bir durumda nasıl hareket edeceğinizi açıklayın..."
                     required
                 ></textarea>
+
             </div>
 
-            <div class="question">
+
+            <!-- 12 -->
+
+            <div class="form-group">
+
                 <label for="about">
-                    12. Bize biraz kendinizden ve geliştirici olarak hedeflerinizden bahseder misiniz?
+                    Bize biraz kendinizden ve geliştirici olarak
+                    hedeflerinizden bahseder misiniz?
+                    <span>*</span>
                 </label>
 
                 <textarea
                     id="about"
                     name="about"
+                    placeholder="Kendinizden ve hedeflerinizden bahsedin..."
                     required
                 ></textarea>
+
             </div>
+
 
             <button
                 type="submit"
@@ -443,238 +912,492 @@
                 Başvuruyu Gönder
             </button>
 
-        </form>
 
-        <a href="index.html" class="back-button">
-            Ana Sayfaya Dön
-        </a>
+        </form>
 
     </div>
 
+
+    <!-- =========================
+         MEVCUT BAŞVURU
+    ========================= -->
+
+    <div
+        id="applicationView"
+        class="application-view"
+        style="display:none;"
+    >
+
+        <h2>
+            Geliştirici Başvurunuz
+        </h2>
+
+        <div
+            id="applicationId"
+            class="application-id"
+        ></div>
+
+
+        <div
+            id="statusBox"
+            class="status status-bekliyor"
+        >
+            Bekliyor
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Adınız
+            </strong>
+
+            <p id="viewFullname"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Yaşınız
+            </strong>
+
+            <p id="viewAge"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Discord Kullanıcı Adınız
+            </strong>
+
+            <p id="viewDiscord"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Bildiğiniz Programlama Dilleri
+            </strong>
+
+            <p id="viewProgrammingLanguages"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Geliştirme Yapabildiğiniz Alanlar
+            </strong>
+
+            <p id="viewDevelopmentAreas"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Daha Önce Yaptığınız Projeler
+            </strong>
+
+            <p id="viewProjects"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Proje Bağlantıları
+            </strong>
+
+            <p id="viewPortfolio"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Geliştirici Ekibinde Yer Alma Nedeni
+            </strong>
+
+            <p id="viewMotivation"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Günlük Ayırabileceğiniz Süre
+            </strong>
+
+            <p id="viewAvailability"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Ekip İçi Anlaşmazlık
+            </strong>
+
+            <p id="viewConflict"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Görevin Zamanında Tamamlanamaması Durumu
+            </strong>
+
+            <p id="viewResponsibility"></p>
+
+        </div>
+
+
+        <div class="answer-box">
+
+            <strong>
+                Kendiniz ve Geliştirici Hedefleriniz
+            </strong>
+
+            <p id="viewAbout"></p>
+
+        </div>
+
+
+        <div
+            id="adminMessageBox"
+            class="admin-message"
+            style="display:none;"
+        >
+
+            <strong>
+                Geliştirici Ekibinden Mesaj
+            </strong>
+
+            <p id="adminMessage"></p>
+
+        </div>
+
+
+    </div>
+
+
 </div>
+
 
 <script>
 
-    const SUPABASE_URL =
-        "https://drfborwvynrwfljrqlmg.supabase.co";
 
-    const SUPABASE_KEY =
-        "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
+/* =========================================
+   SUPABASE
+========================================= */
 
-    const supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_KEY
+const SUPABASE_URL =
+    "https://drfborwvynrwfljrqlmg.supabase.co";
+
+const SUPABASE_KEY =
+    "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+/* =========================================
+   ELEMENTLER
+========================================= */
+
+const formContainer =
+    document.getElementById(
+        "formContainer"
+    );
+
+const applicationView =
+    document.getElementById(
+        "applicationView"
+    );
+
+const descriptionBox =
+    document.getElementById(
+        "descriptionBox"
+    );
+
+const errorBox =
+    document.getElementById(
+        "errorBox"
+    );
+
+
+/* =========================================
+   HATA GÖSTER
+========================================= */
+
+function showError(message) {
+
+    errorBox.style.display =
+        "block";
+
+    errorBox.textContent =
+        message;
+
+}
+
+
+/* =========================================
+   HATA GİZLE
+========================================= */
+
+function hideError() {
+
+    errorBox.style.display =
+        "none";
+
+    errorBox.textContent =
+        "";
+
+}
+
+
+/* =========================================
+   DURUM
+========================================= */
+
+function getStatus(status) {
+
+    if (
+        status === "Kabul Edildi"
+    ) {
+
+        return {
+            text: "Kabul Edildi",
+            className: "status-kabul"
+        };
+
+    }
+
+
+    if (
+        status === "Reddedildi"
+    ) {
+
+        return {
+            text: "Reddedildi",
+            className: "status-red"
+        };
+
+    }
+
+
+    return {
+        text: "Bekliyor",
+        className: "status-bekliyor"
+    };
+
+}
+
+
+/* =========================================
+   BAŞVURU GÖSTER
+========================================= */
+
+function showApplication(app) {
+
+    formContainer.style.display =
+        "none";
+
+    descriptionBox.style.display =
+        "none";
+
+    applicationView.style.display =
+        "block";
+
+
+    document.getElementById(
+        "applicationId"
+    ).textContent =
+        "Başvuru ID: " + app.id;
+
+
+    const status =
+        getStatus(
+            app.status
         );
 
 
-    const form =
-        document.getElementById("developerForm");
-
-    const formContainer =
-        document.getElementById("formContainer");
-
-    const existingBox =
-        document.getElementById("existingBox");
-
-    const existingStatus =
-        document.getElementById("existingStatus");
-
-    const existingAnswers =
-        document.getElementById("existingAnswers");
-
-    const existingAdminMessageBox =
-        document.getElementById("existingAdminMessageBox");
-
-    const existingAdminMessage =
-        document.getElementById("existingAdminMessage");
-
-    const message =
-        document.getElementById("message");
-
-    const submitButton =
-        document.getElementById("submitButton");
+    const statusBox =
+        document.getElementById(
+            "statusBox"
+        );
 
 
-    function escapeHtml(text) {
-
-        const div =
-            document.createElement("div");
-
-        div.textContent =
-            text ?? "";
-
-        return div.innerHTML;
-    }
+    statusBox.textContent =
+        status.text;
 
 
-    function showMessage(text, type) {
+    statusBox.className =
+        "status " +
+        status.className;
 
-        message.textContent =
-            text;
 
-        message.className =
-            "message " + type;
+    document.getElementById(
+        "viewFullname"
+    ).textContent =
+        app.fullname || "-";
 
-        message.style.display =
+
+    document.getElementById(
+        "viewAge"
+    ).textContent =
+        app.age || "-";
+
+
+    document.getElementById(
+        "viewDiscord"
+    ).textContent =
+        app.discord || "-";
+
+
+    document.getElementById(
+        "viewProgrammingLanguages"
+    ).textContent =
+        app.programming_languages || "-";
+
+
+    document.getElementById(
+        "viewDevelopmentAreas"
+    ).textContent =
+        app.development_areas || "-";
+
+
+    document.getElementById(
+        "viewProjects"
+    ).textContent =
+        app.projects || "-";
+
+
+    document.getElementById(
+        "viewPortfolio"
+    ).textContent =
+        app.portfolio || "Belirtilmedi";
+
+
+    document.getElementById(
+        "viewMotivation"
+    ).textContent =
+        app.motivation || "-";
+
+
+    document.getElementById(
+        "viewAvailability"
+    ).textContent =
+        app.availability || "-";
+
+
+    document.getElementById(
+        "viewConflict"
+    ).textContent =
+        app.conflict || "-";
+
+
+    document.getElementById(
+        "viewResponsibility"
+    ).textContent =
+        app.responsibility || "-";
+
+
+    document.getElementById(
+        "viewAbout"
+    ).textContent =
+        app.about || "-";
+
+
+    const adminMessageBox =
+        document.getElementById(
+            "adminMessageBox"
+        );
+
+
+    if (
+        app.admin_message &&
+        app.admin_message.trim() !== ""
+    ) {
+
+        adminMessageBox.style.display =
             "block";
+
+        document.getElementById(
+            "adminMessage"
+        ).textContent =
+            app.admin_message;
+
     }
 
+    else {
 
-    function createAnswers(application) {
-
-        const answers = [
-
-            [
-                "1. Adınız nedir?",
-                application.fullname
-            ],
-
-            [
-                "2. Kaç yaşındasınız?",
-                application.age
-            ],
-
-            [
-                "3. Discord kullanıcı adınız nedir?",
-                application.discord
-            ],
-
-            [
-                "4. Hangi programlama dillerini biliyorsunuz?",
-                application.programming_languages
-            ],
-
-            [
-                "5. Hangi alanlarda geliştirme yapabiliyorsunuz?",
-                application.development_areas
-            ],
-
-            [
-                "6. Daha önce yaptığınız projeler var mı? Varsa kısaca bahsediniz.",
-                application.projects
-            ],
-
-            [
-                "7. Varsa GitHub, web sitesi veya projelerinizi gösterebileceğiniz bağlantılarınızı paylaşınız.",
-                application.portfolio || "Belirtilmedi"
-            ],
-
-            [
-                "8. SnMac geliştirici ekibinde neden yer almak istiyorsunuz?",
-                application.motivation
-            ],
-
-            [
-                "9. Gün içerisinde ortalama ne kadar zaman ayırabilirsiniz?",
-                application.availability
-            ],
-
-            [
-                "10. Ekip içerisinde bir fikir veya teknik konuda anlaşmazlık yaşarsanız nasıl çözersiniz?",
-                application.conflict
-            ],
-
-            [
-                "11. Bir projede size verilen görevi zamanında tamamlayamayacağınızı fark ederseniz ne yaparsınız?",
-                application.responsibility
-            ],
-
-            [
-                "12. Bize biraz kendinizden ve geliştirici olarak hedeflerinizden bahseder misiniz?",
-                application.about
-            ]
-
-        ];
-
-
-        existingAnswers.innerHTML =
-            answers.map(
-                ([question, answer]) => `
-
-                    <div class="answer-item">
-
-                        <div class="answer-question">
-                            ${escapeHtml(question)}
-                        </div>
-
-                        <div class="answer-text">
-                            ${escapeHtml(
-                                String(
-                                    answer ??
-                                    "Belirtilmedi"
-                                )
-                            )}
-                        </div>
-
-                    </div>
-
-                `
-            ).join("");
-    }
-
-
-    function showApplication(application) {
-
-        formContainer.style.display =
+        adminMessageBox.style.display =
             "none";
 
-        existingBox.style.display =
-            "block";
-
-        existingStatus.textContent =
-            application.status ||
-            "Bekliyor";
-
-        createAnswers(
-            application
-        );
-
-
-        if (
-            application.admin_message &&
-            application.admin_message.trim() !== ""
-        ) {
-
-            existingAdminMessage.textContent =
-                application.admin_message;
-
-            existingAdminMessageBox.style.display =
-                "block";
-
-        } else {
-
-            existingAdminMessageBox.style.display =
-                "none";
-        }
     }
 
+}
 
-    async function checkUser() {
+
+/* =========================================
+   SAYFA BAŞLAT
+========================================= */
+
+async function initializePage() {
+
+    try {
+
+        hideError();
+
 
         const {
-            data: { user },
-            error
+            data: sessionData,
+            error: sessionError
         } =
-            await supabaseClient.auth.getUser();
+            await supabaseClient
+                .auth
+                .getSession();
 
 
         if (
-            error ||
-            !user
+            sessionError ||
+            !sessionData ||
+            !sessionData.session
         ) {
 
             window.location.href =
                 "login.html";
 
             return;
+
         }
 
 
-        const {
-            data,
-            error: applicationError
-        } =
+        const user =
+            sessionData.session.user;
+
+
+        const result =
             await supabaseClient
                 .from("applications")
                 .select("*")
@@ -695,218 +1418,284 @@
                 .limit(1);
 
 
-        if (applicationError) {
+        if (result.error) {
 
             console.error(
-                applicationError
+                "Başvuru kontrol hatası:",
+                result.error
+            );
+
+            showError(
+                "Başvurunuz kontrol edilirken bir hata oluştu:\n\n" +
+                result.error.message
             );
 
             return;
+
         }
 
 
         if (
-            data &&
-            data.length > 0
+            result.data &&
+            result.data.length > 0
         ) {
 
             showApplication(
-                data[0]
+                result.data[0]
             );
+
+            return;
+
         }
+
+
+        descriptionBox.style.display =
+            "block";
+
+        formContainer.style.display =
+            "block";
+
+        applicationView.style.display =
+            "none";
+
     }
 
+    catch (error) {
 
-    form.addEventListener(
-        "submit",
-        async function(event) {
+        console.error(
+            error
+        );
 
-            event.preventDefault();
+        showError(
+            "Beklenmeyen bir hata oluştu:\n\n" +
+            error.message
+        );
 
+    }
 
-            submitButton.disabled =
-                true;
-
-            submitButton.textContent =
-                "Gönderiliyor...";
-
-            message.style.display =
-                "none";
+}
 
 
-            try {
+/* =========================================
+   FORM GÖNDERME
+========================================= */
 
-                const {
-                    data: { user },
-                    error: userError
-                } =
-                    await supabaseClient.auth.getUser();
+document.getElementById(
+    "applicationForm"
+).addEventListener(
+    "submit",
+    async function(event) {
 
-
-                if (
-                    userError ||
-                    !user
-                ) {
-
-                    window.location.href =
-                        "login.html";
-
-                    return;
-                }
+        event.preventDefault();
 
 
-                const formData =
-                    new FormData(form);
+        hideError();
 
 
-                const application = {
-
-                    user_id:
-                        user.id,
-
-                    application_type:
-                        "gelistirici",
-
-                    fullname:
-                        formData.get(
-                            "fullname"
-                        ),
-
-                    discord:
-                        formData.get(
-                            "discord"
-                        ),
-
-                    age:
-                        Number(
-                            formData.get(
-                                "age"
-                            )
-                        ),
-
-                    programming_languages:
-                        formData.get(
-                            "programming_languages"
-                        ),
-
-                    development_areas:
-                        formData.get(
-                            "development_areas"
-                        ),
-
-                    projects:
-                        formData.get(
-                            "projects"
-                        ),
-
-                    portfolio:
-                        formData.get(
-                            "portfolio"
-                        ),
-
-                    motivation:
-                        formData.get(
-                            "motivation"
-                        ),
-
-                    availability:
-                        formData.get(
-                            "availability"
-                        ),
-
-                    conflict:
-                        formData.get(
-                            "conflict"
-                        ),
-
-                    responsibility:
-                        formData.get(
-                            "responsibility"
-                        ),
-
-                    about:
-                        formData.get(
-                            "about"
-                        ),
-
-                    status:
-                        "Bekliyor"
-                };
+        const submitButton =
+            document.getElementById(
+                "submitButton"
+            );
 
 
-                const {
-                    error
-                } =
-                    await supabaseClient
-                        .from("applications")
-                        .insert(
-                            application
-                        );
+        submitButton.disabled =
+            true;
+
+        submitButton.textContent =
+            "Başvurunuz gönderiliyor...";
 
 
-                if (error) {
+        try {
 
-                    console.error(
-                        error
-                    );
-
-                    showMessage(
-                        "Başvurunuz gönderilemedi: " +
-                        (
-                            error.message ||
-                            "Bilinmeyen bir hata oluştu."
-                        ),
-                        "error"
-                    );
-
-                    submitButton.disabled =
-                        false;
-
-                    submitButton.textContent =
-                        "Başvuruyu Gönder";
-
-                    return;
-                }
+            const {
+                data: sessionData,
+                error: sessionError
+            } =
+                await supabaseClient
+                    .auth
+                    .getSession();
 
 
-                /*
-                 * Kayıt başarılı olduğu anda
-                 * formu kapatıp gönderilen
-                 * cevapları doğrudan gösteriyoruz.
-                 *
-                 * Sayfayı yenilemeye gerek yok.
-                 */
+            if (
+                sessionError ||
+                !sessionData ||
+                !sessionData.session
+            ) {
 
-                showApplication(
-                    application
-                );
+                window.location.href =
+                    "login.html";
 
+                return;
 
-            } catch (error) {
-
-                console.error(
-                    error
-                );
-
-                showMessage(
-                    "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
-                    "error"
-                );
-
-                submitButton.disabled =
-                    false;
-
-                submitButton.textContent =
-                    "Başvuruyu Gönder";
             }
 
+
+            const user =
+                sessionData.session.user;
+
+
+            const form =
+                new FormData(
+                    event.target
+                );
+
+
+            const application = {
+
+                user_id:
+                    user.id,
+
+                application_type:
+                    "gelistirici",
+
+                fullname:
+                    form.get(
+                        "fullname"
+                    ),
+
+                discord:
+                    form.get(
+                        "discord"
+                    ),
+
+                age:
+                    Number(
+                        form.get(
+                            "age"
+                        )
+                    ),
+
+                programming_languages:
+                    form.get(
+                        "programming_languages"
+                    ),
+
+                development_areas:
+                    form.get(
+                        "development_areas"
+                    ),
+
+                projects:
+                    form.get(
+                        "projects"
+                    ),
+
+                portfolio:
+                    form.get(
+                        "portfolio"
+                    ),
+
+                motivation:
+                    form.get(
+                        "motivation"
+                    ),
+
+                availability:
+                    form.get(
+                        "availability"
+                    ),
+
+                conflict:
+                    form.get(
+                        "conflict"
+                    ),
+
+                responsibility:
+                    form.get(
+                        "responsibility"
+                    ),
+
+                about:
+                    form.get(
+                        "about"
+                    ),
+
+                status:
+                    "Bekliyor"
+
+            };
+
+
+            const result =
+                await supabaseClient
+                    .from("applications")
+                    .insert(
+                        application
+                    )
+                    .select()
+                    .single();
+
+
+            if (result.error) {
+
+                console.error(
+                    "Başvuru gönderme hatası:",
+                    result.error
+                );
+
+                showError(
+                    "Başvurunuz gönderilemedi:\n\n" +
+                    result.error.message +
+                    "\n\nKod: " +
+                    (
+                        result.error.code ||
+                        "Bilinmiyor"
+                    )
+                );
+
+                return;
+
+            }
+
+
+            /*
+             * Veritabanına kayıt başarılı olduğu
+             * anda sayfayı yenilemeden başvuruyu
+             * doğrudan gösteriyoruz.
+             */
+
+            showApplication(
+                result.data
+            );
+
         }
-    );
+
+        catch (error) {
+
+            console.error(
+                error
+            );
+
+            showError(
+                "Beklenmeyen bir hata oluştu:\n\n" +
+                error.message
+            );
+
+        }
+
+        finally {
+
+            submitButton.disabled =
+                false;
+
+            submitButton.textContent =
+                "Başvuruyu Gönder";
+
+        }
+
+    }
+);
 
 
-    checkUser();
+/* =========================================
+   BAŞLAT
+========================================= */
+
+initializePage();
 
 </script>
 
+
 </body>
+
 </html>
