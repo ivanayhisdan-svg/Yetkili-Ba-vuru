@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geliştirici Başvurusu - SnMac</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.92)),
+                url("assets/background.jpg") center/cover fixed;
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #a78bfa;
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            color: #cfcfcf;
+            line-height: 1.6;
+            font-size: 15px;
+        }
+
+        .form-box,
+        .existing-box,
+        .success-box {
+            background: rgba(15, 15, 15, 0.94);
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            border-radius: 14px;
+            padding: 28px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        .question {
+            margin-bottom: 24px;
+        }
+
+        .question label {
+            display: block;
+            color: #a78bfa;
+            font-weight: bold;
+            margin-bottom: 9px;
+            line-height: 1.5;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            background: #101010;
+            color: white;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.12);
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: Arial, sans-serif;
+        }
+
+        .submit-button {
+            width: 100%;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            background: #8b5cf6;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-button:hover {
+            background: #7c3aed;
+        }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin-top: 18px;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back-button:hover {
+            color: white;
+        }
+
+        .message {
+            display: none;
+            margin-bottom: 20px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .error {
+            background: rgba(180, 40, 40, 0.15);
+            border: 1px solid rgba(220, 70, 70, 0.4);
+            color: #ff9b9b;
+        }
+
+        .success {
+            background: rgba(40, 160, 90, 0.12);
+            border: 1px solid rgba(70, 190, 110, 0.4);
+            color: #9be7b3;
+        }
+
+        .existing-box {
+            display: none;
+        }
+
+        .existing-box h2,
+        .success-box h2 {
+            color: #a78bfa;
+            margin-bottom: 12px;
+        }
+
+        .existing-box p,
+        .success-box p {
+            color: #ccc;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 7px 12px;
+            border-radius: 6px;
+            background: rgba(139, 92, 246, 0.15);
+            color: #c4b5fd;
+            font-weight: bold;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 25px 12px;
+            }
+
+            .form-box,
+            .existing-box,
+            .success-box {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>Geliştirici Başvurusu</h1>
+        <p>
+            SnMac geliştirici ekibinde görev almak isteyen kullanıcılar için
+            hazırlanmış başvuru formudur. Soruları dikkatlice okuyarak
+            kendiniz ve geliştirme deneyimleriniz hakkında mümkün olduğunca
+            açık ve doğru bilgiler vermeniz beklenmektedir.
+        </p>
+    </div>
+
+    <div id="message" class="message"></div>
+
+    <div id="existingBox" class="existing-box">
+        <h2>Mevcut Başvurunuz Bulunuyor</h2>
+        <p>
+            Geliştirici kategorisinde daha önce bir başvuru göndermişsiniz.
+            Yeni bir başvuru gönderebilmeniz için mevcut başvurunuzun
+            değerlendirme sürecinin tamamlanması gerekmektedir.
+        </p>
+
+        <p>
+            Başvuru durumu:
+        </p>
+
+        <span id="existingStatus" class="status">Bekliyor</span>
+
+        <a href="index.html" class="back-button">Ana Sayfaya Dön</a>
+    </div>
+
+    <div id="formContainer" class="form-box">
+
+        <form id="developerForm">
+
+            <div class="question">
+                <label for="fullname">1. Adınız nedir?</label>
+                <input type="text" id="fullname" name="fullname" required>
+            </div>
+
+            <div class="question">
+                <label for="age">2. Kaç yaşındasınız?</label>
+                <input type="number" id="age" name="age" min="1" max="100" required>
+            </div>
+
+            <div class="question">
+                <label for="discord">3. Discord kullanıcı adınız nedir?</label>
+                <input type="text" id="discord" name="discord" required>
+            </div>
+
+            <div class="question">
+                <label for="programming_languages">
+                    4. Hangi programlama dillerini biliyorsunuz?
+                </label>
+                <textarea
+                    id="programming_languages"
+                    name="programming_languages"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="question">
+                <label for="development_areas">
+                    5. Hangi alanlarda geliştirme yapabiliyorsunuz?
+                </label>
+                <textarea
+                    id="development_areas"
+                    name="development_areas"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="question">
+                <label for="projects">
+                    6. Daha önce yaptığınız projeler var mı? Varsa kısaca bahsediniz.
+                </label>
+                <textarea
+                    id="projects"
+                    name="projects"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="question">
+                <label for="portfolio">
+                    7. Varsa GitHub, web sitesi veya projelerinizi gösterebileceğiniz bağlantılarınızı paylaşınız.
+                </label>
+                <textarea
+                    id="portfolio"
+                    name="portfolio"
+                ></textarea>
+            </div>
+
+            <div class="question">
+                <label for="motivation">
+                    8. SnMac geliştirici ekibinde neden yer almak istiyorsunuz?
+                </label>
+                <textarea
+                    id="motivation"
+                    name="motivation"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="question">
+                <label for="availability">
+                    9. Gün içerisinde ortalama ne kadar zaman ayırabilirsiniz?
+                </label>
+                <textarea
+                    id="availability"
+                    name="availability"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="question">
+                <label for="conflict">
+                    10. Ekip içerisinde bir fikir veya teknik konuda anlaşmazlık yaşarsanız nasıl çözersiniz?
+                </label>
+                <textarea
+                    id="conflict"
+                    name="conflict"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="question">
+                <label for="responsibility">
+                    11. Bir projede size verilen görevi zamanında tamamlayamayacağınızı fark ederseniz ne yaparsınız?
+                </label>
+                <textarea
+                    id="responsibility"
+                    name="responsibility"
+                    required
+                ></textarea>
+            </div>
+
+            <div class="question">
+                <label for="about">
+                    12. Bize biraz kendinizden ve geliştirici olarak hedeflerinizden bahseder misiniz?
+                </label>
+                <textarea
+                    id="about"
+                    name="about"
+                    required
+                ></textarea>
+            </div>
+
+            <button
+                type="submit"
+                id="submitButton"
+                class="submit-button"
+            >
+                Başvuruyu Gönder
+            </button>
+
+        </form>
+
+        <a href="index.html" class="back-button">Ana Sayfaya Dön</a>
+
+    </div>
+
+    <div id="successBox" class="success-box hidden">
+        <h2>Başvurunuz Alındı</h2>
+        <p>
+            Geliştirici başvurunuz başarıyla gönderildi ve değerlendirme
+            sürecine alındı.
+        </p>
+
+        <a href="index.html" class="back-button">Ana Sayfaya Dön</a>
+    </div>
+
+</div>
+
+<script>
+    const SUPABASE_URL = "https://drfborwvynrwfljrqlmg.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
+
+    const supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+    const form = document.getElementById("developerForm");
+    const formContainer = document.getElementById("formContainer");
+    const existingBox = document.getElementById("existingBox");
+    const existingStatus = document.getElementById("existingStatus");
+    const successBox = document.getElementById("successBox");
+    const message = document.getElementById("message");
+    const submitButton = document.getElementById("submitButton");
+
+    function showMessage(text, type) {
+        message.textContent = text;
+        message.className = "message " + type;
+        message.style.display = "block";
+    }
+
+    async function checkUser() {
+        const {
+            data: { user },
+            error
+        } = await supabaseClient.auth.getUser();
+
+        if (error || !user) {
+            window.location.href = "login.html";
+            return;
+        }
+
+        const { data, error: applicationError } =
+            await supabaseClient
+                .from("applications")
+                .select("status")
+                .eq("user_id", user.id)
+                .eq("application_type", "gelistirici")
+                .order("created_at", { ascending: false })
+                .limit(1);
+
+        if (applicationError) {
+            console.error(applicationError);
+            return;
+        }
+
+        if (data && data.length > 0) {
+            existingStatus.textContent = data[0].status || "Bekliyor";
+            existingBox.style.display = "block";
+            formContainer.style.display = "none";
+        }
+    }
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Gönderiliyor...";
+        message.style.display = "none";
+
+        try {
+            const {
+                data: { user },
+                error: userError
+            } = await supabaseClient.auth.getUser();
+
+            if (userError || !user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            const formData = new FormData(form);
+
+            const application = {
+                user_id: user.id,
+                application_type: "gelistirici",
+
+                fullname: formData.get("fullname"),
+                discord: formData.get("discord"),
+                age: Number(formData.get("age")),
+
+                programming_languages:
+                    formData.get("programming_languages"),
+
+                development_areas:
+                    formData.get("development_areas"),
+
+                projects:
+                    formData.get("projects"),
+
+                portfolio:
+                    formData.get("portfolio"),
+
+                motivation:
+                    formData.get("motivation"),
+
+                availability:
+                    formData.get("availability"),
+
+                conflict:
+                    formData.get("conflict"),
+
+                responsibility:
+                    formData.get("responsibility"),
+
+                about:
+                    formData.get("about"),
+
+                status: "Bekliyor"
+            };
+
+            const { error } = await supabaseClient
+                .from("applications")
+                .insert(application);
+
+            if (error) {
+                console.error(error);
+
+                showMessage(
+                    "Başvurunuz gönderilemedi: " +
+                    (error.message || "Bilinmeyen bir hata oluştu."),
+                    "error"
+                );
+
+                submitButton.disabled = false;
+                submitButton.textContent = "Başvuruyu Gönder";
+                return;
+            }
+
+            formContainer.style.display = "none";
+            successBox.classList.remove("hidden");
+
+        } catch (error) {
+            console.error(error);
+
+            showMessage(
+                "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
+                "error"
+            );
+
+            submitButton.disabled = false;
+            submitButton.textContent = "Başvuruyu Gönder";
+        }
+    });
+
+    checkUser();
+</script>
+
+</body>
+</html>
