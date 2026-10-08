@@ -44,9 +44,7 @@
         .container {
 
             width: 100%;
-
             max-width: 850px;
-
             margin: auto;
 
         }
@@ -58,7 +56,6 @@
         .top {
 
             text-align: center;
-
             margin-bottom: 30px;
 
         }
@@ -66,7 +63,6 @@
         .top h1 {
 
             font-size: 34px;
-
             margin-bottom: 12px;
 
         }
@@ -74,13 +70,9 @@
         .top-line {
 
             width: 70px;
-
             height: 3px;
-
             margin: 0 auto;
-
             background: #8b5cf6;
-
             border-radius: 5px;
 
         }
@@ -117,7 +109,6 @@
         .back-button:hover {
 
             border-color: #8b5cf6;
-
             color: white;
 
         }
@@ -405,13 +396,11 @@
 
             font-weight: 700;
 
-            margin-bottom: 25px;
+            margin-bottom: 15px;
 
             border: 1px solid transparent;
 
         }
-
-        /* BEKLİYOR */
 
         .status-bekliyor {
 
@@ -425,8 +414,6 @@
 
         }
 
-        /* KABUL EDİLDİ */
-
         .status-kabul {
 
             color: #42d392 !important;
@@ -439,8 +426,6 @@
 
         }
 
-        /* REDDEDİLDİ */
-
         .status-red {
 
             color: #ff6464 !important;
@@ -450,6 +435,57 @@
 
             border-color:
                 rgba(255, 100, 100, 0.35) !important;
+
+        }
+
+        /* =========================
+           ADMİN MESAJI
+        ========================= */
+
+        .admin-message {
+
+            margin-bottom: 20px;
+
+            padding: 18px 19px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(139, 92, 246, 0.08);
+
+            border:
+                1px solid
+                rgba(139, 92, 246, 0.28);
+
+        }
+
+        .admin-message strong {
+
+            display: block;
+
+            color: #a78bfa;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 9px;
+
+        }
+
+        .admin-message p {
+
+            margin: 0;
+
+            color: #e2e2e2;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
 
         }
 
@@ -521,57 +557,6 @@
         }
 
         /* =========================
-           ADMİN MESAJI
-        ========================= */
-
-        .admin-message {
-
-            margin-top: 25px;
-
-            padding: 18px 19px;
-
-            border-radius: 10px;
-
-            background:
-                rgba(139, 92, 246, 0.08);
-
-            border:
-                1px solid
-                rgba(139, 92, 246, 0.28);
-
-        }
-
-        .admin-message strong {
-
-            display: block;
-
-            color: #a78bfa;
-
-            font-size: 13px;
-
-            font-weight: 700;
-
-            margin-bottom: 9px;
-
-        }
-
-        .admin-message p {
-
-            margin: 0;
-
-            color: #e2e2e2;
-
-            font-size: 14px;
-
-            line-height: 1.7;
-
-            white-space: pre-wrap;
-
-            word-break: break-word;
-
-        }
-
-        /* =========================
            HATA
         ========================= */
 
@@ -635,7 +620,7 @@
 
             .status {
 
-                margin-bottom: 20px;
+                margin-bottom: 15px;
 
             }
 
@@ -727,8 +712,6 @@
             </div>
 
 
-            <!-- 1 -->
-
             <div class="form-group">
 
                 <label for="fullname">
@@ -746,8 +729,6 @@
 
             </div>
 
-
-            <!-- 2 -->
 
             <div class="form-group">
 
@@ -768,8 +749,6 @@
 
             </div>
 
-
-            <!-- 3 -->
 
             <div class="form-group">
 
@@ -794,8 +773,6 @@
             </div>
 
 
-            <!-- 4 -->
-
             <div class="form-group">
 
                 <label for="programming_languages">
@@ -812,8 +789,6 @@
 
             </div>
 
-
-            <!-- 5 -->
 
             <div class="form-group">
 
@@ -832,8 +807,6 @@
             </div>
 
 
-            <!-- 6 -->
-
             <div class="form-group">
 
                 <label for="projects">
@@ -851,8 +824,6 @@
 
             </div>
 
-
-            <!-- 7 -->
 
             <div class="form-group">
 
@@ -875,8 +846,6 @@
             </div>
 
 
-            <!-- 8 -->
-
             <div class="form-group">
 
                 <label for="motivation">
@@ -894,8 +863,6 @@
 
             </div>
 
-
-            <!-- 9 -->
 
             <div class="form-group">
 
@@ -915,8 +882,6 @@
             </div>
 
 
-            <!-- 10 -->
-
             <div class="form-group">
 
                 <label for="conflict">
@@ -935,8 +900,6 @@
             </div>
 
 
-            <!-- 11 -->
-
             <div class="form-group">
 
                 <label for="responsibility">
@@ -954,8 +917,6 @@
 
             </div>
 
-
-            <!-- 12 -->
 
             <div class="form-group">
 
@@ -1009,6 +970,8 @@
         ></div>
 
 
+        <!-- DURUM -->
+
         <div
             id="statusBox"
             class="status status-bekliyor"
@@ -1016,6 +979,25 @@
             Bekliyor
         </div>
 
+
+        <!-- ADMİN MESAJI -->
+
+        <div
+            id="adminMessageBox"
+            class="admin-message"
+            style="display:none;"
+        >
+
+            <strong>
+                Geliştirici Ekibinden Mesaj
+            </strong>
+
+            <p id="adminMessage"></p>
+
+        </div>
+
+
+        <!-- CEVAPLAR -->
 
         <div class="answer-box">
 
@@ -1145,21 +1127,6 @@
             </strong>
 
             <p id="viewAbout"></p>
-
-        </div>
-
-
-        <div
-            id="adminMessageBox"
-            class="admin-message"
-            style="display:none;"
-        >
-
-            <strong>
-                Geliştirici Ekibinden Mesaj
-            </strong>
-
-            <p id="adminMessage"></p>
 
         </div>
 
