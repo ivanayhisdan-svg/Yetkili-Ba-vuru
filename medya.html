@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SnMac - Medya Başvurusu</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
+
+            background:
+                linear-gradient(
+                    rgba(5, 5, 10, 0.82),
+                    rgba(5, 5, 10, 0.92)
+                ),
+                url("assets/background.jpg");
+
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+
+            color: #fff;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 850px;
+            margin: 50px auto;
+        }
+
+        .back {
+            display: inline-block;
+
+            margin-bottom: 20px;
+
+            color: #aaa;
+            text-decoration: none;
+
+            font-size: 14px;
+
+            transition: 0.2s;
+        }
+
+        .back:hover {
+            color: #fff;
+        }
+
+        .card {
+            background: rgba(15, 15, 23, 0.94);
+
+            border: 1px solid #29293a;
+
+            border-radius: 14px;
+
+            padding: 30px;
+
+            box-shadow:
+                0 20px 60px rgba(0, 0, 0, 0.35);
+        }
+
+        h1 {
+            margin-top: 0;
+            margin-bottom: 8px;
+
+            font-size: 30px;
+        }
+
+        .subtitle {
+            color: #999;
+
+            line-height: 1.6;
+
+            margin-bottom: 25px;
+        }
+
+        .info-box {
+            background: rgba(139, 92, 246, 0.08);
+
+            border: 1px solid rgba(139, 92, 246, 0.25);
+
+            border-radius: 10px;
+
+            padding: 17px 18px;
+
+            margin-bottom: 25px;
+
+            color: #d8d8d8;
+
+            line-height: 1.65;
+
+            font-size: 14px;
+        }
+
+        .info-box strong {
+            display: block;
+
+            color: #a78bfa;
+
+            margin-bottom: 7px;
+        }
+
+        .question {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #ddd;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            line-height: 1.5;
+        }
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            background: #0f0f17;
+
+            color: white;
+
+            border: 1px solid #303044;
+
+            border-radius: 8px;
+
+            padding: 12px;
+
+            outline: none;
+
+            font-family: Arial, sans-serif;
+
+            font-size: 14px;
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+
+            border-color: #8b5cf6;
+
+            background: #11111b;
+        }
+
+        textarea {
+            resize: vertical;
+
+            min-height: 110px;
+
+            line-height: 1.6;
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .submit-btn {
+
+            width: 100%;
+
+            margin-top: 5px;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: #8b5cf6;
+
+            color: white;
+
+            font-weight: bold;
+
+            font-size: 14px;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                transform 0.15s ease,
+                opacity 0.2s ease;
+        }
+
+        .submit-btn:hover {
+
+            background: #7c4ee8;
+
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+
+            opacity: 0.6;
+
+            cursor: not-allowed;
+
+            transform: none;
+        }
+
+        .error {
+
+            display: none;
+
+            background: #351919;
+
+            color: #ff8c8c;
+
+            border: 1px solid #5b2828;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            line-height: 1.5;
+
+            font-size: 14px;
+        }
+
+        .success {
+
+            display: none;
+
+            background: #16361f;
+
+            color: #70d98a;
+
+            border: 1px solid #275c36;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            margin-bottom: 20px;
+
+            line-height: 1.5;
+
+            font-size: 14px;
+        }
+
+        /* =========================================
+           BAŞVURU GÖRÜNTÜLEME
+        ========================================= */
+
+        #applicationView {
+            display: none;
+        }
+
+        .application-header {
+
+            margin-bottom: 25px;
+
+            padding-bottom: 20px;
+
+            border-bottom: 1px solid #29293a;
+        }
+
+        .application-header h2 {
+
+            margin: 0 0 8px;
+
+            font-size: 23px;
+        }
+
+        .application-header p {
+
+            margin: 0;
+
+            color: #999;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+        .status {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 125px;
+
+            padding: 10px 18px;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+
+            border: 1px solid transparent;
+        }
+
+        .status-bekliyor {
+
+            color: #f5c542;
+
+            background: rgba(
+                245,
+                197,
+                66,
+                0.12
+            );
+
+            border-color: rgba(
+                245,
+                197,
+                66,
+                0.35
+            );
+        }
+
+        .status-kabul {
+
+            color: #42d392;
+
+            background: rgba(
+                66,
+                211,
+                146,
+                0.12
+            );
+
+            border-color: rgba(
+                66,
+                211,
+                146,
+                0.35
+            );
+        }
+
+        .status-red {
+
+            color: #ff6464;
+
+            background: rgba(
+                255,
+                100,
+                100,
+                0.12
+            );
+
+            border-color: rgba(
+                255,
+                100,
+                100,
+                0.35
+            );
+        }
+
+        .answer-box {
+
+            position: relative;
+
+            padding: 17px 18px;
+
+            margin-bottom: 13px;
+
+            border-radius: 10px;
+
+            background: rgba(
+                255,
+                255,
+                255,
+                0.035
+            );
+
+            border: 1px solid rgba(
+                255,
+                255,
+                255,
+                0.09
+            );
+
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .answer-box:hover {
+
+            background: rgba(
+                139,
+                92,
+                246,
+                0.045
+            );
+
+            border-color: rgba(
+                139,
+                92,
+                246,
+                0.22
+            );
+        }
+
+        .answer-box strong {
+
+            display: block;
+
+            color: #a78bfa;
+
+            font-size: 12px;
+
+            font-weight: 600;
+
+            margin-bottom: 9px;
+        }
+
+        .answer-box p {
+
+            margin: 0;
+
+            color: #e2e2e2;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+        }
+
+        .admin-message {
+
+            margin-bottom: 20px;
+
+            padding: 18px 19px;
+
+            border-radius: 10px;
+
+            background: rgba(
+                139,
+                92,
+                246,
+                0.08
+            );
+
+            border: 1px solid rgba(
+                139,
+                92,
+                246,
+                0.28
+            );
+        }
+
+        .admin-message strong {
+
+            display: block;
+
+            color: #a78bfa;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            margin-bottom: 9px;
+        }
+
+        .admin-message p {
+
+            margin: 0;
+
+            color: #e2e2e2;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            white-space: pre-wrap;
+
+            word-break: break-word;
+        }
+
+        .new-application-btn {
+
+            width: 100%;
+
+            margin-top: 10px;
+
+            padding: 12px;
+
+            border-radius: 8px;
+
+            border: 1px solid #303044;
+
+            background: transparent;
+
+            color: #aaa;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .new-application-btn:hover {
+
+            color: white;
+
+            border-color: #8b5cf6;
+
+            background: rgba(
+                139,
+                92,
+                246,
+                0.05
+            );
+        }
+
+        @media (max-width: 650px) {
+
+            .container {
+
+                width: 94%;
+
+                margin: 25px auto;
+            }
+
+            .card {
+
+                padding: 21px;
+            }
+
+            h1 {
+
+                font-size: 25px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a
+        href="index.html"
+        class="back"
+    >
+        ← Ana Sayfaya Dön
+    </a>
+
+
+    <div class="card">
+
+
+        <!-- =========================================
+             BAŞVURU FORMU
+        ========================================== -->
+
+        <div id="applicationFormContainer">
+
+            <h1>
+                Medya Başvurusu
+            </h1>
+
+            <div class="subtitle">
+                SnMac medya ekibinde yer almak ve sunucumuz için içerik üretmek istiyorsanız aşağıdaki formu eksiksiz şekilde doldurabilirsiniz.
+            </div>
+
+
+            <div class="info-box">
+
+                <strong>
+                    Medya Ekibi Hakkında
+                </strong>
+
+                Başvurunuz değerlendirilirken içerik üretme deneyiminiz,
+                aktif olduğunuz platformlar, içerik kaliteniz ve SnMac'e
+                ayırabileceğiniz zaman göz önünde bulundurulacaktır.
+                Bilgilerinizi mümkün olduğunca doğru ve anlaşılır şekilde
+                paylaşmanız değerlendirme sürecinin daha sağlıklı ilerlemesini sağlar.
+
+            </div>
+
+
+            <div
+                id="errorBox"
+                class="error"
+            ></div>
+
+
+            <div
+                id="successBox"
+                class="success"
+            ></div>
+
+
+            <form id="mediaForm">
+
+
+                <!-- 1 -->
+
+                <div class="question">
+
+                    <label>
+                        Adınız nedir?
+                    </label>
+
+                    <input
+                        type="text"
+                        name="fullname"
+                        required
+                        maxlength="100"
+                    >
+
+                </div>
+
+
+                <!-- 2 -->
+
+                <div class="question">
+
+                    <label>
+                        Kaç yaşındasınız?
+                    </label>
+
+                    <input
+                        type="number"
+                        name="age"
+                        min="13"
+                        max="100"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- 3 -->
+
+                <div class="question">
+
+                    <label>
+                        Discord kullanıcı adınız nedir?
+                    </label>
+
+                    <input
+                        type="text"
+                        name="discord"
+                        required
+                        maxlength="100"
+                    >
+
+                </div>
+
+
+                <!-- 4 -->
+
+                <div class="question">
+
+                    <label>
+                        Hangi sosyal medya platformlarında içerik üretiyorsunuz?
+                    </label>
+
+                    <textarea
+                        name="platforms"
+                        required
+                        maxlength="1500"
+                        placeholder="Örneğin: YouTube, TikTok, Twitch..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- 5 -->
+
+                <div class="question">
+
+                    <label>
+                        Kanal/profil bağlantılarınızı paylaşınız.
+                    </label>
+
+                    <textarea
+                        name="links"
+                        required
+                        maxlength="2000"
+                        placeholder="Kanal veya profil bağlantılarınız..."
+                    ></textarea>
+
+                </div>
+
+
+                <!-- 6 -->
+
+                <div class="question">
+
+                    <label>
+                        Daha önce Minecraft veya başka oyunlar üzerine içerik ürettiniz mi?
+                    </label>
+
+                    <textarea
+                        name="experience"
+                        required
+                        maxlength="2500"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- 7 -->
+
+                <div class="question">
+
+                    <label>
+                        Ortalama izlenme ve takipçi sayılarınız hakkında bilgi verebilir misiniz?
+                    </label>
+
+                    <textarea
+                        name="statistics"
+                        required
+                        maxlength="1500"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- 8 -->
+
+                <div class="question">
+
+                    <label>
+                        Ne tür içerikler üretmeyi planlıyorsunuz?
+                    </label>
+
+                    <textarea
+                        name="content_type"
+                        required
+                        maxlength="2500"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- 9 -->
+
+                <div class="question">
+
+                    <label>
+                        SnMac için neden içerik üretmek istiyorsunuz?
+                    </label>
+
+                    <textarea
+                        name="motivation"
+                        required
+                        maxlength="2500"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- 10 -->
+
+                <div class="question">
+
+                    <label>
+                        Gün içerisinde içerik üretmeye ortalama ne kadar zaman ayırabilirsiniz?
+                    </label>
+
+                    <textarea
+                        name="availability"
+                        required
+                        maxlength="1500"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- 11 -->
+
+                <div class="question">
+
+                    <label>
+                        Daha önce başka sunucular veya topluluklarla medya işbirlikleri yaptınız mı?
+                    </label>
+
+                    <textarea
+                        name="collaboration"
+                        required
+                        maxlength="2500"
+                    ></textarea>
+
+                </div>
+
+
+                <!-- 12 -->
+
+                <div class="question">
+
+                    <label>
+                        Bize biraz kendinizden ve içerik üreticisi olarak hedeflerinizden bahseder misiniz?
+                    </label>
+
+                    <textarea
+                        name="about"
+                        required
+                        maxlength="3000"
+                    ></textarea>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="submit-btn"
+                    id="submitBtn"
+                >
+                    Medya Başvurusunu Gönder
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- =========================================
+             BAŞVURU GÖRÜNTÜLEME
+        ========================================== -->
+
+        <div id="applicationView">
+
+            <div class="application-header">
+
+                <h2>
+                    Medya Başvurunuz
+                </h2>
+
+                <p>
+                    Gönderdiğiniz başvurunun mevcut durumunu aşağıdan takip edebilirsiniz.
+                </p>
+
+            </div>
+
+
+            <div
+                id="statusBox"
+                class="status status-bekliyor"
+            >
+                Bekliyor
+            </div>
+
+
+            <!-- ADMIN MESAJI -->
+
+            <div
+                id="adminMessageBox"
+                class="admin-message"
+                style="display:none;"
+            >
+
+                <strong>
+                    Medya Ekibinden Mesaj
+                </strong>
+
+                <p id="adminMessage"></p>
+
+            </div>
+
+
+            <!-- CEVAPLAR -->
+
+            <div class="answer-box">
+
+                <strong>
+                    Adınız
+                </strong>
+
+                <p id="answerFullname"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    Yaşınız
+                </strong>
+
+                <p id="answerAge"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    Discord Kullanıcı Adınız
+                </strong>
+
+                <p id="answerDiscord"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    İçerik Ürettiğiniz Platformlar
+                </strong>
+
+                <p id="answerPlatforms"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    Kanal / Profil Bağlantıları
+                </strong>
+
+                <p id="answerLinks"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    Önceki İçerik Deneyimi
+                </strong>
+
+                <p id="answerExperience"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    Ortalama İzlenme ve Takipçi
+                </strong>
+
+                <p id="answerStatistics"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    Planlanan İçerikler
+                </strong>
+
+                <p id="answerContentType"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    SnMac İçin İçerik Üretme Nedeni
+                </strong>
+
+                <p id="answerMotivation"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    Günlük Ayırabileceği Zaman
+                </strong>
+
+                <p id="answerAvailability"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    Medya İşbirliği Deneyimi
+                </strong>
+
+                <p id="answerCollaboration"></p>
+
+            </div>
+
+
+            <div class="answer-box">
+
+                <strong>
+                    Kendisi ve Hedefleri
+                </strong>
+
+                <p id="answerAbout"></p>
+
+            </div>
+
+
+            <button
+                class="new-application-btn"
+                id="newApplicationBtn"
+            >
+                Başvuru Formuna Dön
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =========================================
+       SUPABASE
+    ========================================== */
+
+    const SUPABASE_URL =
+        "https://drfborwvynrwfljrqlmg.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
+
+
+    const supabaseClient =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    /* =========================================
+       ELEMENTLER
+    ========================================== */
+
+    const form =
+        document.getElementById(
+            "mediaForm"
+        );
+
+    const formContainer =
+        document.getElementById(
+            "applicationFormContainer"
+        );
+
+    const applicationView =
+        document.getElementById(
+            "applicationView"
+        );
+
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
+
+    const successBox =
+        document.getElementById(
+            "successBox"
+        );
+
+    const submitBtn =
+        document.getElementById(
+            "submitBtn"
+        );
+
+
+    /* =========================================
+       HATA / BAŞARI
+    ========================================== */
+
+    function showError(message) {
+
+        errorBox.textContent =
+            message;
+
+        errorBox.style.display =
+            "block";
+
+    }
+
+
+    function hideError() {
+
+        errorBox.style.display =
+            "none";
+
+    }
+
+
+    function showSuccess(message) {
+
+        successBox.textContent =
+            message;
+
+        successBox.style.display =
+            "block";
+
+    }
+
+
+    /* =========================================
+       STATUS
+    ========================================== */
+
+    function getStatusClass(status) {
+
+        if (
+            status ===
+            "Kabul Edildi"
+        ) {
+
+            return "status-kabul";
+
+        }
+
+
+        if (
+            status ===
+            "Reddedildi"
+        ) {
+
+            return "status-red";
+
+        }
+
+
+        return "status-bekliyor";
+
+    }
+
+
+    /* =========================================
+       BAŞVURUYU GÖSTER
+    ========================================== */
+
+    function showApplication(application) {
+
+        formContainer.style.display =
+            "none";
+
+        applicationView.style.display =
+            "block";
+
+
+        const statusBox =
+            document.getElementById(
+                "statusBox"
+            );
+
+
+        statusBox.textContent =
+            application.status ||
+            "Bekliyor";
+
+
+        statusBox.className =
+            "status " +
+            getStatusClass(
+                application.status
+            );
+
+
+        document.getElementById(
+            "answerFullname"
+        ).textContent =
+            application.fullname ||
+            "-";
+
+
+        document.getElementById(
+            "answerAge"
+        ).textContent =
+            application.age ??
+            "-";
+
+
+        document.getElementById(
+            "answerDiscord"
+        ).textContent =
+            application.discord ||
+            "-";
+
+
+        document.getElementById(
+            "answerPlatforms"
+        ).textContent =
+            application.platforms ||
+            "-";
+
+
+        document.getElementById(
+            "answerLinks"
+        ).textContent =
+            application.links ||
+            "-";
+
+
+        document.getElementById(
+            "answerExperience"
+        ).textContent =
+            application.media_experience ||
+            "-";
+
+
+        document.getElementById(
+            "answerStatistics"
+        ).textContent =
+            application.statistics ||
+            "-";
+
+
+        document.getElementById(
+            "answerContentType"
+        ).textContent =
+            application.content_type ||
+            "-";
+
+
+        document.getElementById(
+            "answerMotivation"
+        ).textContent =
+            application.motivation ||
+            "-";
+
+
+        document.getElementById(
+            "answerAvailability"
+        ).textContent =
+            application.availability ||
+            "-";
+
+
+        document.getElementById(
+            "answerCollaboration"
+        ).textContent =
+            application.collaboration ||
+            "-";
+
+
+        document.getElementById(
+            "answerAbout"
+        ).textContent =
+            application.about ||
+            "-";
+
+
+        const adminMessageBox =
+            document.getElementById(
+                "adminMessageBox"
+            );
+
+        const adminMessage =
+            document.getElementById(
+                "adminMessage"
+            );
+
+
+        if (
+            application.admin_message &&
+            application.admin_message.trim()
+        ) {
+
+            adminMessage.textContent =
+                application.admin_message;
+
+            adminMessageBox.style.display =
+                "block";
+
+        }
+
+        else {
+
+            adminMessage.textContent =
+                "";
+
+            adminMessageBox.style.display =
+                "none";
+
+        }
+
+    }
+
+
+    /* =========================================
+       OTURUM KONTROLÜ
+    ========================================== */
+
+    async function getCurrentUser() {
+
+        const {
+            data: {
+                session
+            }
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
+
+        if (!session) {
+
+            window.location.href =
+                "login.html";
+
+            return null;
+
+        }
+
+
+        return session.user;
+
+    }
+
+
+    /* =========================================
+       MEVCUT BAŞVURUYU BUL
+    ========================================== */
+
+    async function loadExistingApplication(user) {
+
+        hideError();
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "application_type",
+                    "medya"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                )
+                .limit(1);
+
+
+        if (error) {
+
+            showError(
+                "Başvurunuz kontrol edilirken bir hata oluştu: " +
+                error.message
+            );
+
+            return;
+
+        }
+
+
+        if (
+            data &&
+            data.length > 0
+        ) {
+
+            showApplication(
+                data[0]
+            );
+
+        }
+
+    }
+
+
+    /* =========================================
+       FORM GÖNDER
+    ========================================== */
+
+    form.addEventListener(
+        "submit",
+        async (event) => {
+
+            event.preventDefault();
+
+
+            hideError();
+
+            successBox.style.display =
+                "none";
+
+
+            submitBtn.disabled =
+                true;
+
+            submitBtn.textContent =
+                "Başvuru Gönderiliyor...";
+
+
+            try {
+
+                const user =
+                    await getCurrentUser();
+
+
+                if (!user) {
+
+                    return;
+
+                }
+
+
+                /*
+                    Form verilerini al.
+                */
+
+                const formData =
+                    new FormData(form);
+
+
+                const application = {
+
+                    user_id:
+                        user.id,
+
+                    application_type:
+                        "medya",
+
+                    fullname:
+                        formData.get(
+                            "fullname"
+                        ),
+
+                    discord:
+                        formData.get(
+                            "discord"
+                        ),
+
+                    age:
+                        Number(
+                            formData.get(
+                                "age"
+                            )
+                        ),
+
+                    platforms:
+                        formData.get(
+                            "platforms"
+                        ),
+
+                    links:
+                        formData.get(
+                            "links"
+                        ),
+
+                    media_experience:
+                        formData.get(
+                            "experience"
+                        ),
+
+                    statistics:
+                        formData.get(
+                            "statistics"
+                        ),
+
+                    content_type:
+                        formData.get(
+                            "content_type"
+                        ),
+
+                    motivation:
+                        formData.get(
+                            "motivation"
+                        ),
+
+                    availability:
+                        formData.get(
+                            "availability"
+                        ),
+
+                    collaboration:
+                        formData.get(
+                            "collaboration"
+                        ),
+
+                    about:
+                        formData.get(
+                            "about"
+                        ),
+
+                    status:
+                        "Bekliyor"
+
+                };
+
+
+                const {
+                    data,
+                    error
+                } =
+                    await supabaseClient
+                        .from("applications")
+                        .insert(
+                            application
+                        )
+                        .select()
+                        .single();
+
+
+                if (error) {
+
+                    throw error;
+
+                }
+
+
+                showSuccess(
+                    "Medya başvurunuz başarıyla gönderildi."
+                );
+
+
+                /*
+                    Sayfayı yenilemeden
+                    başvuruyu göster.
+                */
+
+                setTimeout(
+                    () => {
+
+                        showApplication(
+                            data
+                        );
+
+                    },
+                    500
+                );
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+
+                showError(
+                    "Başvuru gönderilirken bir hata oluştu: " +
+                    error.message
+                );
+
+            }
+
+            finally {
+
+                submitBtn.disabled =
+                    false;
+
+                submitBtn.textContent =
+                    "Medya Başvurusunu Gönder";
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       FORMU TEKRAR GÖSTER
+    ========================================== */
+
+    document.getElementById(
+        "newApplicationBtn"
+    )
+    .addEventListener(
+        "click",
+        () => {
+
+            applicationView.style.display =
+                "none";
+
+            formContainer.style.display =
+                "block";
+
+            form.reset();
+
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+
+        }
+    );
+
+
+    /* =========================================
+       BAŞLAT
+    ========================================== */
+
+    async function init() {
+
+        const user =
+            await getCurrentUser();
+
+
+        if (!user) {
+
+            return;
+
+        }
+
+
+        await loadExistingApplication(
+            user
+        );
+
+    }
+
+
+    init();
+
+</script>
+
+</body>
+</html>
