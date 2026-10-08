@@ -46,6 +46,16 @@
             border: 1px solid #272738;
             border-radius: 12px;
             padding: 20px;
+            transition:
+                transform 0.2s ease,
+                border-color 0.2s ease,
+                box-shadow 0.2s ease;
+        }
+
+        .stat:hover {
+            transform: translateY(-2px);
+            border-color: #3b3b55;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
         }
 
         .stat-title {
@@ -112,17 +122,22 @@
             border-radius: 10px;
             margin-bottom: 10px;
             cursor: pointer;
-            transition: 0.2s;
+            transition:
+                0.2s,
+                transform 0.2s ease;
         }
 
         .application-item:hover {
             border-color: #8b5cf6;
             background: #191923;
+            transform: translateX(2px);
         }
 
         .application-item.active {
             border-color: #8b5cf6;
             background: #1b1727;
+            box-shadow:
+                inset 3px 0 0 #8b5cf6;
         }
 
         .application-name {
@@ -182,6 +197,14 @@
             line-height: 1.5;
             white-space: pre-wrap;
             word-break: break-word;
+            transition:
+                border-color 0.2s ease,
+                background 0.2s ease;
+        }
+
+        .question-answer:hover {
+            border-color: #36364c;
+            background: #11111a;
         }
 
         .admin-actions {
@@ -200,10 +223,25 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
+            transition:
+                background 0.2s ease,
+                transform 0.15s ease,
+                opacity 0.2s ease;
         }
 
         .admin-actions button:hover {
             background: #7c4ee8;
+            transform: translateY(-1px);
+        }
+
+        .admin-actions button:active {
+            transform: translateY(0);
+        }
+
+        .admin-actions button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .logout {
@@ -214,6 +252,7 @@
             border-radius: 8px;
             padding: 8px 14px;
             cursor: pointer;
+            transition: 0.2s;
         }
 
         .logout:hover {
@@ -237,7 +276,294 @@
             display: none;
         }
 
+        /* =========================================
+           SİNEMATİK DURUM EFEKTLERİ
+        ========================================= */
+
+        #statusEffect {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            pointer-events: none;
+            opacity: 0;
+            overflow: hidden;
+        }
+
+        /*
+            KABUL EDİLİNCE:
+            Yukarıdan gelen ilahi / altın ışık
+        */
+
+        #statusEffect.accept {
+            animation: acceptScreen 1.8s ease-out forwards;
+        }
+
+        #statusEffect.accept::before {
+            content: "";
+            position: absolute;
+            width: 70vw;
+            height: 70vw;
+            max-width: 850px;
+            max-height: 850px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%) scale(0.15);
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    rgba(255, 255, 255, 0.55) 0%,
+                    rgba(255, 230, 170, 0.32) 18%,
+                    rgba(255, 210, 110, 0.12) 40%,
+                    transparent 72%
+                );
+
+            filter: blur(4px);
+
+            animation: divineLight 1.8s ease-out forwards;
+        }
+
+        #statusEffect.accept::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background:
+                radial-gradient(
+                    ellipse at center,
+                    rgba(255, 255, 255, 0.18),
+                    rgba(255, 205, 100, 0.08) 35%,
+                    transparent 68%
+                );
+
+            animation: divineGlow 1.8s ease-out forwards;
+        }
+
+        @keyframes acceptScreen {
+
+            0% {
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 1;
+            }
+
+            35% {
+                opacity: 0.75;
+            }
+
+            60% {
+                opacity: 0.38;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes divineLight {
+
+            0% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(0.12);
+
+                opacity: 0;
+            }
+
+            18% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(0.65);
+
+                opacity: 1;
+            }
+
+            50% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1.05);
+
+                opacity: 0.65;
+            }
+
+            100% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1.6);
+
+                opacity: 0;
+            }
+        }
+
+        @keyframes divineGlow {
+
+            0% {
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.45;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        /*
+            REDDEDİLİNCE:
+            Hafif kararma / gölge
+        */
+
+        #statusEffect.reject {
+            animation: rejectScreen 1.7s ease-out forwards;
+        }
+
+        #statusEffect.reject::before {
+            content: "";
+            position: absolute;
+            inset: -20%;
+
+            background:
+                radial-gradient(
+                    ellipse at center,
+                    transparent 15%,
+                    rgba(0, 0, 0, 0.25) 42%,
+                    rgba(0, 0, 0, 0.75) 100%
+                );
+
+            animation: shadowFall 1.7s ease-out forwards;
+        }
+
+        #statusEffect.reject::after {
+            content: "";
+            position: absolute;
+            width: 80vw;
+            height: 80vw;
+            max-width: 1000px;
+            max-height: 1000px;
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%)
+                scale(0.6);
+
+            border-radius: 50%;
+
+            background:
+                radial-gradient(
+                    circle,
+                    transparent 0%,
+                    rgba(0, 0, 0, 0.18) 45%,
+                    rgba(0, 0, 0, 0.7) 100%
+                );
+
+            animation: darkCore 1.7s ease-out forwards;
+        }
+
+        @keyframes rejectScreen {
+
+            0% {
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 0.85;
+            }
+
+            40% {
+                opacity: 0.62;
+            }
+
+            65% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes shadowFall {
+
+            0% {
+                transform:
+                    scale(0.8)
+                    rotate(-3deg);
+
+                opacity: 0;
+            }
+
+            25% {
+                transform:
+                    scale(1)
+                    rotate(0deg);
+
+                opacity: 1;
+            }
+
+            65% {
+                transform:
+                    scale(1.08)
+                    rotate(2deg);
+
+                opacity: 0.7;
+            }
+
+            100% {
+                transform:
+                    scale(1.2)
+                    rotate(4deg);
+
+                opacity: 0;
+            }
+        }
+
+        @keyframes darkCore {
+
+            0% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(0.5);
+
+                opacity: 0;
+            }
+
+            20% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(0.85);
+
+                opacity: 0.8;
+            }
+
+            55% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1.1);
+
+                opacity: 0.55;
+            }
+
+            100% {
+                transform:
+                    translate(-50%, -50%)
+                    scale(1.45);
+
+                opacity: 0;
+            }
+        }
+
         @media (max-width: 850px) {
+
             .stats {
                 grid-template-columns: 1fr;
             }
@@ -255,169 +581,378 @@
 
 <body>
 
+<!--
+    Sadece kabul / red sırasında kullanılan
+    tam ekran sinematik efekt katmanı.
+-->
+<div id="statusEffect"></div>
+
+
 <div class="container">
 
-    <button class="logout" id="logoutBtn">Çıkış Yap</button>
+    <button class="logout" id="logoutBtn">
+        Çıkış Yap
+    </button>
 
     <h1>SnMac Admin Paneli</h1>
+
     <div class="subtitle">
         Başvuruları görüntüleyebilir, değerlendirebilir ve başvuru sahiplerine geri bildirim bırakabilirsiniz.
     </div>
 
     <div id="errorBox" class="error"></div>
 
+
     <div class="stats">
-        <div class="stat">
-            <div class="stat-title">Toplam Başvuru</div>
-            <div class="stat-value" id="totalCount">0</div>
-        </div>
 
         <div class="stat">
-            <div class="stat-title">Bekleyen</div>
-            <div class="stat-value" id="pendingCount">0</div>
+
+            <div class="stat-title">
+                Toplam Başvuru
+            </div>
+
+            <div
+                class="stat-value"
+                id="totalCount"
+            >
+                0
+            </div>
+
         </div>
 
+
         <div class="stat">
-            <div class="stat-title">Sonuçlanan</div>
-            <div class="stat-value" id="completedCount">0</div>
+
+            <div class="stat-title">
+                Bekleyen
+            </div>
+
+            <div
+                class="stat-value"
+                id="pendingCount"
+            >
+                0
+            </div>
+
         </div>
+
+
+        <div class="stat">
+
+            <div class="stat-title">
+                Sonuçlanan
+            </div>
+
+            <div
+                class="stat-value"
+                id="completedCount"
+            >
+                0
+            </div>
+
+        </div>
+
     </div>
+
 
     <div class="panel">
+
         <div class="filters">
+
             <select id="statusFilter">
-                <option value="all">Tüm Başvurular</option>
-                <option value="Bekliyor">Bekliyor</option>
-                <option value="Kabul Edildi">Kabul Edildi</option>
-                <option value="Reddedildi">Reddedildi</option>
+
+                <option value="all">
+                    Tüm Başvurular
+                </option>
+
+                <option value="Bekliyor">
+                    Bekliyor
+                </option>
+
+                <option value="Kabul Edildi">
+                    Kabul Edildi
+                </option>
+
+                <option value="Reddedildi">
+                    Reddedildi
+                </option>
+
             </select>
+
         </div>
+
     </div>
+
 
     <div class="applications">
 
-        <div class="panel">
-            <h2>Başvurular</h2>
 
-            <div id="applicationList" class="application-list">
-                <div class="empty">Başvurular yükleniyor...</div>
+        <div class="panel">
+
+            <h2>
+                Başvurular
+            </h2>
+
+            <div
+                id="applicationList"
+                class="application-list"
+            >
+
+                <div class="empty">
+                    Başvurular yükleniyor...
+                </div>
+
             </div>
+
         </div>
 
+
         <div class="panel">
 
-            <div id="emptyDetail" class="empty">
+            <div
+                id="emptyDetail"
+                class="empty"
+            >
                 Görüntülemek için bir başvuru seçin.
             </div>
 
-            <div id="applicationDetail" style="display:none;">
 
-                <div class="detail-title" id="detailTitle">
+            <div
+                id="applicationDetail"
+                style="display:none;"
+            >
+
+                <div
+                    class="detail-title"
+                    id="detailTitle"
+                >
                     Başvuru Detayları
                 </div>
 
-                <div class="question">
-                    <div class="question-title">Adınız ve soyadınız nedir?</div>
-                    <div class="question-answer" id="detailFullname"></div>
-                </div>
 
                 <div class="question">
-                    <div class="question-title">Kaç yaşındasınız?</div>
-                    <div class="question-answer" id="detailAge"></div>
+
+                    <div class="question-title">
+                        Adınız ve soyadınız nedir?
+                    </div>
+
+                    <div
+                        class="question-answer"
+                        id="detailFullname"
+                    ></div>
+
                 </div>
 
-                <div class="question">
-                    <div class="question-title">Discord kullanıcı adınız nedir?</div>
-                    <div class="question-answer" id="detailDiscord"></div>
-                </div>
 
                 <div class="question">
+
+                    <div class="question-title">
+                        Kaç yaşındasınız?
+                    </div>
+
+                    <div
+                        class="question-answer"
+                        id="detailAge"
+                    ></div>
+
+                </div>
+
+
+                <div class="question">
+
+                    <div class="question-title">
+                        Discord kullanıcı adınız nedir?
+                    </div>
+
+                    <div
+                        class="question-answer"
+                        id="detailDiscord"
+                    ></div>
+
+                </div>
+
+
+                <div class="question">
+
                     <div class="question-title">
                         Daha önce herhangi bir Minecraft sunucusunda veya Discord topluluğunda yetkili olarak görev aldınız mı?
                     </div>
-                    <div class="question-answer" id="detailExperience"></div>
+
+                    <div
+                        class="question-answer"
+                        id="detailExperience"
+                    ></div>
+
                 </div>
 
+
                 <div class="question">
+
                     <div class="question-title">
                         Gün içerisinde genellikle neler yaparsınız?
                     </div>
-                    <div class="question-answer" id="detailActivity"></div>
+
+                    <div
+                        class="question-answer"
+                        id="detailActivity"
+                    ></div>
+
                 </div>
 
+
                 <div class="question">
+
                     <div class="question-title">
                         Günde ortalama kaç saatinizi yetkili olarak görev yapmaya ayırabilirsiniz?
                     </div>
-                    <div class="question-answer" id="detailAvailability"></div>
+
+                    <div
+                        class="question-answer"
+                        id="detailAvailability"
+                    ></div>
+
                 </div>
 
+
                 <div class="question">
+
                     <div class="question-title">
                         Kullanabileceğiniz bir mikrofonunuz bulunuyor mu?
                     </div>
-                    <div class="question-answer" id="detailMicrophone"></div>
+
+                    <div
+                        class="question-answer"
+                        id="detailMicrophone"
+                    ></div>
+
                 </div>
 
+
                 <div class="question">
+
                     <div class="question-title">
                         SnMac sunucusunda yetkili olarak görev almak istemenizin temel nedeni nedir?
                     </div>
-                    <div class="question-answer" id="detailMotivation"></div>
+
+                    <div
+                        class="question-answer"
+                        id="detailMotivation"
+                    ></div>
+
                 </div>
 
+
                 <div class="question">
+
                     <div class="question-title">
                         Yetkili olduğunuz sırada yakın olduğunuz bir arkadaşınızın kural ihlali yaptığını fark ettiniz. Bu durumda nasıl bir tutum sergilersiniz?
                     </div>
-                    <div class="question-answer" id="detailFriendRule"></div>
+
+                    <div
+                        class="question-answer"
+                        id="detailFriendRule"
+                    ></div>
+
                 </div>
 
+
                 <div class="question">
+
                     <div class="question-title">
                         Yeni bir oyuncunun size aynı veya benzer basit soruları sürekli olarak sorduğunu düşünün. Bu durumda nasıl davranırsınız?
                     </div>
-                    <div class="question-answer" id="detailRepeatedQuestions"></div>
+
+                    <div
+                        class="question-answer"
+                        id="detailRepeatedQuestions"
+                    ></div>
+
                 </div>
 
+
                 <div class="question">
+
                     <div class="question-title">
                         Bize biraz kendinizden bahseder misiniz?
                     </div>
-                    <div class="question-answer" id="detailAbout"></div>
+
+                    <div
+                        class="question-answer"
+                        id="detailAbout"
+                    ></div>
+
                 </div>
 
+
                 <div class="question">
+
                     <div class="question-title">
                         Bir ekip arkadaşınızla veya sizden daha alt ya da üst yetkide bulunan bir yetkiliyle anlaşmazlık yaşadığınızı düşünün. Bu durumda sorunu nasıl çözmeye çalışırsınız?
                     </div>
-                    <div class="question-answer" id="detailConflict"></div>
+
+                    <div
+                        class="question-answer"
+                        id="detailConflict"
+                    ></div>
+
                 </div>
 
+
                 <div class="question">
-                    <div class="question-title">Başvuru Tarihi</div>
-                    <div class="question-answer" id="detailDate"></div>
+
+                    <div class="question-title">
+                        Başvuru Tarihi
+                    </div>
+
+                    <div
+                        class="question-answer"
+                        id="detailDate"
+                    ></div>
+
                 </div>
+
 
                 <div class="admin-actions">
 
-                    <h3>Başvuruyu Değerlendir</h3>
+                    <h3>
+                        Başvuruyu Değerlendir
+                    </h3>
 
-                    <label>Durum</label>
+
+                    <label>
+                        Durum
+                    </label>
+
                     <select id="statusSelect">
-                        <option value="Bekliyor">Bekliyor</option>
-                        <option value="Kabul Edildi">Kabul Edildi</option>
-                        <option value="Reddedildi">Reddedildi</option>
+
+                        <option value="Bekliyor">
+                            Bekliyor
+                        </option>
+
+                        <option value="Kabul Edildi">
+                            Kabul Edildi
+                        </option>
+
+                        <option value="Reddedildi">
+                            Reddedildi
+                        </option>
+
                     </select>
+
 
                     <br><br>
 
-                    <label>Başvuru Sahibine Mesaj</label>
+
+                    <label>
+                        Başvuru Sahibine Mesaj
+                    </label>
+
                     <textarea
                         id="adminMessage"
                         rows="5"
                         placeholder="Başvuru sahibi için bir mesaj yazabilirsiniz..."
                     ></textarea>
+
 
                     <button id="saveBtn">
                         Değişiklikleri Kaydet
@@ -426,67 +961,471 @@
                 </div>
 
             </div>
+
         </div>
 
     </div>
 
 </div>
 
-<script>
-    const SUPABASE_URL = "https://drfborwvynrwfljrqlmg.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
 
-    const supabaseClient = supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-    );
+<script>
+
+    /* =========================================
+       SUPABASE
+    ========================================= */
+
+    const SUPABASE_URL =
+        "https://drfborwvynrwfljrqlmg.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
+
+
+    const supabaseClient =
+        supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    /* =========================================
+       STATE
+    ========================================= */
 
     let applications = [];
+
     let selectedApplication = null;
 
-    const errorBox = document.getElementById("errorBox");
+
+    /* =========================================
+       SES SİSTEMİ
+    ========================================= */
+
+    let audioContext = null;
+
+
+    function initAudio() {
+
+        try {
+
+            if (!audioContext) {
+
+                const AudioContext =
+                    window.AudioContext ||
+                    window.webkitAudioContext;
+
+                if (!AudioContext) {
+                    return;
+                }
+
+                audioContext =
+                    new AudioContext();
+
+            }
+
+
+            if (
+                audioContext.state ===
+                "suspended"
+            ) {
+
+                audioContext.resume();
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.log(
+                "Ses sistemi başlatılamadı.",
+                error
+            );
+
+        }
+
+    }
+
+
+    /*
+        Tarayıcılar kullanıcı etkileşimi olmadan
+        ses oynatılmasına izin vermeyebilir.
+
+        Admin paneline ilk tıklamada ses sistemi
+        hazırlanır.
+    */
+
+    document.addEventListener(
+        "click",
+        initAudio,
+        {
+            once: true
+        }
+    );
+
+
+    /* =========================================
+       KABUL SESİ
+       Hafif yükselen / ilahi
+    ========================================= */
+
+    function playAcceptSound() {
+
+        initAudio();
+
+        if (!audioContext) {
+            return;
+        }
+
+
+        const now =
+            audioContext.currentTime;
+
+
+        const oscillator =
+            audioContext.createOscillator();
+
+        const gain =
+            audioContext.createGain();
+
+
+        oscillator.type =
+            "sine";
+
+
+        oscillator.frequency
+            .setValueAtTime(
+                330,
+                now
+            );
+
+
+        oscillator.frequency
+            .exponentialRampToValueAtTime(
+                660,
+                now + 0.38
+            );
+
+
+        gain.gain
+            .setValueAtTime(
+                0.0001,
+                now
+            );
+
+
+        gain.gain
+            .exponentialRampToValueAtTime(
+                0.15,
+                now + 0.05
+            );
+
+
+        gain.gain
+            .exponentialRampToValueAtTime(
+                0.0001,
+                now + 0.8
+            );
+
+
+        oscillator.connect(gain);
+
+        gain.connect(
+            audioContext.destination
+        );
+
+
+        oscillator.start(now);
+
+        oscillator.stop(
+            now + 0.85
+        );
+
+    }
+
+
+    /* =========================================
+       RED SESİ
+       Tok ve aşağı doğru
+    ========================================= */
+
+    function playRejectSound() {
+
+        initAudio();
+
+        if (!audioContext) {
+            return;
+        }
+
+
+        const now =
+            audioContext.currentTime;
+
+
+        const oscillator =
+            audioContext.createOscillator();
+
+        const gain =
+            audioContext.createGain();
+
+
+        oscillator.type =
+            "triangle";
+
+
+        oscillator.frequency
+            .setValueAtTime(
+                190,
+                now
+            );
+
+
+        oscillator.frequency
+            .exponentialRampToValueAtTime(
+                65,
+                now + 0.52
+            );
+
+
+        gain.gain
+            .setValueAtTime(
+                0.0001,
+                now
+            );
+
+
+        gain.gain
+            .exponentialRampToValueAtTime(
+                0.16,
+                now + 0.035
+            );
+
+
+        gain.gain
+            .exponentialRampToValueAtTime(
+                0.0001,
+                now + 0.8
+            );
+
+
+        oscillator.connect(gain);
+
+        gain.connect(
+            audioContext.destination
+        );
+
+
+        oscillator.start(now);
+
+        oscillator.stop(
+            now + 0.85
+        );
+
+    }
+
+
+    /* =========================================
+       EFEKTİ OYNAT
+    ========================================= */
+
+    function playStatusEffect(status) {
+
+        const effect =
+            document.getElementById(
+                "statusEffect"
+            );
+
+
+        /*
+            Önce eski animasyonu temizle.
+        */
+
+        effect.className = "";
+
+
+        /*
+            CSS animasyonunun yeniden başlaması
+            için reflow.
+        */
+
+        void effect.offsetWidth;
+
+
+        if (
+            status ===
+            "Kabul Edildi"
+        ) {
+
+            effect.classList.add(
+                "accept"
+            );
+
+            playAcceptSound();
+
+        }
+
+
+        else if (
+            status ===
+            "Reddedildi"
+        ) {
+
+            effect.classList.add(
+                "reject"
+            );
+
+            playRejectSound();
+
+        }
+
+
+        /*
+            Animasyon bittikten sonra katmanı
+            tamamen temizle.
+        */
+
+        setTimeout(
+            () => {
+
+                effect.className = "";
+
+            },
+            1900
+        );
+
+    }
+
+
+    /* =========================================
+       HATA
+    ========================================= */
+
+    const errorBox =
+        document.getElementById(
+            "errorBox"
+        );
+
 
     function showError(message) {
-        errorBox.textContent = message;
-        errorBox.style.display = "block";
+
+        errorBox.textContent =
+            message;
+
+        errorBox.style.display =
+            "block";
+
     }
+
 
     function hideError() {
-        errorBox.style.display = "none";
+
+        errorBox.style.display =
+            "none";
+
     }
+
+
+    /* =========================================
+       HTML ESCAPE
+    ========================================= */
 
     function escapeHtml(value) {
-        if (value === null || value === undefined) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+
             return "-";
+
         }
+
 
         return String(value)
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
+
+            .replace(
+                /&/g,
+                "&amp;"
+            )
+
+            .replace(
+                /</g,
+                "&lt;"
+            )
+
+            .replace(
+                />/g,
+                "&gt;"
+            )
+
+            .replace(
+                /"/g,
+                "&quot;"
+            )
+
+            .replace(
+                /'/g,
+                "&#039;"
+            );
+
     }
+
+
+    /* =========================================
+       STATUS CLASS
+    ========================================= */
 
     function statusClass(status) {
-        if (status === "Kabul Edildi") {
+
+        if (
+            status ===
+            "Kabul Edildi"
+        ) {
+
             return "status-kabul";
+
         }
 
-        if (status === "Reddedildi") {
+
+        if (
+            status ===
+            "Reddedildi"
+        ) {
+
             return "status-red";
+
         }
+
 
         return "status-bekliyor";
+
     }
 
+
+    /* =========================================
+       TARİH
+    ========================================= */
+
     function formatDate(date) {
+
         if (!date) {
             return "-";
         }
 
-        return new Date(date).toLocaleString("tr-TR");
+
+        return new Date(
+            date
+        ).toLocaleString(
+            "tr-TR"
+        );
+
     }
+
+
+    /* =========================================
+       ADMIN KONTROLÜ
+    ========================================= */
 
     async function checkAdmin() {
 
@@ -494,25 +1433,47 @@
             data: {
                 session
             }
-        } = await supabaseClient.auth.getSession();
+        } =
+            await supabaseClient
+                .auth
+                .getSession();
+
 
         if (!session) {
-            window.location.href = "login.html";
+
+            window.location.href =
+                "login.html";
+
             return false;
+
         }
+
 
         const {
             data,
             error
-        } = await supabaseClient.rpc("is_admin");
+        } =
+            await supabaseClient
+                .rpc(
+                    "is_admin"
+                );
+
 
         if (error) {
-            showError("Yönetici kontrolü sırasında bir hata oluştu.");
+
+            showError(
+                "Yönetici kontrolü sırasında bir hata oluştu."
+            );
+
             return false;
+
         }
 
+
         if (!data) {
+
             document.body.innerHTML = `
+
                 <div style="
                     min-height:100vh;
                     display:flex;
@@ -524,259 +1485,645 @@
                     text-align:center;
                     padding:20px;
                 ">
+
                     <div>
-                        <h1>Yetkiniz bulunmuyor.</h1>
-                        <p style="color:#aaa;">
+
+                        <h1>
+                            Yetkiniz bulunmuyor.
+                        </h1>
+
+                        <p style="
+                            color:#aaa;
+                        ">
                             Bu sayfaya yalnızca yetkili yöneticiler erişebilir.
                         </p>
+
                     </div>
+
                 </div>
+
             `;
 
             return false;
+
         }
 
+
         return true;
+
     }
+
+
+    /* =========================================
+       BAŞVURULARI YÜKLE
+    ========================================= */
 
     async function loadApplications() {
 
         hideError();
 
+
         const {
             data,
             error
-        } = await supabaseClient
-            .from("applications")
-            .select("*")
-            .order("created_at", {
-                ascending: false
-            });
+        } =
+            await supabaseClient
+                .from("applications")
+                .select("*")
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
 
         if (error) {
-            showError("Başvurular yüklenirken hata oluştu: " + error.message);
+
+            showError(
+                "Başvurular yüklenirken hata oluştu: " +
+                error.message
+            );
+
             return;
+
         }
 
-        applications = data || [];
+
+        applications =
+            data || [];
+
 
         updateStats();
+
         renderApplications();
+
     }
+
+
+    /* =========================================
+       İSTATİSTİKLER
+    ========================================= */
 
     function updateStats() {
 
-        const total = applications.length;
+        const total =
+            applications.length;
 
-        const pending = applications.filter(
-            app => app.status === "Bekliyor"
-        ).length;
 
-        const completed = applications.filter(
-            app =>
-                app.status === "Kabul Edildi" ||
-                app.status === "Reddedildi"
-        ).length;
+        const pending =
+            applications.filter(
+                app =>
+                    app.status ===
+                    "Bekliyor"
+            ).length;
 
-        document.getElementById("totalCount").textContent = total;
-        document.getElementById("pendingCount").textContent = pending;
-        document.getElementById("completedCount").textContent = completed;
+
+        const completed =
+            applications.filter(
+                app =>
+                    app.status ===
+                        "Kabul Edildi" ||
+                    app.status ===
+                        "Reddedildi"
+            ).length;
+
+
+        document.getElementById(
+            "totalCount"
+        ).textContent =
+            total;
+
+
+        document.getElementById(
+            "pendingCount"
+        ).textContent =
+            pending;
+
+
+        document.getElementById(
+            "completedCount"
+        ).textContent =
+            completed;
+
     }
+
+
+    /* =========================================
+       BAŞVURULARI GÖSTER
+    ========================================= */
 
     function renderApplications() {
 
-        const list = document.getElementById("applicationList");
+        const list =
+            document.getElementById(
+                "applicationList"
+            );
+
 
         const filter =
-            document.getElementById("statusFilter").value;
+            document.getElementById(
+                "statusFilter"
+            ).value;
 
-        let filtered = applications;
 
-        if (filter !== "all") {
-            filtered = applications.filter(
-                app => app.status === filter
-            );
+        let filtered =
+            applications;
+
+
+        if (
+            filter !==
+            "all"
+        ) {
+
+            filtered =
+                applications.filter(
+                    app =>
+                        app.status ===
+                        filter
+                );
+
         }
 
-        if (filtered.length === 0) {
+
+        if (
+            filtered.length ===
+            0
+        ) {
+
             list.innerHTML = `
+
                 <div class="empty">
                     Bu filtreye uygun başvuru bulunamadı.
                 </div>
+
             `;
 
             return;
+
         }
 
-        list.innerHTML = filtered.map(app => {
 
-            const active =
-                selectedApplication &&
-                selectedApplication.id === app.id
-                    ? "active"
-                    : "";
+        list.innerHTML =
+            filtered
+                .map(
+                    app => {
 
-            return `
-                <div
-                    class="application-item ${active}"
-                    onclick="selectApplication('${app.id}')"
-                >
-                    <div class="application-name">
-                        ${escapeHtml(app.fullname)}
-                    </div>
+                        const active =
+                            selectedApplication &&
+                            selectedApplication.id ===
+                                app.id
+                                ? "active"
+                                : "";
 
-                    <div class="application-discord">
-                        ${escapeHtml(app.discord)}
-                    </div>
 
-                    <span class="status ${statusClass(app.status)}">
-                        ${escapeHtml(app.status)}
-                    </span>
-                </div>
-            `;
+                        return `
 
-        }).join("");
+                            <div
+                                class="application-item ${active}"
+                                onclick="selectApplication('${escapeHtml(app.id)}')"
+                            >
+
+                                <div class="application-name">
+
+                                    ${escapeHtml(
+                                        app.fullname
+                                    )}
+
+                                </div>
+
+
+                                <div class="application-discord">
+
+                                    ${escapeHtml(
+                                        app.discord
+                                    )}
+
+                                </div>
+
+
+                                <span
+                                    class="status ${statusClass(app.status)}"
+                                >
+
+                                    ${escapeHtml(
+                                        app.status
+                                    )}
+
+                                </span>
+
+                            </div>
+
+                        `;
+
+                    }
+                )
+                .join("");
+
     }
 
-    window.selectApplication = function(id) {
 
-        selectedApplication =
-            applications.find(app => app.id === id);
+    /* =========================================
+       BAŞVURU SEÇ
+    ========================================= */
 
-        if (!selectedApplication) {
-            return;
-        }
+    window.selectApplication =
+        function(id) {
 
-        document.getElementById("emptyDetail").style.display = "none";
-        document.getElementById("applicationDetail").style.display = "block";
+            selectedApplication =
+                applications.find(
+                    app =>
+                        app.id ===
+                        id
+                );
 
-        document.getElementById("detailTitle").textContent =
-            selectedApplication.fullname + " - Başvuru Detayları";
 
-        document.getElementById("detailFullname").textContent =
-            selectedApplication.fullname || "-";
+            if (
+                !selectedApplication
+            ) {
 
-        document.getElementById("detailAge").textContent =
-            selectedApplication.age ?? "-";
-
-        document.getElementById("detailDiscord").textContent =
-            selectedApplication.discord || "-";
-
-        document.getElementById("detailExperience").textContent =
-            selectedApplication.experience || "-";
-
-        document.getElementById("detailActivity").textContent =
-            selectedApplication.activity || "-";
-
-        document.getElementById("detailAvailability").textContent =
-            selectedApplication.availability || "-";
-
-        document.getElementById("detailMicrophone").textContent =
-            selectedApplication.microphone || "-";
-
-        document.getElementById("detailMotivation").textContent =
-            selectedApplication.motivation || "-";
-
-        document.getElementById("detailFriendRule").textContent =
-            selectedApplication.friend_rule_violation || "-";
-
-        document.getElementById("detailRepeatedQuestions").textContent =
-            selectedApplication.repeated_questions || "-";
-
-        document.getElementById("detailAbout").textContent =
-            selectedApplication.about || "-";
-
-        document.getElementById("detailConflict").textContent =
-            selectedApplication.conflict || "-";
-
-        document.getElementById("detailDate").textContent =
-            formatDate(selectedApplication.created_at);
-
-        document.getElementById("statusSelect").value =
-            selectedApplication.status || "Bekliyor";
-
-        document.getElementById("adminMessage").value =
-            selectedApplication.admin_message || "";
-
-        renderApplications();
-    };
-
-    document.getElementById("statusFilter")
-        .addEventListener("change", renderApplications);
-
-    document.getElementById("saveBtn")
-        .addEventListener("click", async () => {
-
-            if (!selectedApplication) {
                 return;
+
             }
+
+
+            document.getElementById(
+                "emptyDetail"
+            ).style.display =
+                "none";
+
+
+            document.getElementById(
+                "applicationDetail"
+            ).style.display =
+                "block";
+
+
+            document.getElementById(
+                "detailTitle"
+            ).textContent =
+                selectedApplication.fullname +
+                " - Başvuru Detayları";
+
+
+            document.getElementById(
+                "detailFullname"
+            ).textContent =
+                selectedApplication.fullname ||
+                "-";
+
+
+            document.getElementById(
+                "detailAge"
+            ).textContent =
+                selectedApplication.age ??
+                "-";
+
+
+            document.getElementById(
+                "detailDiscord"
+            ).textContent =
+                selectedApplication.discord ||
+                "-";
+
+
+            document.getElementById(
+                "detailExperience"
+            ).textContent =
+                selectedApplication.experience ||
+                "-";
+
+
+            document.getElementById(
+                "detailActivity"
+            ).textContent =
+                selectedApplication.activity ||
+                "-";
+
+
+            document.getElementById(
+                "detailAvailability"
+            ).textContent =
+                selectedApplication.availability ||
+                "-";
+
+
+            document.getElementById(
+                "detailMicrophone"
+            ).textContent =
+                selectedApplication.microphone ||
+                "-";
+
+
+            document.getElementById(
+                "detailMotivation"
+            ).textContent =
+                selectedApplication.motivation ||
+                "-";
+
+
+            document.getElementById(
+                "detailFriendRule"
+            ).textContent =
+                selectedApplication.friend_rule_violation ||
+                "-";
+
+
+            document.getElementById(
+                "detailRepeatedQuestions"
+            ).textContent =
+                selectedApplication.repeated_questions ||
+                "-";
+
+
+            document.getElementById(
+                "detailAbout"
+            ).textContent =
+                selectedApplication.about ||
+                "-";
+
+
+            document.getElementById(
+                "detailConflict"
+            ).textContent =
+                selectedApplication.conflict ||
+                "-";
+
+
+            document.getElementById(
+                "detailDate"
+            ).textContent =
+                formatDate(
+                    selectedApplication.created_at
+                );
+
+
+            document.getElementById(
+                "statusSelect"
+            ).value =
+                selectedApplication.status ||
+                "Bekliyor";
+
+
+            document.getElementById(
+                "adminMessage"
+            ).value =
+                selectedApplication.admin_message ||
+                "";
+
+
+            renderApplications();
+
+        };
+
+
+    /* =========================================
+       FİLTRE
+    ========================================= */
+
+    document.getElementById(
+        "statusFilter"
+    )
+    .addEventListener(
+        "change",
+        renderApplications
+    );
+
+
+    /* =========================================
+       KAYDET
+    ========================================= */
+
+    document.getElementById(
+        "saveBtn"
+    )
+    .addEventListener(
+        "click",
+        async () => {
+
+            if (
+                !selectedApplication
+            ) {
+
+                return;
+
+            }
+
 
             hideError();
 
+
             const newStatus =
-                document.getElementById("statusSelect").value;
+                document.getElementById(
+                    "statusSelect"
+                ).value;
+
 
             const adminMessage =
-                document.getElementById("adminMessage").value.trim();
+                document.getElementById(
+                    "adminMessage"
+                ).value.trim();
+
+
+            /*
+                Eski durumu efekt için
+                kaydediyoruz.
+            */
+
+            const oldStatus =
+                selectedApplication.status;
+
+
+            const saveButton =
+                document.getElementById(
+                    "saveBtn"
+                );
+
+
+            saveButton.disabled =
+                true;
+
+
+            saveButton.textContent =
+                "Kaydediliyor...";
+
 
             const {
                 error
-            } = await supabaseClient
-                .from("applications")
-                .update({
-                    status: newStatus,
-                    admin_message: adminMessage || null,
-                    updated_at: new Date().toISOString()
-                })
-                .eq("id", selectedApplication.id);
+            } =
+                await supabaseClient
+                    .from("applications")
+                    .update({
+
+                        status:
+                            newStatus,
+
+                        admin_message:
+                            adminMessage ||
+                            null,
+
+                        updated_at:
+                            new Date()
+                                .toISOString()
+
+                    })
+                    .eq(
+                        "id",
+                        selectedApplication.id
+                    );
+
 
             if (error) {
+
                 showError(
                     "Başvuru güncellenirken hata oluştu: " +
                     error.message
                 );
 
+
+                saveButton.disabled =
+                    false;
+
+
+                saveButton.textContent =
+                    "Değişiklikleri Kaydet";
+
+
                 return;
+
             }
 
-            selectedApplication.status = newStatus;
+
+            /*
+                Local state güncelle.
+            */
+
+            selectedApplication.status =
+                newStatus;
+
+
             selectedApplication.admin_message =
-                adminMessage || null;
+                adminMessage ||
+                null;
 
-            const index = applications.findIndex(
-                app => app.id === selectedApplication.id
-            );
 
-            if (index !== -1) {
-                applications[index] = selectedApplication;
+            const index =
+                applications.findIndex(
+                    app =>
+                        app.id ===
+                        selectedApplication.id
+                );
+
+
+            if (
+                index !==
+                -1
+            ) {
+
+                applications[index] =
+                    selectedApplication;
+
             }
+
 
             updateStats();
+
             renderApplications();
 
-            alert("Başvuru başarıyla güncellendi.");
-        });
 
-    document.getElementById("logoutBtn")
-        .addEventListener("click", async () => {
+            /*
+                SADECE DURUM DEĞİŞTİYSE
+                sinematik efekt oynat.
+            */
 
-            await supabaseClient.auth.signOut();
+            if (
+                oldStatus !==
+                newStatus
+            ) {
 
-            window.location.href = "login.html";
-        });
+                if (
+                    newStatus ===
+                    "Kabul Edildi"
+                ) {
+
+                    playStatusEffect(
+                        "Kabul Edildi"
+                    );
+
+                }
+
+                else if (
+                    newStatus ===
+                    "Reddedildi"
+                ) {
+
+                    playStatusEffect(
+                        "Reddedildi"
+                    );
+
+                }
+
+            }
+
+
+            saveButton.disabled =
+                false;
+
+
+            saveButton.textContent =
+                "Değişiklikleri Kaydet";
+
+        }
+    );
+
+
+    /* =========================================
+       ÇIKIŞ
+    ========================================= */
+
+    document.getElementById(
+        "logoutBtn"
+    )
+    .addEventListener(
+        "click",
+        async () => {
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+
+            window.location.href =
+                "login.html";
+
+        }
+    );
+
+
+    /* =========================================
+       BAŞLAT
+    ========================================= */
 
     async function init() {
 
-        const isAdmin = await checkAdmin();
+        const isAdmin =
+            await checkAdmin();
+
 
         if (!isAdmin) {
+
             return;
+
         }
 
+
         await loadApplications();
+
     }
 
+
     init();
+
 </script>
 
 </body>
