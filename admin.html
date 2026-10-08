@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>SnMac - Admin Paneli</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
+
         * {
             box-sizing: border-box;
         }
@@ -96,7 +98,7 @@
         }
 
         select {
-            max-width: 250px;
+            max-width: 300px;
         }
 
         select:focus,
@@ -145,6 +147,13 @@
             margin-bottom: 6px;
         }
 
+        .application-type {
+            color: #a78bfa;
+            font-size: 12px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
         .application-discord {
             color: #aaa;
             font-size: 14px;
@@ -177,6 +186,18 @@
         .detail-title {
             font-size: 22px;
             margin-bottom: 20px;
+        }
+
+        .application-category {
+            display: inline-block;
+            padding: 6px 10px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            color: #a78bfa;
+            font-size: 12px;
+            font-weight: bold;
         }
 
         .question {
@@ -276,6 +297,7 @@
             display: none;
         }
 
+
         /* =========================================
            SİNEMATİK DURUM EFEKTLERİ
         ========================================= */
@@ -289,10 +311,8 @@
             overflow: hidden;
         }
 
-        /*
-            KABUL EDİLİNCE:
-            Yukarıdan gelen ilahi / altın ışık
-        */
+
+        /* KABUL */
 
         #statusEffect.accept {
             animation: acceptScreen 1.8s ease-out forwards;
@@ -301,13 +321,20 @@
         #statusEffect.accept::before {
             content: "";
             position: absolute;
+
             width: 70vw;
             height: 70vw;
+
             max-width: 850px;
             max-height: 850px;
+
             left: 50%;
             top: 50%;
-            transform: translate(-50%, -50%) scale(0.15);
+
+            transform:
+                translate(-50%, -50%)
+                scale(0.15);
+
             border-radius: 50%;
 
             background:
@@ -321,7 +348,8 @@
 
             filter: blur(4px);
 
-            animation: divineLight 1.8s ease-out forwards;
+            animation:
+                divineLight 1.8s ease-out forwards;
         }
 
         #statusEffect.accept::after {
@@ -337,8 +365,10 @@
                     transparent 68%
                 );
 
-            animation: divineGlow 1.8s ease-out forwards;
+            animation:
+                divineGlow 1.8s ease-out forwards;
         }
+
 
         @keyframes acceptScreen {
 
@@ -361,7 +391,9 @@
             100% {
                 opacity: 0;
             }
+
         }
+
 
         @keyframes divineLight {
 
@@ -396,7 +428,9 @@
 
                 opacity: 0;
             }
+
         }
+
 
         @keyframes divineGlow {
 
@@ -415,15 +449,15 @@
             100% {
                 opacity: 0;
             }
+
         }
 
-        /*
-            REDDEDİLİNCE:
-            Hafif kararma / gölge
-        */
+
+        /* RED */
 
         #statusEffect.reject {
-            animation: rejectScreen 1.7s ease-out forwards;
+            animation:
+                rejectScreen 1.7s ease-out forwards;
         }
 
         #statusEffect.reject::before {
@@ -439,16 +473,20 @@
                     rgba(0, 0, 0, 0.75) 100%
                 );
 
-            animation: shadowFall 1.7s ease-out forwards;
+            animation:
+                shadowFall 1.7s ease-out forwards;
         }
 
         #statusEffect.reject::after {
             content: "";
             position: absolute;
+
             width: 80vw;
             height: 80vw;
+
             max-width: 1000px;
             max-height: 1000px;
+
             left: 50%;
             top: 50%;
 
@@ -466,8 +504,10 @@
                     rgba(0, 0, 0, 0.7) 100%
                 );
 
-            animation: darkCore 1.7s ease-out forwards;
+            animation:
+                darkCore 1.7s ease-out forwards;
         }
+
 
         @keyframes rejectScreen {
 
@@ -490,7 +530,9 @@
             100% {
                 opacity: 0;
             }
+
         }
+
 
         @keyframes shadowFall {
 
@@ -525,7 +567,9 @@
 
                 opacity: 0;
             }
+
         }
+
 
         @keyframes darkCore {
 
@@ -560,7 +604,9 @@
 
                 opacity: 0;
             }
+
         }
+
 
         @media (max-width: 850px) {
 
@@ -575,35 +621,48 @@
             .application-list {
                 max-height: none;
             }
+
         }
+
     </style>
 </head>
 
+
 <body>
 
-<!--
-    Sadece kabul / red sırasında kullanılan
-    tam ekran sinematik efekt katmanı.
--->
+
 <div id="statusEffect"></div>
 
 
 <div class="container">
 
-    <button class="logout" id="logoutBtn">
+
+    <button
+        class="logout"
+        id="logoutBtn"
+    >
         Çıkış Yap
     </button>
 
-    <h1>SnMac Admin Paneli</h1>
+
+    <h1>
+        SnMac Admin Paneli
+    </h1>
+
 
     <div class="subtitle">
         Başvuruları görüntüleyebilir, değerlendirebilir ve başvuru sahiplerine geri bildirim bırakabilirsiniz.
     </div>
 
-    <div id="errorBox" class="error"></div>
+
+    <div
+        id="errorBox"
+        class="error"
+    ></div>
 
 
     <div class="stats">
+
 
         <div class="stat">
 
@@ -652,6 +711,7 @@
 
         </div>
 
+
     </div>
 
 
@@ -693,6 +753,7 @@
                 Başvurular
             </h2>
 
+
             <div
                 id="applicationList"
                 class="application-list"
@@ -708,6 +769,7 @@
 
 
         <div class="panel">
+
 
             <div
                 id="emptyDetail"
@@ -730,172 +792,18 @@
                 </div>
 
 
-                <div class="question">
-
-                    <div class="question-title">
-                        Adınız ve soyadınız nedir?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailFullname"
-                    ></div>
-
-                </div>
+                <div
+                    class="application-category"
+                    id="applicationCategory"
+                ></div>
 
 
-                <div class="question">
+                <!--
+                    DETAYLAR JAVASCRIPT TARAFINDAN
+                    BAŞVURU TÜRÜNE GÖRE OLUŞTURULACAK
+                -->
 
-                    <div class="question-title">
-                        Kaç yaşındasınız?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailAge"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        Discord kullanıcı adınız nedir?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailDiscord"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        Daha önce herhangi bir Minecraft sunucusunda veya Discord topluluğunda yetkili olarak görev aldınız mı?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailExperience"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        Gün içerisinde genellikle neler yaparsınız?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailActivity"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        Günde ortalama kaç saatinizi yetkili olarak görev yapmaya ayırabilirsiniz?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailAvailability"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        Kullanabileceğiniz bir mikrofonunuz bulunuyor mu?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailMicrophone"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        SnMac sunucusunda yetkili olarak görev almak istemenizin temel nedeni nedir?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailMotivation"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        Yetkili olduğunuz sırada yakın olduğunuz bir arkadaşınızın kural ihlali yaptığını fark ettiniz. Bu durumda nasıl bir tutum sergilersiniz?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailFriendRule"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        Yeni bir oyuncunun size aynı veya benzer basit soruları sürekli olarak sorduğunu düşünün. Bu durumda nasıl davranırsınız?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailRepeatedQuestions"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        Bize biraz kendinizden bahseder misiniz?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailAbout"
-                    ></div>
-
-                </div>
-
-
-                <div class="question">
-
-                    <div class="question-title">
-                        Bir ekip arkadaşınızla veya sizden daha alt ya da üst yetkide bulunan bir yetkiliyle anlaşmazlık yaşadığınızı düşünün. Bu durumda sorunu nasıl çözmeye çalışırsınız?
-                    </div>
-
-                    <div
-                        class="question-answer"
-                        id="detailConflict"
-                    ></div>
-
-                </div>
+                <div id="detailQuestions"></div>
 
 
                 <div class="question">
@@ -914,6 +822,7 @@
 
                 <div class="admin-actions">
 
+
                     <h3>
                         Başvuruyu Değerlendir
                     </h3>
@@ -922,6 +831,7 @@
                     <label>
                         Durum
                     </label>
+
 
                     <select id="statusSelect">
 
@@ -947,6 +857,7 @@
                         Başvuru Sahibine Mesaj
                     </label>
 
+
                     <textarea
                         id="adminMessage"
                         rows="5"
@@ -957,6 +868,7 @@
                     <button id="saveBtn">
                         Değişiklikleri Kaydet
                     </button>
+
 
                 </div>
 
@@ -971,12 +883,14 @@
 
 <script>
 
+
     /* =========================================
        SUPABASE
     ========================================= */
 
     const SUPABASE_URL =
         "https://drfborwvynrwfljrqlmg.supabase.co";
+
 
     const SUPABASE_KEY =
         "sb_publishable_Sw6ra8A72oj7dXNnCX__rA_ZNxGtrpn";
@@ -1048,14 +962,6 @@
     }
 
 
-    /*
-        Tarayıcılar kullanıcı etkileşimi olmadan
-        ses oynatılmasına izin vermeyebilir.
-
-        Admin paneline ilk tıklamada ses sistemi
-        hazırlanır.
-    */
-
     document.addEventListener(
         "click",
         initAudio,
@@ -1067,7 +973,6 @@
 
     /* =========================================
        KABUL SESİ
-       Hafif yükselen / ilahi
     ========================================= */
 
     function playAcceptSound() {
@@ -1085,6 +990,7 @@
 
         const oscillator =
             audioContext.createOscillator();
+
 
         const gain =
             audioContext.createGain();
@@ -1147,7 +1053,6 @@
 
     /* =========================================
        RED SESİ
-       Tok ve aşağı doğru
     ========================================= */
 
     function playRejectSound() {
@@ -1165,6 +1070,7 @@
 
         const oscillator =
             audioContext.createOscillator();
+
 
         const gain =
             audioContext.createGain();
@@ -1226,7 +1132,7 @@
 
 
     /* =========================================
-       EFEKTİ OYNAT
+       DURUM EFEKTİ
     ========================================= */
 
     function playStatusEffect(status) {
@@ -1237,17 +1143,8 @@
             );
 
 
-        /*
-            Önce eski animasyonu temizle.
-        */
-
         effect.className = "";
 
-
-        /*
-            CSS animasyonunun yeniden başlaması
-            için reflow.
-        */
 
         void effect.offsetWidth;
 
@@ -1279,11 +1176,6 @@
 
         }
 
-
-        /*
-            Animasyon bittikten sonra katmanı
-            tamamen temizle.
-        */
 
         setTimeout(
             () => {
@@ -1419,6 +1311,423 @@
         ).toLocaleString(
             "tr-TR"
         );
+
+    }
+
+
+    /* =========================================
+       BAŞVURU TÜRÜ
+    ========================================= */
+
+    function getApplicationTypeName(type) {
+
+        if (
+            type ===
+            "yetkili"
+        ) {
+
+            return "Yetkili Başvurusu";
+
+        }
+
+
+        if (
+            type ===
+            "medya"
+        ) {
+
+            return "Medya Başvurusu";
+
+        }
+
+
+        if (
+            type ===
+            "gelistirici"
+        ) {
+
+            return "Geliştirici Başvurusu";
+
+        }
+
+
+        if (
+            type ===
+            "aac"
+        ) {
+
+            return "AAC Başvurusu";
+
+        }
+
+
+        return "Başvuru";
+
+    }
+
+
+    /* =========================================
+       SORU KUTUSU OLUŞTUR
+    ========================================= */
+
+    function createQuestion(
+        title,
+        value
+    ) {
+
+        return `
+
+            <div class="question">
+
+                <div class="question-title">
+                    ${escapeHtml(title)}
+                </div>
+
+                <div class="question-answer">
+                    ${escapeHtml(
+                        value
+                    )}
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    /* =========================================
+       MEDYA DETAYLARI
+    ========================================= */
+
+    function renderMediaDetails(app) {
+
+        const container =
+            document.getElementById(
+                "detailQuestions"
+            );
+
+
+        container.innerHTML =
+
+            createQuestion(
+                "Adınız nedir?",
+                app.fullname
+            )
+
+            +
+
+            createQuestion(
+                "Kaç yaşındasınız?",
+                app.age
+            )
+
+            +
+
+            createQuestion(
+                "Discord kullanıcı adınız nedir?",
+                app.discord
+            )
+
+            +
+
+            createQuestion(
+                "Hangi platformlarda içerik üretiyorsunuz?",
+                app.platforms
+            )
+
+            +
+
+            createQuestion(
+                "Kanal, profil veya içerik bağlantılarınızı paylaşınız.",
+                app.links
+            )
+
+            +
+
+            createQuestion(
+                "Daha önce içerik üretme konusunda deneyiminiz oldu mu?",
+                app.media_experience
+            )
+
+            +
+
+            createQuestion(
+                "Ortalama izlenme, takipçi veya diğer istatistikleriniz nelerdir?",
+                app.statistics
+            )
+
+            +
+
+            createQuestion(
+                "Ne tür içerikler üretiyorsunuz veya üretmeyi planlıyorsunuz?",
+                app.content_type
+            )
+
+            +
+
+            createQuestion(
+                "SnMac medya ekibinde neden yer almak istiyorsunuz?",
+                app.motivation
+            )
+
+            +
+
+            createQuestion(
+                "Günlük olarak medya ekibine ortalama ne kadar zaman ayırabilirsiniz?",
+                app.availability
+            )
+
+            +
+
+            createQuestion(
+                "SnMac için içerik üretimi veya medya ekibiyle işbirliği konusunda neler yapabilirsiniz?",
+                app.collaboration
+            )
+
+            +
+
+            createQuestion(
+                "Medya alanındaki hedeflerinizden ve kendinizden biraz bahseder misiniz?",
+                app.about
+            );
+
+    }
+
+
+    /* =========================================
+       YETKİLİ DETAYLARI
+    ========================================= */
+
+    function renderStaffDetails(app) {
+
+        const container =
+            document.getElementById(
+                "detailQuestions"
+            );
+
+
+        container.innerHTML =
+
+            createQuestion(
+                "Adınız ve soyadınız nedir?",
+                app.fullname
+            )
+
+            +
+
+            createQuestion(
+                "Kaç yaşındasınız?",
+                app.age
+            )
+
+            +
+
+            createQuestion(
+                "Discord kullanıcı adınız nedir?",
+                app.discord
+            )
+
+            +
+
+            createQuestion(
+                "Daha önce herhangi bir Minecraft sunucusunda veya Discord topluluğunda yetkili olarak görev aldınız mı?",
+                app.experience
+            )
+
+            +
+
+            createQuestion(
+                "Gün içerisinde genellikle neler yaparsınız?",
+                app.activity
+            )
+
+            +
+
+            createQuestion(
+                "Günde ortalama kaç saatinizi yetkili olarak görev yapmaya ayırabilirsiniz?",
+                app.availability
+            )
+
+            +
+
+            createQuestion(
+                "Kullanabileceğiniz bir mikrofonunuz bulunuyor mu?",
+                app.microphone
+            )
+
+            +
+
+            createQuestion(
+                "SnMac sunucusunda yetkili olarak görev almak istemenizin temel nedeni nedir?",
+                app.motivation
+            )
+
+            +
+
+            createQuestion(
+                "Yetkili olduğunuz sırada yakın olduğunuz bir arkadaşınızın kural ihlali yaptığını fark ettiniz. Bu durumda nasıl bir tutum sergilersiniz?",
+                app.friend_rule_violation
+            )
+
+            +
+
+            createQuestion(
+                "Yeni bir oyuncunun size aynı veya benzer basit soruları sürekli olarak sorduğunu düşünün. Bu durumda nasıl davranırsınız?",
+                app.repeated_questions
+            )
+
+            +
+
+            createQuestion(
+                "Bize biraz kendinizden bahseder misiniz?",
+                app.about
+            )
+
+            +
+
+            createQuestion(
+                "Bir ekip arkadaşınızla veya sizden daha alt ya da üst yetkide bulunan bir yetkiliyle anlaşmazlık yaşadığınızı düşünün. Bu durumda sorunu nasıl çözmeye çalışırsınız?",
+                app.conflict
+            );
+
+    }
+
+
+    /* =========================================
+       GELİŞTİRİCİ DETAYLARI
+    ========================================= */
+
+    function renderDeveloperDetails(app) {
+
+        const container =
+            document.getElementById(
+                "detailQuestions"
+            );
+
+
+        container.innerHTML =
+
+            createQuestion(
+                "Adınız nedir?",
+                app.fullname
+            )
+
+            +
+
+            createQuestion(
+                "Kaç yaşındasınız?",
+                app.age
+            )
+
+            +
+
+            createQuestion(
+                "Discord kullanıcı adınız nedir?",
+                app.discord
+            )
+
+            +
+
+            createQuestion(
+                "Hangi programlama dillerini biliyorsunuz?",
+                app.programming_languages
+            )
+
+            +
+
+            createQuestion(
+                "Hangi alanlarda geliştirme yapabiliyorsunuz?",
+                app.development_areas
+            )
+
+            +
+
+            createQuestion(
+                "Daha önce yaptığınız projeler var mı?",
+                app.projects
+            )
+
+            +
+
+            createQuestion(
+                "GitHub, web sitesi veya projelerinizi gösterebileceğiniz bağlantılarınız",
+                app.portfolio
+            )
+
+            +
+
+            createQuestion(
+                "SnMac geliştirici ekibinde neden yer almak istiyorsunuz?",
+                app.motivation
+            )
+
+            +
+
+            createQuestion(
+                "Gün içerisinde ortalama ne kadar zaman ayırabilirsiniz?",
+                app.availability
+            )
+
+            +
+
+            createQuestion(
+                "Ekip içerisinde bir fikir veya teknik konuda anlaşmazlık yaşarsanız nasıl çözersiniz?",
+                app.conflict
+            )
+
+            +
+
+            createQuestion(
+                "Bir projede size verilen görevi zamanında tamamlayamayacağınızı fark ederseniz ne yaparsınız?",
+                app.responsibility
+            )
+
+            +
+
+            createQuestion(
+                "Bize biraz kendinizden ve geliştirici olarak hedeflerinizden bahseder misiniz?",
+                app.about
+            );
+
+    }
+
+
+    /* =========================================
+       DETAYLARI RENDER ET
+    ========================================= */
+
+    function renderApplicationDetails(app) {
+
+        const type =
+            app.application_type;
+
+
+        if (
+            type ===
+            "medya"
+        ) {
+
+            renderMediaDetails(app);
+
+            return;
+
+        }
+
+
+        if (
+            type ===
+            "gelistirici"
+        ) {
+
+            renderDeveloperDetails(app);
+
+            return;
+
+        }
+
+
+        renderStaffDetails(app);
 
     }
 
@@ -1685,31 +1994,34 @@
                             >
 
                                 <div class="application-name">
-
                                     ${escapeHtml(
                                         app.fullname
                                     )}
+                                </div>
 
+
+                                <div class="application-type">
+                                    ${escapeHtml(
+                                        getApplicationTypeName(
+                                            app.application_type
+                                        )
+                                    )}
                                 </div>
 
 
                                 <div class="application-discord">
-
                                     ${escapeHtml(
                                         app.discord
                                     )}
-
                                 </div>
 
 
                                 <span
                                     class="status ${statusClass(app.status)}"
                                 >
-
                                     ${escapeHtml(
                                         app.status
                                     )}
-
                                 </span>
 
                             </div>
@@ -1767,87 +2079,16 @@
 
 
             document.getElementById(
-                "detailFullname"
+                "applicationCategory"
             ).textContent =
-                selectedApplication.fullname ||
-                "-";
+                getApplicationTypeName(
+                    selectedApplication.application_type
+                );
 
 
-            document.getElementById(
-                "detailAge"
-            ).textContent =
-                selectedApplication.age ??
-                "-";
-
-
-            document.getElementById(
-                "detailDiscord"
-            ).textContent =
-                selectedApplication.discord ||
-                "-";
-
-
-            document.getElementById(
-                "detailExperience"
-            ).textContent =
-                selectedApplication.experience ||
-                "-";
-
-
-            document.getElementById(
-                "detailActivity"
-            ).textContent =
-                selectedApplication.activity ||
-                "-";
-
-
-            document.getElementById(
-                "detailAvailability"
-            ).textContent =
-                selectedApplication.availability ||
-                "-";
-
-
-            document.getElementById(
-                "detailMicrophone"
-            ).textContent =
-                selectedApplication.microphone ||
-                "-";
-
-
-            document.getElementById(
-                "detailMotivation"
-            ).textContent =
-                selectedApplication.motivation ||
-                "-";
-
-
-            document.getElementById(
-                "detailFriendRule"
-            ).textContent =
-                selectedApplication.friend_rule_violation ||
-                "-";
-
-
-            document.getElementById(
-                "detailRepeatedQuestions"
-            ).textContent =
-                selectedApplication.repeated_questions ||
-                "-";
-
-
-            document.getElementById(
-                "detailAbout"
-            ).textContent =
-                selectedApplication.about ||
-                "-";
-
-
-            document.getElementById(
-                "detailConflict"
-            ).textContent =
-                selectedApplication.conflict ||
-                "-";
+            renderApplicationDetails(
+                selectedApplication
+            );
 
 
             document.getElementById(
@@ -1925,11 +2166,6 @@
                 ).value.trim();
 
 
-            /*
-                Eski durumu efekt için
-                kaydediyoruz.
-            */
-
             const oldStatus =
                 selectedApplication.status;
 
@@ -1994,10 +2230,6 @@
             }
 
 
-            /*
-                Local state güncelle.
-            */
-
             selectedApplication.status =
                 newStatus;
 
@@ -2032,8 +2264,8 @@
 
 
             /*
-                SADECE DURUM DEĞİŞTİYSE
-                sinematik efekt oynat.
+                Sadece gerçek durum değişikliğinde
+                kabul / red efekti çalışır.
             */
 
             if (
@@ -2051,6 +2283,7 @@
                     );
 
                 }
+
 
                 else if (
                     newStatus ===
